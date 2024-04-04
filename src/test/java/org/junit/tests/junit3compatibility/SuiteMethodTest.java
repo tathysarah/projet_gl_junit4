@@ -59,7 +59,6 @@ public class SuiteMethodTest {
         assertTrue(wasRun);
     }
 
-
     public static class CompatibilityTest {
         @Ignore
         @Test
@@ -71,13 +70,15 @@ public class SuiteMethodTest {
         }
     }
 
-    // when executing as JUnit 3, ignored tests are stripped out before execution
+    // when executing as JUnit 3, ignored tests are stripped out before
+    // execution
     @Test
     public void descriptionAndRunNotificationsAreConsistent() {
         Result result = JUnitCore.runClasses(CompatibilityTest.class);
         assertEquals(0, result.getIgnoreCount());
 
-        Description description = Request.aClass(CompatibilityTest.class).getRunner().getDescription();
+        Description description = Request.aClass(CompatibilityTest.class)
+                .getRunner().getDescription();
         assertEquals(0, description.getChildren().size());
     }
 

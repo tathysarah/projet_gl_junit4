@@ -17,10 +17,10 @@ import org.junit.runner.RunWith;
 @RunWith(Theories.class)
 public class WhenNoParametersMatch {
     @DataPoints
-    public static int[] ints = {0, 1, 3, 5, 1776};
+    public static int[] ints = { 0, 1, 3, 5, 1776 };
 
     @DataPoints
-    public static Matcher<?>[] matchers = {not(0), is(1)};
+    public static Matcher<?>[] matchers = { not(0), is(1) };
 
     @RunWith(Theories.class)
     public static class AssumptionsFail {

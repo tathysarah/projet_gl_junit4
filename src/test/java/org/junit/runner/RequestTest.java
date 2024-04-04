@@ -31,7 +31,8 @@ public class RequestTest {
 
         core.run(new FailingComputer(), FooTest.class, BarTest.class);
 
-        assertThat(collector, hasSingleFailureWithMessage("cannot create suite"));
+        assertThat(collector,
+                hasSingleFailureWithMessage("cannot create suite"));
     }
 
     private static class FailingComputer extends Computer {

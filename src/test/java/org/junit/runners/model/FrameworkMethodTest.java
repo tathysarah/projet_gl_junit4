@@ -21,7 +21,8 @@ public class FrameworkMethodTest {
     @Test
     public void cannotBeCreatedWithoutUnderlyingField() {
         thrown.expect(NullPointerException.class);
-        thrown.expectMessage("FrameworkMethod cannot be created without an underlying method.");
+        thrown.expectMessage(
+                "FrameworkMethod cannot be created without an underlying method.");
         new FrameworkMethod(null);
     }
 
@@ -34,7 +35,8 @@ public class FrameworkMethodTest {
 
     @Test
     public void presentAnnotationIsAvailable() throws Exception {
-        Method method = ClassWithDummyMethod.class.getMethod("annotatedDummyMethod");
+        Method method = ClassWithDummyMethod.class
+                .getMethod("annotatedDummyMethod");
         FrameworkMethod frameworkMethod = new FrameworkMethod(method);
         Annotation annotation = frameworkMethod.getAnnotation(Rule.class);
         assertTrue(Rule.class.isAssignableFrom(annotation.getClass()));
@@ -42,7 +44,8 @@ public class FrameworkMethodTest {
 
     @Test
     public void missingAnnotationIsNotAvailable() throws Exception {
-        Method method = ClassWithDummyMethod.class.getMethod("annotatedDummyMethod");
+        Method method = ClassWithDummyMethod.class
+                .getMethod("annotatedDummyMethod");
         FrameworkMethod frameworkMethod = new FrameworkMethod(method);
         Annotation annotation = frameworkMethod.getAnnotation(ClassRule.class);
         assertThat(annotation, is(nullValue()));

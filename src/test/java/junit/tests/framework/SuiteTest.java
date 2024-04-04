@@ -32,7 +32,8 @@ public class SuiteTest extends TestCase {
         suite.addTest(new SuiteTest("testNotVoidTestCase"));
         suite.addTest(new SuiteTest("testNotExistingTestCase"));
         suite.addTest(new SuiteTest("testInheritedTests"));
-        suite.addTest(new SuiteTest("testOneTestCaseEclipseSeesSameStructureAs381"));
+        suite.addTest(
+                new SuiteTest("testOneTestCaseEclipseSeesSameStructureAs381"));
         suite.addTest(new SuiteTest("testNoTestCaseClass"));
         suite.addTest(new SuiteTest("testShadowedTests"));
         suite.addTest(new SuiteTest("testAddTestSuite"));
@@ -51,14 +52,14 @@ public class SuiteTest extends TestCase {
     public void testNoTestCaseClass() {
         Test t = new TestSuite(NoTestCaseClass.class);
         t.run(fResult);
-        assertEquals(1, fResult.runCount());  // warning test
+        assertEquals(1, fResult.runCount()); // warning test
         assertTrue(!fResult.wasSuccessful());
     }
 
     public void testNoTestCases() {
         Test t = new TestSuite(NoTestCases.class);
         t.run(fResult);
-        assertTrue(fResult.runCount() == 1);  // warning test
+        assertTrue(fResult.runCount() == 1); // warning test
         assertTrue(fResult.failureCount() == 1);
         assertTrue(!fResult.wasSuccessful());
     }
@@ -110,9 +111,12 @@ public class SuiteTest extends TestCase {
     }
 
     public void testCreateSuiteFromArray() {
-        TestSuite suite = new TestSuite(OneTestCase.class, DoublePrecisionAssertTest.class);
+        TestSuite suite = new TestSuite(OneTestCase.class,
+                DoublePrecisionAssertTest.class);
         assertEquals(2, suite.testCount());
-        assertEquals("junit.tests.framework.DoublePrecisionAssertTest", ((TestSuite) suite.testAt(1)).getName());
-        assertEquals("junit.tests.framework.OneTestCase", ((TestSuite) suite.testAt(0)).getName());
+        assertEquals("junit.tests.framework.DoublePrecisionAssertTest",
+                ((TestSuite) suite.testAt(1)).getName());
+        assertEquals("junit.tests.framework.OneTestCase",
+                ((TestSuite) suite.testAt(0)).getName());
     }
 }

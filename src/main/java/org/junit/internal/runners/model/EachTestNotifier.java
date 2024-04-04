@@ -18,7 +18,8 @@ public class EachTestNotifier {
 
     public void addFailure(Throwable targetException) {
         if (targetException instanceof MultipleFailureException) {
-            addMultipleFailureException((MultipleFailureException) targetException);
+            addMultipleFailureException(
+                    (MultipleFailureException) targetException);
         } else {
             notifier.fireTestFailure(new Failure(description, targetException));
         }
@@ -48,8 +49,10 @@ public class EachTestNotifier {
 
     /**
      * Calls {@link RunNotifier#fireTestSuiteStarted(Description)}, passing the
-     * {@link Description} that was passed to the {@code EachTestNotifier} constructor.
-     * This should be called when a test suite is about to be started.
+     * {@link Description} that was passed to the {@code EachTestNotifier}
+     * constructor. This should be called when a test suite is about to be
+     * started.
+     * 
      * @see RunNotifier#fireTestSuiteStarted(Description)
      * @since 4.13
      */
@@ -59,9 +62,10 @@ public class EachTestNotifier {
 
     /**
      * Calls {@link RunNotifier#fireTestSuiteFinished(Description)}, passing the
-     * {@link Description} that was passed to the {@code EachTestNotifier} constructor.
-     * This should be called when a test suite has finished, whether the test suite succeeds
-     * or fails.
+     * {@link Description} that was passed to the {@code EachTestNotifier}
+     * constructor. This should be called when a test suite has finished,
+     * whether the test suite succeeds or fails.
+     * 
      * @see RunNotifier#fireTestSuiteFinished(Description)
      * @since 4.13
      */

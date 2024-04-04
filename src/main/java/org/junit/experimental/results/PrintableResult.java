@@ -11,12 +11,11 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
 /**
- * A test result that prints nicely in error messages.
- * This is only intended to be used in JUnit self-tests.
- * For example:
+ * A test result that prints nicely in error messages. This is only intended to
+ * be used in JUnit self-tests. For example:
  *
  * <pre>
- *    assertThat(testResult(HasExpectedException.class), isSuccessful());
+ * assertThat(testResult(HasExpectedException.class), isSuccessful());
  * </pre>
  */
 public class PrintableResult {

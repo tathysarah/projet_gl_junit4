@@ -44,8 +44,8 @@ public class RuleChainTest {
     public static class UseRuleChain {
         @Rule
         public final RuleChain chain = outerRule(new LoggingRule("outer rule"))
-                .around(new LoggingRule("middle rule")).around(
-                        new LoggingRule("inner rule"));
+                .around(new LoggingRule("middle rule"))
+                .around(new LoggingRule("inner rule"));
 
         @Test
         public void example() {
@@ -70,7 +70,8 @@ public class RuleChainTest {
             chain.around(null);
             fail("around() should not allow null rules");
         } catch (NullPointerException e) {
-            assertThat(e.getMessage(), equalTo("The enclosed rule must not be null"));
+            assertThat(e.getMessage(),
+                    equalTo("The enclosed rule must not be null"));
         }
     }
 
@@ -80,7 +81,8 @@ public class RuleChainTest {
                 .around(null);
 
         @Test
-        public void example() {}
+        public void example() {
+        }
     }
 
     @Test
@@ -88,7 +90,9 @@ public class RuleChainTest {
         Result result = JUnitCore.runClasses(RuleChainWithNullRules.class);
 
         assertThat(result.getFailures().size(), equalTo(1));
-        String stacktrace = Throwables.getStacktrace(result.getFailures().get(0).getException());
-        assertThat(stacktrace, containsString("\tat org.junit.rules.RuleChainTest$RuleChainWithNullRules.<init>(RuleChainTest.java:"));
+        String stacktrace = Throwables
+                .getStacktrace(result.getFailures().get(0).getException());
+        assertThat(stacktrace, containsString(
+                "\tat org.junit.rules.RuleChainTest$RuleChainWithNullRules.<init>(RuleChainTest.java:"));
     }
 }

@@ -1,8 +1,8 @@
 package org.junit.tests.running.methods;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -39,7 +39,8 @@ public class TimeoutTest {
         Result result = core.run(FailureWithTimeoutTest.class);
         assertEquals(1, result.getRunCount());
         assertEquals(1, result.getFailureCount());
-        assertEquals(AssertionError.class, result.getFailures().get(0).getException().getClass());
+        assertEquals(AssertionError.class,
+                result.getFailures().get(0).getException().getClass());
     }
 
     public static class FailureWithTimeoutRunTimeExceptionTest {
@@ -55,7 +56,8 @@ public class TimeoutTest {
         Result result = core.run(FailureWithTimeoutRunTimeExceptionTest.class);
         assertEquals(1, result.getRunCount());
         assertEquals(1, result.getFailureCount());
-        assertEquals(NullPointerException.class, result.getFailures().get(0).getException().getClass());
+        assertEquals(NullPointerException.class,
+                result.getFailures().get(0).getException().getClass());
     }
 
     public static class SuccessWithTimeoutTest {
@@ -86,7 +88,8 @@ public class TimeoutTest {
         Result result = core.run(TimeoutFailureTest.class);
         assertEquals(1, result.getRunCount());
         assertEquals(1, result.getFailureCount());
-        assertEquals(InterruptedException.class, result.getFailures().get(0).getException().getClass());
+        assertEquals(InterruptedException.class,
+                result.getFailures().get(0).getException().getClass());
     }
 
     public static class InfiniteLoopTest {
@@ -96,7 +99,7 @@ public class TimeoutTest {
         }
 
         private void infiniteLoop() {
-            for (; ; ) {
+            for (;;) {
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
@@ -112,7 +115,8 @@ public class TimeoutTest {
         assertEquals(1, result.getRunCount());
         assertEquals(1, result.getFailureCount());
         Throwable exception = result.getFailures().get(0).getException();
-        assertTrue(exception.getMessage().contains("test timed out after 100 milliseconds"));
+        assertTrue(exception.getMessage()
+                .contains("test timed out after 100 milliseconds"));
     }
 
     public static class ImpatientLoopTest {
@@ -122,20 +126,24 @@ public class TimeoutTest {
         }
 
         private void infiniteLoop() {
-            for (; ; ) ;
+            for (;;)
+                ;
         }
     }
 
     @Ignore("This breaks sporadically with time differences just slightly more than 200ms")
     @Test
-    public void infiniteLoopRunsForApproximatelyLengthOfTimeout() throws Exception {
-        // "prime the pump": running these beforehand makes the runtimes more predictable
-        //                   (because of class loading?)
+    public void infiniteLoopRunsForApproximatelyLengthOfTimeout()
+            throws Exception {
+        // "prime the pump": running these beforehand makes the runtimes more
+        // predictable
+        // (because of class loading?)
         JUnitCore.runClasses(InfiniteLoopTest.class, ImpatientLoopTest.class);
         long longTime = runAndTime(InfiniteLoopTest.class);
         long shortTime = runAndTime(ImpatientLoopTest.class);
         long difference = longTime - shortTime;
-        assertTrue(String.format("Difference was %sms", difference), difference < 200);
+        assertTrue(String.format("Difference was %sms", difference),
+                difference < 200);
     }
 
     private long runAndTime(Class<?> clazz) {
@@ -152,7 +160,7 @@ public class TimeoutTest {
         exception.printStackTrace(writer);
         return buffer.toString();
     }
-    
+
     @Test
     public void stalledThreadAppearsInStackTrace() throws Exception {
         JUnitCore core = new JUnitCore();
@@ -160,11 +168,14 @@ public class TimeoutTest {
         assertEquals(1, result.getRunCount());
         assertEquals(1, result.getFailureCount());
         Throwable exception = result.getFailures().get(0).getException();
-        assertThat(stackForException(exception), containsString("infiniteLoop")); // Make sure we have the stalled frame on the stack somewhere
+        assertThat(stackForException(exception),
+                containsString("infiniteLoop")); // Make sure we have the
+                                                 // stalled frame on the stack
+                                                 // somewhere
     }
 
     public static class InfiniteLoopMultithreaded {
-        
+
         private static class ThreadTest implements Runnable {
             private boolean fStall;
 
@@ -174,48 +185,49 @@ public class TimeoutTest {
 
             public void run() {
                 if (fStall)
-                    for (; ; ) ;   
+                    for (;;)
+                        ;
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                 }
             }
         }
-        
+
         public void failure(boolean mainThreadStalls) throws Exception {
             Thread t1 = new Thread(new ThreadTest(false), "timeout-thr1");
-            Thread t2 = new Thread(new ThreadTest(!mainThreadStalls), "timeout-thr2");
+            Thread t2 = new Thread(new ThreadTest(!mainThreadStalls),
+                    "timeout-thr2");
             Thread t3 = new Thread(new ThreadTest(false), "timeout-thr3");
             t1.start();
             t2.start();
             t3.start();
             if (mainThreadStalls)
-                for (; ; ) ;
+                for (;;)
+                    ;
             t1.join();
             t2.join();
             t3.join();
         }
-   }
-    
+    }
+
     public static class InfiniteLoopWithStuckThreadTest {
         @Rule
         public TestRule globalTimeout = Timeout.builder()
-            .withTimeout(100, TimeUnit.MILLISECONDS)
-            .withLookingForStuckThread(true)
-            .build();
+                .withTimeout(100, TimeUnit.MILLISECONDS)
+                .withLookingForStuckThread(true).build();
 
         @Test
         public void failure() throws Exception {
             (new InfiniteLoopMultithreaded()).failure(false);
         }
     }
-    
+
     public static class InfiniteLoopStuckInMainThreadTest {
         @Rule
         public TestRule globalTimeout = Timeout.builder()
-            .withTimeout(100, TimeUnit.MILLISECONDS)
-            .withLookingForStuckThread(true)
-            .build();
+                .withTimeout(100, TimeUnit.MILLISECONDS)
+                .withLookingForStuckThread(true).build();
 
         @Test
         public void failure() throws Exception {
@@ -232,9 +244,12 @@ public class TimeoutTest {
         Throwable exception[] = new Throwable[2];
         for (int i = 0; i < 2; i++)
             exception[i] = result.getFailures().get(i).getException();
-        assertThat(exception[0].getMessage(), containsString("test timed out after 100 milliseconds"));
-        assertThat(stackForException(exception[0]), containsString("Thread.join"));
-        assertThat(exception[1].getMessage(), containsString("Appears to be stuck in thread timeout-thr2"));
+        assertThat(exception[0].getMessage(),
+                containsString("test timed out after 100 milliseconds"));
+        assertThat(stackForException(exception[0]),
+                containsString("Thread.join"));
+        assertThat(exception[1].getMessage(),
+                containsString("Appears to be stuck in thread timeout-thr2"));
     }
 
     @Test
@@ -244,8 +259,10 @@ public class TimeoutTest {
         assertEquals(1, result.getRunCount());
         assertEquals(1, result.getFailureCount());
         Throwable exception = result.getFailures().get(0).getException();
-        assertThat(exception.getMessage(), containsString("test timed out after 100 milliseconds"));
-        assertThat(exception.getMessage(), not(containsString("Appears to be stuck")));
+        assertThat(exception.getMessage(),
+                containsString("test timed out after 100 milliseconds"));
+        assertThat(exception.getMessage(),
+                not(containsString("Appears to be stuck")));
     }
 
     @Test
@@ -260,7 +277,7 @@ public class TimeoutTest {
 
         @Test(timeout = 1)
         public void test() {
-            for (; ; ) {
+            for (;;) {
                 try {
                     Thread.sleep(10000);
                 } catch (InterruptedException e) {
@@ -300,7 +317,8 @@ public class TimeoutTest {
         JUnitCore core = new JUnitCore();
         Result result = core.run(TimeOutZero.class);
         assertEquals("Should run the test", 1, result.getRunCount());
-        assertEquals("Test should not have failed", 0, result.getFailureCount());
+        assertEquals("Test should not have failed", 0,
+                result.getFailureCount());
     }
 
     private static class TimeoutSubclass extends Timeout {
@@ -316,11 +334,13 @@ public class TimeoutTest {
 
     public static class TimeOutOneSecond {
         @Rule
-        public TimeoutSubclass timeout = new TimeoutSubclass(1, TimeUnit.SECONDS);
+        public TimeoutSubclass timeout = new TimeoutSubclass(1,
+                TimeUnit.SECONDS);
 
         @Test
         public void test() {
-            assertEquals(1000, timeout.getTimeoutFromSuperclass(TimeUnit.MILLISECONDS));
+            assertEquals(1000,
+                    timeout.getTimeoutFromSuperclass(TimeUnit.MILLISECONDS));
         }
     }
 
@@ -329,6 +349,7 @@ public class TimeoutTest {
         JUnitCore core = new JUnitCore();
         Result result = core.run(TimeOutOneSecond.class);
         assertEquals("Should run the test", 1, result.getRunCount());
-        assertEquals("Test should not have failed", 0, result.getFailureCount());
+        assertEquals("Test should not have failed", 0,
+                result.getFailureCount());
     }
 }

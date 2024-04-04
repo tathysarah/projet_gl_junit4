@@ -9,6 +9,7 @@ import junit.framework.TestSuite;
  */
 public class SimpleTest extends TestCase {
     protected int fValue1;
+
     protected int fValue2;
 
     @Override
@@ -20,26 +21,18 @@ public class SimpleTest extends TestCase {
     public static Test suite() {
 
         /*
-           * the type safe way
-           *
-          TestSuite suite= new TestSuite();
-          suite.addTest(
-              new SimpleTest("add") {
-                   protected void runTest() { testAdd(); }
-              }
-          );
-
-          suite.addTest(
-              new SimpleTest("testDivideByZero") {
-                   protected void runTest() { testDivideByZero(); }
-              }
-          );
-          return suite;
-          */
+         * the type safe way
+         *
+         * TestSuite suite= new TestSuite(); suite.addTest( new
+         * SimpleTest("add") { protected void runTest() { testAdd(); } } );
+         * 
+         * suite.addTest( new SimpleTest("testDivideByZero") { protected void
+         * runTest() { testDivideByZero(); } } ); return suite;
+         */
 
         /*
-           * the dynamic way
-           */
+         * the dynamic way
+         */
         return new TestSuite(SimpleTest.class);
     }
 

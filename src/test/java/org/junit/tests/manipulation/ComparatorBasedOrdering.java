@@ -20,7 +20,8 @@ class ComparatorBasedOrdering extends Ordering {
     }
 
     @Override
-    protected List<Description> orderItems(Collection<Description> descriptions) {
+    protected List<Description> orderItems(
+            Collection<Description> descriptions) {
         List<Description> ordered = new ArrayList<Description>(descriptions);
         Collections.sort(ordered, comparator);
         return ordered;

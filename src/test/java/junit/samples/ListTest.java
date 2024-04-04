@@ -12,8 +12,8 @@ import junit.framework.TestSuite;
  */
 public class ListTest extends TestCase {
     private List<Integer> emptyList;
-    private List<Integer> fullList;
 
+    private List<Integer> fullList;
 
     @Override
     protected void setUp() {
@@ -43,7 +43,7 @@ public class ListTest extends TestCase {
 
     public void testElementAt() {
         int i = fullList.get(0);
-        assertEquals(1,i);
+        assertEquals(1, i);
 
         try {
             fullList.get(fullList.size());

@@ -16,7 +16,9 @@ import org.junit.Test;
  */
 public class ListTest {
     protected List<Integer> fEmpty;
+
     protected List<Integer> fFull;
+
     protected static List<Integer> fgHeavy;
 
     public static void main(String... args) {

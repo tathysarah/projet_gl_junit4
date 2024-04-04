@@ -89,6 +89,7 @@ public class SuccessfulWithDataPointFields {
     public static class PositiveIntsWithNegativeField {
         @DataPoint
         public static final int ONE = 1;
+
         @DataPoint
         public static final int NEGONE = -1;
 

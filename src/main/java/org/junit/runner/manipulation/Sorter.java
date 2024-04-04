@@ -9,8 +9,8 @@ import java.util.List;
 import org.junit.runner.Description;
 
 /**
- * A <code>Sorter</code> orders tests. In general you will not need
- * to use a <code>Sorter</code> directly. Instead, use
+ * A <code>Sorter</code> orders tests. In general you will not need to use a
+ * <code>Sorter</code> directly. Instead, use
  * {@link org.junit.runner.Request#sortWith(Comparator)}.
  *
  * @since 4.0
@@ -28,10 +28,11 @@ public class Sorter extends Ordering implements Comparator<Description> {
     private final Comparator<Description> comparator;
 
     /**
-     * Creates a <code>Sorter</code> that uses <code>comparator</code>
-     * to sort tests
+     * Creates a <code>Sorter</code> that uses <code>comparator</code> to sort
+     * tests
      *
-     * @param comparator the {@link Comparator} to use when sorting tests
+     * @param comparator
+     *            the {@link Comparator} to use when sorting tests
      * @since 4.0
      */
     public Sorter(Comparator<Description> comparator) {
@@ -59,14 +60,15 @@ public class Sorter extends Ordering implements Comparator<Description> {
     public int compare(Description o1, Description o2) {
         return comparator.compare(o1, o2);
     }
- 
+
     /**
      * {@inheritDoc}
      *
      * @since 4.13
      */
     @Override
-    protected final List<Description> orderItems(Collection<Description> descriptions) {
+    protected final List<Description> orderItems(
+            Collection<Description> descriptions) {
         /*
          * In practice, we will never get here--Sorters do their work in the
          * compare() method--but the Liskov substitution principle demands that
@@ -74,7 +76,8 @@ public class Sorter extends Ordering implements Comparator<Description> {
          * implement.
          */
         List<Description> sorted = new ArrayList<Description>(descriptions);
-        Collections.sort(sorted, this); // Note: it would be incorrect to pass in "comparator"
+        Collections.sort(sorted, this); // Note: it would be incorrect to pass
+                                        // in "comparator"
         return sorted;
     }
 

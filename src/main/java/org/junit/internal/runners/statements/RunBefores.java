@@ -12,7 +12,8 @@ public class RunBefores extends Statement {
 
     private final List<FrameworkMethod> befores;
 
-    public RunBefores(Statement next, List<FrameworkMethod> befores, Object target) {
+    public RunBefores(Statement next, List<FrameworkMethod> befores,
+            Object target) {
         this.next = next;
         this.befores = befores;
         this.target = target;

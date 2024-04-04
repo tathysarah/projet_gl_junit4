@@ -19,24 +19,25 @@ import org.junit.TestCouldNotBeSkippedException;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.runners.model.MultipleFailureException;
 
-
 /**
  * Tests for {@link org.junit.runners.model.MultipleFailureException}
  *
  * @author kcooney@google.com (Kevin Cooney)
  */
 public class MultipleFailureExceptionTest {
-    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    private static final String LINE_SEPARATOR = System
+            .getProperty("line.separator");
 
     @Test
     public void assertEmptyDoesNotThrowForEmptyList() throws Exception {
-        MultipleFailureException.assertEmpty(Collections.<Throwable>emptyList());
+        MultipleFailureException
+                .assertEmpty(Collections.<Throwable> emptyList());
     }
 
     @Test
     public void assertEmptyRethrowsSingleRuntimeException() throws Exception {
-        Throwable exception= new ExpectedException("pesto");
-        List<Throwable> errors= Collections.singletonList(exception);
+        Throwable exception = new ExpectedException("pesto");
+        List<Throwable> errors = Collections.singletonList(exception);
         try {
             MultipleFailureException.assertEmpty(errors);
             fail();
@@ -47,8 +48,8 @@ public class MultipleFailureExceptionTest {
 
     @Test
     public void assertEmptyRethrowsSingleError() throws Exception {
-        Throwable exception= new AnnotationFormatError("changeo");
-        List<Throwable> errors= Collections.singletonList(exception);
+        Throwable exception = new AnnotationFormatError("changeo");
+        List<Throwable> errors = Collections.singletonList(exception);
         try {
             MultipleFailureException.assertEmpty(errors);
             fail();
@@ -58,7 +59,8 @@ public class MultipleFailureExceptionTest {
     }
 
     @Test
-    public void assertEmptyThrowsMultipleFailureExceptionForManyThrowables() throws Exception {
+    public void assertEmptyThrowsMultipleFailureExceptionForManyThrowables()
+            throws Exception {
         List<Throwable> errors = new ArrayList<Throwable>();
         errors.add(new ExpectedException("basil"));
         errors.add(new RuntimeException("garlic"));
@@ -68,16 +70,19 @@ public class MultipleFailureExceptionTest {
             fail();
         } catch (MultipleFailureException expected) {
             assertThat(expected.getFailures(), equalTo(errors));
-            assertTrue(expected.getMessage().startsWith("There were 2 errors:" + LINE_SEPARATOR));
-            assertTrue(expected.getMessage().contains("ExpectedException(basil)" + LINE_SEPARATOR));
-            assertTrue(expected.getMessage().contains("RuntimeException(garlic)"));
+            assertTrue(expected.getMessage()
+                    .startsWith("There were 2 errors:" + LINE_SEPARATOR));
+            assertTrue(expected.getMessage()
+                    .contains("ExpectedException(basil)" + LINE_SEPARATOR));
+            assertTrue(
+                    expected.getMessage().contains("RuntimeException(garlic)"));
         }
     }
 
     @Test
     public void assertEmptyErrorListConstructorFailure() {
         try {
-            new MultipleFailureException(Collections.<Throwable>emptyList());
+            new MultipleFailureException(Collections.<Throwable> emptyList());
             fail();
         } catch (IllegalArgumentException expected) {
             assertThat(expected.getMessage(),
@@ -86,9 +91,11 @@ public class MultipleFailureExceptionTest {
     }
 
     @Test
-    public void assertEmptyWrapsAssumptionFailuresForManyThrowables() throws Exception {
+    public void assertEmptyWrapsAssumptionFailuresForManyThrowables()
+            throws Exception {
         List<Throwable> errors = new ArrayList<Throwable>();
-        AssumptionViolatedException assumptionViolatedException = new AssumptionViolatedException("skip it");
+        AssumptionViolatedException assumptionViolatedException = new AssumptionViolatedException(
+                "skip it");
         errors.add(assumptionViolatedException);
         errors.add(new RuntimeException("garlic"));
 
@@ -97,14 +104,19 @@ public class MultipleFailureExceptionTest {
             fail();
         } catch (MultipleFailureException expected) {
             assertThat(expected.getFailures().size(), equalTo(2));
-            assertTrue(expected.getMessage().startsWith("There were 2 errors:" + LINE_SEPARATOR));
-            assertTrue(expected.getMessage().contains("TestCouldNotBeSkippedException(Test could not be skipped"));
-            assertTrue(expected.getMessage().contains("RuntimeException(garlic)"));
+            assertTrue(expected.getMessage()
+                    .startsWith("There were 2 errors:" + LINE_SEPARATOR));
+            assertTrue(expected.getMessage().contains(
+                    "TestCouldNotBeSkippedException(Test could not be skipped"));
+            assertTrue(
+                    expected.getMessage().contains("RuntimeException(garlic)"));
             Throwable first = expected.getFailures().get(0);
             assertThat(first, instanceOf(TestCouldNotBeSkippedException.class));
-            Throwable cause = ((TestCouldNotBeSkippedException) first).getCause();
+            Throwable cause = ((TestCouldNotBeSkippedException) first)
+                    .getCause();
             assertThat(cause, instanceOf(AssumptionViolatedException.class));
-            assertThat((AssumptionViolatedException) cause, CoreMatchers.sameInstance(assumptionViolatedException));
+            assertThat((AssumptionViolatedException) cause,
+                    CoreMatchers.sameInstance(assumptionViolatedException));
         }
     }
 

@@ -32,19 +32,22 @@ public class ResultTest extends TestCase {
         assertResultReserializable(result, SerializationFormat.V4_12);
     }
 
-    public void testRunAssumptionFailedResultCanBeSerialised() throws Exception {
+    public void testRunAssumptionFailedResultCanBeSerialised()
+            throws Exception {
         JUnitCore runner = new JUnitCore();
         Result result = runner.run(AssumptionFailedTest.class);
         assertResultSerializable(result);
     }
 
-    public void testRunAssumptionFailedResultCanBeReserialised_v4_12() throws Exception {
+    public void testRunAssumptionFailedResultCanBeReserialised_v4_12()
+            throws Exception {
         JUnitCore runner = new JUnitCore();
         Result result = runner.run(AssumptionFailedTest.class);
         assertResultReserializable(result, SerializationFormat.V4_12);
     }
 
-    public void testRunAssumptionFailedResultCanBeReserialised_v4_13() throws Exception {
+    public void testRunAssumptionFailedResultCanBeReserialised_v4_13()
+            throws Exception {
         JUnitCore runner = new JUnitCore();
         Result result = runner.run(AssumptionFailedTest.class);
         assertResultReserializable(result, SerializationFormat.V4_13);
@@ -69,22 +72,26 @@ public class ResultTest extends TestCase {
     }
 
     private enum SerializationFormat {
-        V4_12,
-        V4_13
+        V4_12, V4_13
     }
 
-    private void assertResultSerializable(Result result) throws IOException, ClassNotFoundException {
+    private void assertResultSerializable(Result result)
+            throws IOException, ClassNotFoundException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+                byteArrayOutputStream);
         objectOutputStream.writeObject(result);
         objectOutputStream.flush();
         byte[] bytes = byteArrayOutputStream.toByteArray();
-        ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(bytes));
+        ObjectInputStream objectInputStream = new ObjectInputStream(
+                new ByteArrayInputStream(bytes));
         Result fromStream = (Result) objectInputStream.readObject();
-        assertSerializedCorrectly(result, fromStream, SerializationFormat.V4_13);
+        assertSerializedCorrectly(result, fromStream,
+                SerializationFormat.V4_13);
     }
- 
-    private void assertResultReserializable(Result result, SerializationFormat resourceSerializationFormat)
+
+    private void assertResultReserializable(Result result,
+            SerializationFormat resourceSerializationFormat)
             throws IOException, ClassNotFoundException {
         String resourceName = getName();
         InputStream resource = getClass().getResourceAsStream(resourceName);
@@ -104,8 +111,8 @@ public class ResultTest extends TestCase {
     }
 
     /**
-     * A version of {@code Result} that returns a hard-coded runtime.
-     * This makes values returned by the methods deterministic.
+     * A version of {@code Result} that returns a hard-coded runtime. This makes
+     * values returned by the methods deterministic.
      */
     private static class ResultWithFixedRunTime extends Result {
 
@@ -148,13 +155,16 @@ public class ResultTest extends TestCase {
         }
     }
 
-    private void assertSerializedCorrectly(
-            Result result, Result fromStream, SerializationFormat serializationFormat) {
+    private void assertSerializedCorrectly(Result result, Result fromStream,
+            SerializationFormat serializationFormat) {
         assertNotNull(fromStream);
 
-        // Exceptions don't implement equals() so we need to compare field by field
-        assertEquals("failureCount", result.getFailureCount(), fromStream.getFailureCount());
-        assertEquals("ignoreCount", result.getIgnoreCount(), fromStream.getIgnoreCount());
+        // Exceptions don't implement equals() so we need to compare field by
+        // field
+        assertEquals("failureCount", result.getFailureCount(),
+                fromStream.getFailureCount());
+        assertEquals("ignoreCount", result.getIgnoreCount(),
+                fromStream.getIgnoreCount());
 
         if (serializationFormat == SerializationFormat.V4_13) {
             // assumption failures are serialized
@@ -171,19 +181,21 @@ public class ResultTest extends TestCase {
         }
 
         assertEquals("runTime", result.getRunTime(), fromStream.getRunTime());
-        assertEquals("failures", result.getFailures().size(), fromStream.getFailures().size());
+        assertEquals("failures", result.getFailures().size(),
+                fromStream.getFailures().size());
         int index = 0;
         for (Failure failure : result.getFailures()) {
             Failure failureFromStream = fromStream.getFailures().get(index);
             String messagePrefix = String.format("failures[%d]", index++);
             assertEquals(messagePrefix + ".description",
-                    failure.getDescription(), failureFromStream.getDescription());
+                    failure.getDescription(),
+                    failureFromStream.getDescription());
             Throwable exception = failure.getException();
             Throwable exceptionFromStream = failureFromStream.getException();
-            assertEquals(messagePrefix + ".exception",
-                    exception.getClass(), exceptionFromStream.getClass());
-            assertEquals(messagePrefix + ".exception",
-                    exception.getMessage(), exceptionFromStream.getMessage());
+            assertEquals(messagePrefix + ".exception", exception.getClass(),
+                    exceptionFromStream.getClass());
+            assertEquals(messagePrefix + ".exception", exception.getMessage(),
+                    exceptionFromStream.getMessage());
         }
     }
 }

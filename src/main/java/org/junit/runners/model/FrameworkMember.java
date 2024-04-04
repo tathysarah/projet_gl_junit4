@@ -8,28 +8,30 @@ import java.util.List;
  *
  * @since 4.7
  */
-public abstract class FrameworkMember<T extends FrameworkMember<T>> implements
-        Annotatable {
+public abstract class FrameworkMember<T extends FrameworkMember<T>>
+        implements Annotatable {
     abstract boolean isShadowedBy(T otherMember);
 
     T handlePossibleBridgeMethod(List<T> members) {
-        for (int i = members.size() - 1; i >=0; i--) {
+        for (int i = members.size() - 1; i >= 0; i--) {
             T otherMember = members.get(i);
             if (isShadowedBy(otherMember)) {
                 if (otherMember.isBridgeMethod()) {
                     /*
-                     *  We need to return the previously-encountered bridge method
-                     *  because JUnit won't be able to call the parent method,
-                     *  because the parent class isn't public.
+                     * We need to return the previously-encountered bridge
+                     * method because JUnit won't be able to call the parent
+                     * method, because the parent class isn't public.
                      */
                     members.remove(i);
                     return otherMember;
                 }
-                // We found a shadowed member that isn't a bridge method. Ignore it.
+                // We found a shadowed member that isn't a bridge method. Ignore
+                // it.
                 return null;
             }
         }
-        // No shadow or bridge method found. The caller should add *this* member.
+        // No shadow or bridge method found. The caller should add *this*
+        // member.
         FrameworkMember<? extends T> thisMember = this;
         @SuppressWarnings("unchecked")
         T result = (T) thisMember;

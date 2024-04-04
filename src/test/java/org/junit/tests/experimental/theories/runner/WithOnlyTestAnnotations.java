@@ -26,7 +26,8 @@ public class WithOnlyTestAnnotations {
 
     @Test
     public void honorExpected() throws Exception {
-        assertThat(testResult(HonorExpectedException.class).failureCount(), is(1));
+        assertThat(testResult(HonorExpectedException.class).failureCount(),
+                is(1));
     }
 
     @RunWith(Theories.class)
@@ -39,7 +40,8 @@ public class WithOnlyTestAnnotations {
 
     @Test
     public void honorExpectedPassing() throws Exception {
-        assertThat(testResult(HonorExpectedExceptionPasses.class), isSuccessful());
+        assertThat(testResult(HonorExpectedExceptionPasses.class),
+                isSuccessful());
     }
 
     @RunWith(Theories.class)
@@ -74,7 +76,8 @@ public class WithOnlyTestAnnotations {
     @Test
     public void testErrorWhenTestHasParametersDespiteTheories() {
         JUnitCore core = new JUnitCore();
-        Result result = core.run(ErrorWhenTestHasParametersDespiteTheories.class);
+        Result result = core
+                .run(ErrorWhenTestHasParametersDespiteTheories.class);
         assertEquals(1, result.getFailureCount());
         String message = result.getFailures().get(0).getMessage();
         assertThat(message, containsString("should have no parameters"));

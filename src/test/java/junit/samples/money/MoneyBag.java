@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A MoneyBag defers exchange rate conversions. For example adding
- * 12 Swiss Francs to 14 US Dollars is represented as a bag
- * containing the two Monies 12 CHF and 14 USD. Adding another
- * 10 Swiss francs gives a bag with 22 CHF and 14 USD. Due to
- * the deferred exchange rate conversion we can later value a
+ * A MoneyBag defers exchange rate conversions. For example adding 12 Swiss
+ * Francs to 14 US Dollars is represented as a bag containing the two Monies 12
+ * CHF and 14 USD. Adding another 10 Swiss francs gives a bag with 22 CHF and 14
+ * USD. Due to the deferred exchange rate conversion we can later value a
  * MoneyBag with different exchange rates.
  *
- * A MoneyBag is represented as a list of Monies and provides
- * different constructors to create a MoneyBag.
+ * A MoneyBag is represented as a list of Monies and provides different
+ * constructors to create a MoneyBag.
  */
 public class MoneyBag implements IMoney {
     private List<Money> fMonies = new ArrayList<Money>(5);
@@ -43,7 +42,8 @@ public class MoneyBag implements IMoney {
     }
 
     void appendMoney(Money aMoney) {
-        if (aMoney.isZero()) return;
+        if (aMoney.isZero())
+            return;
         IMoney old = findMoney(aMoney.currency());
         if (old == null) {
             fMonies.add(aMoney);
@@ -92,7 +92,8 @@ public class MoneyBag implements IMoney {
 
     private boolean contains(Money m) {
         Money found = findMoney(m.currency());
-        if (found == null) return false;
+        if (found == null)
+            return false;
         return found.amount() == m.amount();
     }
 

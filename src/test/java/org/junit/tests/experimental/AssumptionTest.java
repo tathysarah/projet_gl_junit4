@@ -101,7 +101,7 @@ public class AssumptionTest {
 
     @Test
     public void assumeNotNullThrowsException() {
-        Object[] objects = {1, 2, null};
+        Object[] objects = { 1, 2, null };
         try {
             assumeNotNull(objects);
             fail("should throw AssumptionViolatedException");
@@ -122,7 +122,7 @@ public class AssumptionTest {
 
     @Test
     public void assumeNotNullPasses() {
-        Object[] objects = {1, 2};
+        Object[] objects = { 1, 2 };
         assumeNotNull(objects);
         assertCompletesNormally();
     }
@@ -130,7 +130,7 @@ public class AssumptionTest {
     @Test
     public void assumeNotNullIncludesParameterList() {
         try {
-            Object[] objects = {1, 2, null};
+            Object[] objects = { 1, 2, null };
             assumeNotNull(objects);
         } catch (AssumptionViolatedException e) {
             assertThat(e.getMessage(), containsString("1, 2, null"));
@@ -204,7 +204,8 @@ public class AssumptionTest {
 
     @Test
     public void failingAssumptionInBeforeClassIgnoresClass() {
-        assertThat(testResult(HasFailingAssumeInBeforeClass.class), isSuccessful());
+        assertThat(testResult(HasFailingAssumeInBeforeClass.class),
+                isSuccessful());
     }
 
     public static class AssumptionFailureInConstructor {
@@ -220,7 +221,8 @@ public class AssumptionTest {
 
     @Test
     public void failingAssumptionInConstructorIgnoresClass() {
-        assertThat(testResult(AssumptionFailureInConstructor.class), isSuccessful());
+        assertThat(testResult(AssumptionFailureInConstructor.class),
+                isSuccessful());
     }
 
     public static class TestClassWithAssumptionFailure {
@@ -233,11 +235,13 @@ public class AssumptionTest {
 
     @Test
     public void assumeWithExpectedExceptionShouldThrowAssumptionViolatedException() {
-        Result result = JUnitCore.runClasses(TestClassWithAssumptionFailure.class);
+        Result result = JUnitCore
+                .runClasses(TestClassWithAssumptionFailure.class);
         assertThat(result.getAssumptionFailureCount(), is(1));
     }
 
     static final String message = "Some random message string.";
+
     static final Throwable e = new Throwable();
 
     /**
@@ -252,8 +256,8 @@ public class AssumptionTest {
 
     @Test
     public void assumptionsWithMessage() {
-        final List<Failure> failures =
-                runAndGetAssumptionFailures(HasAssumeWithMessage.class);
+        final List<Failure> failures = runAndGetAssumptionFailures(
+                HasAssumeWithMessage.class);
 
         assertTrue(failures.get(0).getMessage().contains(message));
     }
@@ -270,8 +274,8 @@ public class AssumptionTest {
 
     @Test
     public void assumptionsWithMessageAndCause() {
-        final List<Failure> failures =
-                runAndGetAssumptionFailures(HasAssumeWithMessageAndCause.class);
+        final List<Failure> failures = runAndGetAssumptionFailures(
+                HasAssumeWithMessageAndCause.class);
         assertTrue(failures.get(0).getMessage().contains(message));
         assertSame(failures.get(0).getException().getCause(), e);
     }
@@ -286,8 +290,8 @@ public class AssumptionTest {
 
     @Test
     public void failedAssumptionsWithMessage() {
-        final List<Failure> failures =
-                runAndGetAssumptionFailures(HasFailingAssumptionWithMessage.class);
+        final List<Failure> failures = runAndGetAssumptionFailures(
+                HasFailingAssumptionWithMessage.class);
 
         assertEquals(1, failures.size());
         assertTrue(failures.get(0).getMessage().contains(message));

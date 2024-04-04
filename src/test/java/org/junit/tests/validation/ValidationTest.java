@@ -21,7 +21,8 @@ public class ValidationTest {
     @Test
     public void initializationErrorIsOnCorrectClass() {
         assertEquals(WrongBeforeClass.class.getName(),
-                Request.aClass(WrongBeforeClass.class).getRunner().getDescription().getDisplayName());
+                Request.aClass(WrongBeforeClass.class).getRunner()
+                        .getDescription().getDisplayName());
     }
 
     public static class NonStaticBeforeClass {
@@ -37,6 +38,7 @@ public class ValidationTest {
     @Test
     public void nonStaticBeforeClass() {
         Result result = JUnitCore.runClasses(NonStaticBeforeClass.class);
-        assertThat(result.getFailures().get(0).getMessage(), containsString("Method before() should be static"));
+        assertThat(result.getFailures().get(0).getMessage(),
+                containsString("Method before() should be static"));
     }
 }

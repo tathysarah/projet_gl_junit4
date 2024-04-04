@@ -5,10 +5,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({
-        AllMembersSupplierTest.class,
+@SuiteClasses({ AllMembersSupplierTest.class,
         ParameterizedAssertionErrorTest.class,
-        SpecificDataPointsSupplierTest.class
-})
+        SpecificDataPointsSupplierTest.class })
 public class AllTheoriesInternalTests {
 }

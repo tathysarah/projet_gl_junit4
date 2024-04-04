@@ -16,24 +16,29 @@ public abstract class ComparisonCriteria {
      * thrown with the given message. If <code>expecteds</code> and
      * <code>actuals</code> are <code>null</code>, they are considered equal.
      *
-     * @param message the identifying message for the {@link AssertionError} (
-     * <code>null</code> okay)
-     * @param expecteds Object array or array of arrays (multi-dimensional array) with
-     * expected values.
-     * @param actuals Object array or array of arrays (multi-dimensional array) with
-     * actual values
+     * @param message
+     *            the identifying message for the {@link AssertionError} (
+     *            <code>null</code> okay)
+     * @param expecteds
+     *            Object array or array of arrays (multi-dimensional array) with
+     *            expected values.
+     * @param actuals
+     *            Object array or array of arrays (multi-dimensional array) with
+     *            actual values
      */
     public void arrayEquals(String message, Object expecteds, Object actuals)
             throws ArrayComparisonFailure {
         arrayEquals(message, expecteds, actuals, true);
     }
 
-    private void arrayEquals(String message, Object expecteds, Object actuals, boolean outer)
-            throws ArrayComparisonFailure {
-        if (expecteds == actuals
-            || Arrays.deepEquals(new Object[] {expecteds}, new Object[] {actuals})) {
-            // The reflection-based loop below is potentially very slow, especially for primitive
-            // arrays. The deepEquals check allows us to circumvent it in the usual case where
+    private void arrayEquals(String message, Object expecteds, Object actuals,
+            boolean outer) throws ArrayComparisonFailure {
+        if (expecteds == actuals || Arrays.deepEquals(
+                new Object[] { expecteds }, new Object[] { actuals })) {
+            // The reflection-based loop below is potentially very slow,
+            // especially for primitive
+            // arrays. The deepEquals check allows us to circumvent it in the
+            // usual case where
             // the arrays are exactly equal.
             return;
         }
@@ -53,7 +58,8 @@ public abstract class ComparisonCriteria {
         int expectedsLength = Array.getLength(expecteds);
         if (actualsLength != expectedsLength) {
             header += "array lengths differed, expected.length="
-                    + expectedsLength + " actual.length=" + actualsLength + "; ";
+                    + expectedsLength + " actual.length=" + actualsLength
+                    + "; ";
         }
         int prefixLength = Math.min(actualsLength, expectedsLength);
 
@@ -81,8 +87,10 @@ public abstract class ComparisonCriteria {
         }
 
         if (actualsLength != expectedsLength) {
-            Object expected = getToStringableArrayElement(expecteds, expectedsLength, prefixLength);
-            Object actual = getToStringableArrayElement(actuals, actualsLength, prefixLength);
+            Object expected = getToStringableArrayElement(expecteds,
+                    expectedsLength, prefixLength);
+            Object actual = getToStringableArrayElement(actuals, actualsLength,
+                    prefixLength);
             try {
                 Assert.assertEquals(expected, actual);
             } catch (AssertionError e) {
@@ -91,13 +99,16 @@ public abstract class ComparisonCriteria {
         }
     }
 
-    private static final Object END_OF_ARRAY_SENTINEL = objectWithToString("end of array");
+    private static final Object END_OF_ARRAY_SENTINEL = objectWithToString(
+            "end of array");
 
-    private Object getToStringableArrayElement(Object array, int length, int index) {
+    private Object getToStringableArrayElement(Object array, int length,
+            int index) {
         if (index < length) {
             Object element = Array.get(array, index);
             if (isArray(element)) {
-                return objectWithToString(componentTypeName(element.getClass()) + "[" + Array.getLength(element) + "]");
+                return objectWithToString(componentTypeName(element.getClass())
+                        + "[" + Array.getLength(element) + "]");
             } else {
                 return element;
             }

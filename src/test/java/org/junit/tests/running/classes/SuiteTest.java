@@ -38,7 +38,7 @@ public class SuiteTest {
     }
 
     @RunWith(Suite.class)
-    @SuiteClasses({TestA.class, TestB.class})
+    @SuiteClasses({ TestA.class, TestB.class })
     public static class All {
     }
 
@@ -51,7 +51,8 @@ public class SuiteTest {
     @SuiteClasses(TestA.class)
     static class NonPublicSuiteWithBeforeClass {
         @BeforeClass
-        public static void doesNothing() {}
+        public static void doesNothing() {
+        }
     }
 
     public static class InheritsAll extends All {
@@ -89,7 +90,8 @@ public class SuiteTest {
 
     @Test
     public void nonPublicSuiteClassWithBeforeClassPasses() {
-        assertThat(testResult(NonPublicSuiteWithBeforeClass.class), isSuccessful());
+        assertThat(testResult(NonPublicSuiteWithBeforeClass.class),
+                isSuccessful());
     }
 
     @Test
@@ -113,11 +115,10 @@ public class SuiteTest {
         assertEquals(2, adapter.countTestCases());
     }
 
-
     private static String log = "";
 
     @RunWith(Suite.class)
-    @SuiteClasses({TestA.class, TestB.class})
+    @SuiteClasses({ TestA.class, TestB.class })
     public static class AllWithBeforeAndAfterClass {
         @BeforeClass
         public static void before() {
@@ -163,7 +164,7 @@ public class SuiteTest {
     }
 
     @RunWith(Suite.class)
-    @SuiteClasses({BiInfiniteLoop.class, BiInfiniteLoop.class})
+    @SuiteClasses({ BiInfiniteLoop.class, BiInfiniteLoop.class })
     static public class BiInfiniteLoop {
     }
 
@@ -178,12 +179,12 @@ public class SuiteTest {
     // bails us out)
 
     @RunWith(Suite.class)
-    @SuiteClasses({Hercules.class})
+    @SuiteClasses({ Hercules.class })
     static public class Hydra {
     }
 
     @RunWith(Suite.class)
-    @SuiteClasses({Hydra.class, Hydra.class})
+    @SuiteClasses({ Hydra.class, Hydra.class })
     static public class Hercules {
     }
 
@@ -213,6 +214,7 @@ public class SuiteTest {
 
     @Test
     public void suiteShouldComplainAboutNoSuiteClassesAnnotation() {
-        assertThat(testResult(NoSuiteClassesAnnotation.class), hasSingleFailureContaining("SuiteClasses"));
+        assertThat(testResult(NoSuiteClassesAnnotation.class),
+                hasSingleFailureContaining("SuiteClasses"));
     }
 }

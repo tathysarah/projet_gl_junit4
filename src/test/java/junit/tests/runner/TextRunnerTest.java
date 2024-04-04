@@ -25,10 +25,12 @@ public class TextRunnerTest extends TestCase {
     }
 
     void execTest(String testClass, boolean success) throws Exception {
-        String java = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+        String java = System.getProperty("java.home") + File.separator + "bin"
+                + File.separator + "java";
         String cp = System.getProperty("java.class.path");
-        //use -classpath for JDK 1.1.7 compatibility
-        String[] cmd = {java, "-classpath", cp, "junit.textui.TestRunner", testClass};
+        // use -classpath for JDK 1.1.7 compatibility
+        String[] cmd = { java, "-classpath", cp, "junit.textui.TestRunner",
+                testClass };
         Process p = Runtime.getRuntime().exec(cmd);
         InputStream i = p.getInputStream();
         while ((i.read()) != -1)
@@ -43,13 +45,11 @@ public class TextRunnerTest extends TestCase {
 
     public void testRunReturnsResult() {
         PrintStream oldOut = System.out;
-        System.setOut(new PrintStream(
-                new OutputStream() {
-                    @Override
-                    public void write(int arg0) throws IOException {
-                    }
-                }
-        ));
+        System.setOut(new PrintStream(new OutputStream() {
+            @Override
+            public void write(int arg0) throws IOException {
+            }
+        }));
         try {
             TestResult result = junit.textui.TestRunner.run(new TestSuite());
             assertTrue(result.wasSuccessful());
@@ -57,6 +57,5 @@ public class TextRunnerTest extends TestCase {
             System.setOut(oldOut);
         }
     }
-
 
 }

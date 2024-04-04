@@ -32,7 +32,8 @@ public class DoublePrecisionAssertTest extends TestCase {
 
     public void testAssertPosInfinityNotEqualsNegInfinity() {
         try {
-            assertEquals(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, 0.0);
+            assertEquals(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY,
+                    0.0);
         } catch (AssertionFailedError e) {
             return;
         }

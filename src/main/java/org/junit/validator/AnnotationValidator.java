@@ -1,16 +1,16 @@
 package org.junit.validator;
 
-import org.junit.runners.model.FrameworkField;
-import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.TestClass;
-
 import static java.util.Collections.emptyList;
 
 import java.util.List;
 
+import org.junit.runners.model.FrameworkField;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.TestClass;
+
 /**
- * Validates annotations on classes and methods. To be validated,
- * an annotation should be annotated with {@link ValidateWith}
+ * Validates annotations on classes and methods. To be validated, an annotation
+ * should be annotated with {@link ValidateWith}
  *
  * Instances of this class are shared by multiple test runners, so they should
  * be immutable and thread-safe.
@@ -24,8 +24,10 @@ public abstract class AnnotationValidator {
     /**
      * Validates annotation on the given class.
      *
-     * @param testClass that is being validated
-     * @return A list of exceptions. Default behavior is to return an empty list.
+     * @param testClass
+     *            that is being validated
+     * @return A list of exceptions. Default behavior is to return an empty
+     *         list.
      *
      * @since 4.12
      */
@@ -36,8 +38,10 @@ public abstract class AnnotationValidator {
     /**
      * Validates annotation on the given field.
      *
-     * @param field that is being validated
-     * @return A list of exceptions. Default behavior is to return an empty list.
+     * @param field
+     *            that is being validated
+     * @return A list of exceptions. Default behavior is to return an empty
+     *         list.
      *
      * @since 4.12
      */
@@ -49,8 +53,10 @@ public abstract class AnnotationValidator {
     /**
      * Validates annotation on the given method.
      *
-     * @param method that is being validated
-     * @return A list of exceptions. Default behavior is to return an empty list.
+     * @param method
+     *            that is being validated
+     * @return A list of exceptions. Default behavior is to return an empty
+     *         list.
      *
      * @since 4.12
      */

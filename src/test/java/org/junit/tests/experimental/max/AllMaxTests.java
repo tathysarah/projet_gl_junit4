@@ -5,10 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({
-        DescriptionTest.class,
-        JUnit38SortingTest.class,
-        MaxStarterTest.class
-})
+@SuiteClasses({ DescriptionTest.class, JUnit38SortingTest.class,
+        MaxStarterTest.class })
 public class AllMaxTests {
 }

@@ -33,7 +33,7 @@ public class ClassLevelMethodsWithIgnoredTestsTest {
         public static void beforeClass() {
             fail(FAILURE_MESSAGE);
         }
-        
+
         @Ignore
         @Test
         public void test() throws Exception {
@@ -62,8 +62,7 @@ public class ClassLevelMethodsWithIgnoredTestsTest {
 
     @Test
     public void beforeClassShouldNotRunWhenWholeClassIsIgnored() {
-        runClassAndVerifyNoFailures(
-                BeforeClassWithIgnoredClass.class,
+        runClassAndVerifyNoFailures(BeforeClassWithIgnoredClass.class,
                 "BeforeClass should not have been executed because the whole test class is ignored!");
     }
 
@@ -111,11 +110,13 @@ public class ClassLevelMethodsWithIgnoredTestsTest {
 
     @Test
     public void beforeClassShouldNotRunWhenAllTestsAreFiltered() {
-        Result result = new JUnitCore().run(Request.classes(
-                BeforeClassWithFilteredTest.class, HasUnfilteredTest.class)
-                .filterWith(CategoryFilter.exclude(FilteredTests.class)));
-        analyseResult(
-                result,
+        Result result = new JUnitCore()
+                .run(Request
+                        .classes(BeforeClassWithFilteredTest.class,
+                                HasUnfilteredTest.class)
+                        .filterWith(
+                                CategoryFilter.exclude(FilteredTests.class)));
+        analyseResult(result,
                 "BeforeClass should not have been executed because the test method is filtered!");
     }
 
@@ -155,7 +156,8 @@ public class ClassLevelMethodsWithIgnoredTestsTest {
         }
     }
 
-    private void analyzeFailure(Failure failure, String testFailureDescription) {
+    private void analyzeFailure(Failure failure,
+            String testFailureDescription) {
         String actualFailureMsg = failure.getMessage();
         if (FAILURE_MESSAGE.equals(actualFailureMsg)) {
             fail(testFailureDescription);

@@ -9,8 +9,8 @@ import org.junit.runners.model.InitializationError;
  * 
  * @since 4.12
  */
-public class BlockJUnit4ClassRunnerWithParametersFactory implements
-        ParametersRunnerFactory {
+public class BlockJUnit4ClassRunnerWithParametersFactory
+        implements ParametersRunnerFactory {
     public Runner createRunnerForTestWithParameters(TestWithParameters test)
             throws InitializationError {
         return new BlockJUnit4ClassRunnerWithParameters(test);

@@ -22,7 +22,9 @@ public class SynchronizedRunListenerTest {
 
     private static class MethodSignature {
         private final Method fMethod;
+
         private final String fName;
+
         private final List<Class<?>> fParameterTypes;
 
         public MethodSignature(Method method) {
@@ -50,25 +52,28 @@ public class SynchronizedRunListenerTest {
                 return false;
             }
             MethodSignature that = (MethodSignature) obj;
-            return fName.equals(that.fName) && fParameterTypes.equals(that.fParameterTypes);
+            return fName.equals(that.fName)
+                    && fParameterTypes.equals(that.fParameterTypes);
         }
     }
 
     private Set<MethodSignature> getAllDeclaredMethods(Class<?> type) {
         Set<MethodSignature> methods = new HashSet<MethodSignature>();
         for (Method method : type.getDeclaredMethods()) {
-          methods.add(new MethodSignature(method));
+            methods.add(new MethodSignature(method));
         }
         return methods;
     }
 
     @Test
     public void overridesAllMethodsInRunListener() {
-        Set<MethodSignature> runListenerMethods = getAllDeclaredMethods(RunListener.class);
+        Set<MethodSignature> runListenerMethods = getAllDeclaredMethods(
+                RunListener.class);
         Set<MethodSignature> synchronizedRunListenerMethods = getAllDeclaredMethods(
                 SynchronizedRunListener.class);
 
-        assertTrue(synchronizedRunListenerMethods.containsAll(runListenerMethods));
+        assertTrue(
+                synchronizedRunListenerMethods.containsAll(runListenerMethods));
     }
 
     private static class NamedListener extends RunListener {
@@ -80,7 +85,7 @@ public class SynchronizedRunListenerTest {
 
         @Override
         public String toString() {
-          return "NamedListener";
+            return "NamedListener";
         }
 
         @Override
@@ -128,7 +133,8 @@ public class SynchronizedRunListenerTest {
         NamedListener listener = new NamedListener("blue");
 
         assertEquals("NamedListener", listener.toString());
-        assertEquals("NamedListener (with synchronization wrapper)", wrap(listener).toString());
+        assertEquals("NamedListener (with synchronization wrapper)",
+                wrap(listener).toString());
     }
 
     @Test

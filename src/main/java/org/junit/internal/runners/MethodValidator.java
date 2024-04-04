@@ -16,7 +16,8 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 /**
  * @deprecated Included for backwards compatibility with JUnit 4.4. Will be
  *             removed in the next major release. Please use
- *             {@link BlockJUnit4ClassRunner} in place of {@link JUnit4ClassRunner}.
+ *             {@link BlockJUnit4ClassRunner} in place of
+ *             {@link JUnit4ClassRunner}.
  */
 @Deprecated
 public class MethodValidator {
@@ -62,7 +63,9 @@ public class MethodValidator {
         try {
             testClass.getConstructor();
         } catch (Exception e) {
-            errors.add(new Exception("Test class should have public zero-argument constructor", e));
+            errors.add(new Exception(
+                    "Test class should have public zero-argument constructor",
+                    e));
         }
     }
 
@@ -71,27 +74,73 @@ public class MethodValidator {
         List<Method> methods = testClass.getAnnotatedMethods(annotation);
 
         for (Method each : methods) {
-            if (Modifier.isStatic(each.getModifiers()) != isStatic) {
+            modifierIsStatic(each, annotation, isStatic);
+            modifierIsPublic(each);
+            modifierIsPublicAndIsNotInMethod(each);
+            typeVoidOfMethod(each);
+            lengthOfParametersOfMethod(each);
+            /*if (Modifier.isStatic(each.getModifiers()) != isStatic) {
                 String state = isStatic ? "should" : "should not";
                 errors.add(new Exception("Method " + each.getName() + "() "
-						+ state + " be static"));
+                        + state + " be static"));
             }
             if (!Modifier.isPublic(each.getDeclaringClass().getModifiers())) {
-                errors.add(new Exception("Class " + each.getDeclaringClass().getName()
-						+ " should be public"));
+                errors.add(new Exception(
+                        "Class " + each.getDeclaringClass().getName()
+                                + " should be public"));
             }
+
             if (!Modifier.isPublic(each.getModifiers())) {
-                errors.add(new Exception("Method " + each.getName()
-						+ " should be public"));
+                errors.add(new Exception(
+                        "Method " + each.getName() + " should be public"));
             }
             if (each.getReturnType() != Void.TYPE) {
                 errors.add(new Exception("Method " + each.getName()
-						+ "should have a return type of void"));
+                        + "should have a return type of void"));
             }
             if (each.getParameterTypes().length != 0) {
                 errors.add(new Exception("Method " + each.getName()
-						+ " should have no parameters"));
-            }
+                        + " should have no parameters"));
+            }*/
         }
     }
+
+    private void modifierIsStatic(Method m, Class<? extends Annotation> annotation,
+                                boolean isStatic){
+        if (Modifier.isStatic(m.getModifiers()) != isStatic) {
+            String state = isStatic ? "should" : "should not";
+            errors.add(new Exception("Method " + m.getName() + "() "
+                    + state + " be static"));
+        }
+    }
+
+    private void modifierIsPublic(Method m){
+        if (!Modifier.isPublic(m.getDeclaringClass().getModifiers())) {
+            errors.add(new Exception(
+                    "Class " + m.getDeclaringClass().getName()
+                            + " should be public"));
+        }
+    }
+
+    private void modifierIsPublicAndIsNotInMethod(Method m){
+        if (!Modifier.isPublic(m.getModifiers())) {
+            errors.add(new Exception(
+                    "Method " + m.getName() + " should be public"));
+        }
+    }
+
+    private void typeVoidOfMethod(Method m) {
+        if (m.getReturnType() != Void.TYPE) {
+            errors.add(new Exception("Method " + m.getName()
+                    + "should have a return type of void"));
+        }
+    }
+
+    private void lengthOfParametersOfMethod(Method m){
+        if (m.getParameterTypes().length != 0) {
+            errors.add(new Exception("Method " + m.getName()
+                    + " should have no parameters"));
+        }
+    }
+
 }

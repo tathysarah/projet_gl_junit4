@@ -27,8 +27,7 @@ public class BlockJUnit4ClassRunnerTest {
         } catch (InitializationError e) {
             List<Throwable> causes = e.getCauses();
             assertEquals("Wrong number of causes.", 1, causes.size());
-            assertEquals(
-                    "Wrong exception.",
+            assertEquals("Wrong exception.",
                     "The inner class org.junit.tests.running.classes.BlockJUnit4ClassRunnerTest$OuterClass$Enclosed is not static.",
                     causes.get(0).getMessage());
         }

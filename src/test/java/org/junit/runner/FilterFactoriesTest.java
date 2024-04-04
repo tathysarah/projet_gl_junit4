@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assume.assumeThat;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.ExcludeCategories;
@@ -28,8 +29,8 @@ public class FilterFactoriesTest {
     @Test
     public void shouldCreateFilterWithArguments() throws Exception {
         Filter filter = FilterFactories.createFilterFromFilterSpec(
-                createSuiteRequest(),
-                ExcludeCategories.class.getName() + "=" + DummyCategory.class.getName());
+                createSuiteRequest(), ExcludeCategories.class.getName() + "="
+                        + DummyCategory.class.getName());
 
         assertThat(filter.describe(), startsWith("excludes "));
     }
@@ -46,8 +47,8 @@ public class FilterFactoriesTest {
     public void shouldPassOnDescriptionToFilterFactory() throws Exception {
         Request request = createSuiteRequest();
         Description description = request.getRunner().getDescription();
-        Filter filter = FilterFactories.createFilterFromFilterSpec(
-                request, FilterFactoryStub.class.getName());
+        Filter filter = FilterFactories.createFilterFromFilterSpec(request,
+                FilterFactoryStub.class.getName());
 
         // This assumption tested in shouldCreateFilterWithNoArguments()
         assumeThat(filter, instanceOf(DummyFilter.class));
@@ -58,11 +59,9 @@ public class FilterFactoriesTest {
 
     @Test
     public void shouldCreateFilter() throws Exception {
-        Filter filter = FilterFactories.createFilter(
-                FilterFactoryStub.class,
-                new FilterFactoryParams(
-                        Description.createSuiteDescription(testName.getMethodName()),
-                        ""));
+        Filter filter = FilterFactories.createFilter(FilterFactoryStub.class,
+                new FilterFactoryParams(Description
+                        .createSuiteDescription(testName.getMethodName()), ""));
 
         assertThat(filter, instanceOf(DummyFilter.class));
     }
@@ -88,8 +87,10 @@ public class FilterFactoriesTest {
         private NonInstantiableFilterFactory() {
         }
 
-        public Filter createFilter(FilterFactoryParams params) throws FilterNotCreatedException {
-            throw new FilterNotCreatedException(new Exception("not implemented"));
+        public Filter createFilter(FilterFactoryParams params)
+                throws FilterNotCreatedException {
+            throw new FilterNotCreatedException(
+                    new Exception("not implemented"));
         }
     }
 

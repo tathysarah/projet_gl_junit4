@@ -60,15 +60,18 @@ public class ExternalResourceRuleTest {
     }
 
     @Test
-    public void shouldThrowMultipleFailureExceptionWhenTestFailsAndClosingResourceFails() throws Throwable {
+    public void shouldThrowMultipleFailureExceptionWhenTestFailsAndClosingResourceFails()
+            throws Throwable {
         // given
         ExternalResource resourceRule = new ExternalResource() {
             @Override
             protected void after() {
-                throw new RuntimeException("simulating resource tear down failure");
+                throw new RuntimeException(
+                        "simulating resource tear down failure");
             }
         };
-        Statement failingTest = new Fail(new RuntimeException("simulated test failure"));
+        Statement failingTest = new Fail(
+                new RuntimeException("simulated test failure"));
         Description dummyDescription = Description.createTestDescription(
                 "dummy test class name", "dummy test name");
 
@@ -78,8 +81,7 @@ public class ExternalResourceRuleTest {
         } catch (MultipleFailureException e) {
             assertThat(e.getMessage(), allOf(
                     containsString("simulated test failure"),
-                    containsString("simulating resource tear down failure")
-            ));
+                    containsString("simulating resource tear down failure")));
         }
     }
 
@@ -88,7 +90,8 @@ public class ExternalResourceRuleTest {
         public ExternalResource resourceRule1 = new ExternalResource() {
             @Override
             protected void after() {
-                throw new RuntimeException("simulating resource1 tear down failure");
+                throw new RuntimeException(
+                        "simulating resource1 tear down failure");
             }
         };
 
@@ -96,7 +99,8 @@ public class ExternalResourceRuleTest {
         public ExternalResource resourceRule2 = new ExternalResource() {
             @Override
             protected void after() {
-                throw new RuntimeException("simulating resource2 tear down failure");
+                throw new RuntimeException(
+                        "simulating resource2 tear down failure");
             }
         };
 
@@ -108,27 +112,29 @@ public class ExternalResourceRuleTest {
 
     @Test
     public void shouldThrowMultipleFailureExceptionWhenTestFailsAndTwoClosingResourcesFail() {
-        Result result = JUnitCore.runClasses(TestFailsAndTwoClosingResourcesFail.class);
+        Result result = JUnitCore
+                .runClasses(TestFailsAndTwoClosingResourcesFail.class);
         assertEquals(3, result.getFailures().size());
         List<String> messages = new ArrayList<String>();
         for (Failure failure : result.getFailures()) {
             messages.add(failure.getMessage());
         }
-        assertThat(messages, CoreMatchers.hasItems(
-                "simulated test failure",
-                "simulating resource1 tear down failure",
-                "simulating resource2 tear down failure"
-        ));
+        assertThat(messages,
+                CoreMatchers.hasItems("simulated test failure",
+                        "simulating resource1 tear down failure",
+                        "simulating resource2 tear down failure"));
     }
 
     @Test
-    public void shouldWrapAssumptionFailuresWhenClosingResourceFails() throws Throwable {
+    public void shouldWrapAssumptionFailuresWhenClosingResourceFails()
+            throws Throwable {
         // given
         final AtomicReference<Throwable> externalResourceException = new AtomicReference<Throwable>();
         ExternalResource resourceRule = new ExternalResource() {
             @Override
             protected void after() {
-                RuntimeException runtimeException = new RuntimeException("simulating resource tear down failure");
+                RuntimeException runtimeException = new RuntimeException(
+                        "simulating resource tear down failure");
                 externalResourceException.set(runtimeException);
                 throw runtimeException;
             }
@@ -137,7 +143,8 @@ public class ExternalResourceRuleTest {
         Statement skippedTest = new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                AssumptionViolatedException assumptionFailure = new AssumptionViolatedException("skip it");
+                AssumptionViolatedException assumptionFailure = new AssumptionViolatedException(
+                        "skip it");
                 assumptionViolatedException.set(assumptionFailure);
                 throw assumptionFailure;
             }
@@ -149,14 +156,12 @@ public class ExternalResourceRuleTest {
             resourceRule.apply(skippedTest, dummyDescription).evaluate();
             fail("ExternalResource should throw");
         } catch (MultipleFailureException e) {
-            assertThat(e.getFailures(), hasItems(
-                    instanceOf(TestCouldNotBeSkippedException.class),
-                    sameInstance(externalResourceException.get())
-            ));
+            assertThat(e.getFailures(),
+                    hasItems(instanceOf(TestCouldNotBeSkippedException.class),
+                            sameInstance(externalResourceException.get())));
             assertThat(e.getFailures(), hasItems(
                     hasCause(sameInstance(assumptionViolatedException.get())),
-                    sameInstance(externalResourceException.get())
-            ));
+                    sameInstance(externalResourceException.get())));
         }
     }
 

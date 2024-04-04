@@ -32,7 +32,8 @@ public class StacktracePrintingMatcherTest {
         try {
             assertThat(actual, isThrowable(equalTo(expected)));
         } catch (AssertionError e) {
-            assertThat(e.getMessage(), containsString("Stacktrace was: java.lang.IllegalArgumentException: my message"));
+            assertThat(e.getMessage(), containsString(
+                    "Stacktrace was: java.lang.IllegalArgumentException: my message"));
         }
     }
 }

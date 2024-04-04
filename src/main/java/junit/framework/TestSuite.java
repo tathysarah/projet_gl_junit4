@@ -13,29 +13,32 @@ import org.junit.internal.MethodSorter;
 import org.junit.internal.Throwables;
 
 /**
- * A <code>TestSuite</code> is a <code>Composite</code> of Tests.
- * It runs a collection of test cases. Here is an example using
- * the dynamic test definition.
+ * A <code>TestSuite</code> is a <code>Composite</code> of Tests. It runs a
+ * collection of test cases. Here is an example using the dynamic test
+ * definition.
+ * 
  * <pre>
- * TestSuite suite= new TestSuite();
+ * TestSuite suite = new TestSuite();
  * suite.addTest(new MathTest("testAdd"));
  * suite.addTest(new MathTest("testDivideByZero"));
  * </pre>
  * <p>
- * Alternatively, a TestSuite can extract the tests to be run automatically.
- * To do so you pass the class of your TestCase class to the
- * TestSuite constructor.
+ * Alternatively, a TestSuite can extract the tests to be run automatically. To
+ * do so you pass the class of your TestCase class to the TestSuite constructor.
+ * 
  * <pre>
- * TestSuite suite= new TestSuite(MathTest.class);
+ * TestSuite suite = new TestSuite(MathTest.class);
  * </pre>
  * <p>
- * This constructor creates a suite with all the methods
- * starting with "test" that take no arguments.
+ * This constructor creates a suite with all the methods starting with "test"
+ * that take no arguments.
  * <p>
  * A final option is to do the same for a large array of test classes.
+ * 
  * <pre>
  * Class[] testClasses = { MathTest.class, AnotherTest.class };
- * TestSuite suite= new TestSuite(testClasses);
+ * 
+ * TestSuite suite = new TestSuite(testClasses);
  * </pre>
  *
  * @see Test
@@ -43,15 +46,16 @@ import org.junit.internal.Throwables;
 public class TestSuite implements Test {
 
     /**
-     * ...as the moon sets over the early morning Merlin, Oregon
-     * mountains, our intrepid adventurers type...
+     * ...as the moon sets over the early morning Merlin, Oregon mountains, our
+     * intrepid adventurers type...
      */
     static public Test createTest(Class<?> theClass, String name) {
         Constructor<?> constructor;
         try {
             constructor = getTestConstructor(theClass);
         } catch (NoSuchMethodException e) {
-            return warning("Class " + theClass.getName() + " has no public constructor TestCase(String name) or TestCase()");
+            return warning("Class " + theClass.getName()
+                    + " has no public constructor TestCase(String name) or TestCase()");
         }
         Object test;
         try {
@@ -61,23 +65,27 @@ public class TestSuite implements Test {
                     ((TestCase) test).setName(name);
                 }
             } else {
-                test = constructor.newInstance(new Object[]{name});
+                test = constructor.newInstance(new Object[] { name });
             }
         } catch (InstantiationException e) {
-            return (warning("Cannot instantiate test case: " + name + " (" + Throwables.getStacktrace(e) + ")"));
+            return (warning("Cannot instantiate test case: " + name + " ("
+                    + Throwables.getStacktrace(e) + ")"));
         } catch (InvocationTargetException e) {
-            return (warning("Exception in constructor: " + name + " (" + Throwables.getStacktrace(e.getTargetException()) + ")"));
+            return (warning("Exception in constructor: " + name + " ("
+                    + Throwables.getStacktrace(e.getTargetException()) + ")"));
         } catch (IllegalAccessException e) {
-            return (warning("Cannot access test case: " + name + " (" + Throwables.getStacktrace(e) + ")"));
+            return (warning("Cannot access test case: " + name + " ("
+                    + Throwables.getStacktrace(e) + ")"));
         }
         return (Test) test;
     }
 
     /**
-     * Gets a constructor which takes a single String as
-     * its argument or a no arg constructor.
+     * Gets a constructor which takes a single String as its argument or a no
+     * arg constructor.
      */
-    public static Constructor<?> getTestConstructor(Class<?> theClass) throws NoSuchMethodException {
+    public static Constructor<?> getTestConstructor(Class<?> theClass)
+            throws NoSuchMethodException {
         try {
             return theClass.getConstructor(String.class);
         } catch (NoSuchMethodException e) {
@@ -100,7 +108,10 @@ public class TestSuite implements Test {
 
     private String fName;
 
-    private Vector<Test> fTests = new Vector<Test>(10); // Cannot convert this to List because it is used directly by some test runners
+    private Vector<Test> fTests = new Vector<Test>(10); // Cannot convert this
+                                                        // to List because it is
+                                                        // used directly by some
+                                                        // test runners
 
     /**
      * Constructs an empty TestSuite.
@@ -110,9 +121,8 @@ public class TestSuite implements Test {
 
     /**
      * Constructs a TestSuite from the given class. Adds all the methods
-     * starting with "test" as test cases to the suite.
-     * Parts of this method were written at 2337 meters in the Hueffihuette,
-     * Kanton Uri
+     * starting with "test" as test cases to the suite. Parts of this method
+     * were written at 2337 meters in the Hueffihuette, Kanton Uri
      */
     public TestSuite(final Class<?> theClass) {
         addTestsFromTestCase(theClass);
@@ -121,9 +131,11 @@ public class TestSuite implements Test {
     private void addTestsFromTestCase(final Class<?> theClass) {
         fName = theClass.getName();
         try {
-            getTestConstructor(theClass); // Avoid generating multiple error messages
+            getTestConstructor(theClass); // Avoid generating multiple error
+                                          // messages
         } catch (NoSuchMethodException e) {
-            addTest(warning("Class " + theClass.getName() + " has no public constructor TestCase(String name) or TestCase()"));
+            addTest(warning("Class " + theClass.getName()
+                    + " has no public constructor TestCase(String name) or TestCase()"));
             return;
         }
 
@@ -165,7 +177,8 @@ public class TestSuite implements Test {
     /**
      * Constructs a TestSuite from the given array of classes.
      *
-     * @param classes {@link TestCase}s
+     * @param classes
+     *            {@link TestCase}s
      */
     public TestSuite(Class<?>... classes) {
         for (Class<?> each : classes) {
@@ -177,12 +190,14 @@ public class TestSuite implements Test {
         if (TestCase.class.isAssignableFrom(each)) {
             return new TestSuite(each.asSubclass(TestCase.class));
         } else {
-            return warning(each.getCanonicalName() + " does not extend TestCase");
+            return warning(
+                    each.getCanonicalName() + " does not extend TestCase");
         }
     }
 
     /**
-     * Constructs a TestSuite from the given array of classes with the given name.
+     * Constructs a TestSuite from the given array of classes with the given
+     * name.
      *
      * @see TestSuite#TestSuite(Class[])
      */
@@ -217,9 +232,8 @@ public class TestSuite implements Test {
     }
 
     /**
-     * Returns the name of the suite. Not all
-     * test suites have a name and this method
-     * can return null.
+     * Returns the name of the suite. Not all test suites have a name and this
+     * method can return null.
      */
     public String getName() {
         return fName;
@@ -244,7 +258,8 @@ public class TestSuite implements Test {
     /**
      * Sets the name of the suite.
      *
-     * @param name the name to set
+     * @param name
+     *            the name to set
      */
     public void setName(String name) {
         fName = name;
@@ -281,14 +296,16 @@ public class TestSuite implements Test {
         return super.toString();
     }
 
-    private void addTestMethod(Method m, List<String> names, Class<?> theClass) {
+    private void addTestMethod(Method m, List<String> names,
+            Class<?> theClass) {
         String name = m.getName();
         if (names.contains(name)) {
             return;
         }
         if (!isPublicTestMethod(m)) {
             if (isTestMethod(m)) {
-                addTest(warning("Test method isn't public: " + m.getName() + "(" + theClass.getCanonicalName() + ")"));
+                addTest(warning("Test method isn't public: " + m.getName() + "("
+                        + theClass.getCanonicalName() + ")"));
             }
             return;
         }
@@ -301,8 +318,8 @@ public class TestSuite implements Test {
     }
 
     private boolean isTestMethod(Method m) {
-        return m.getParameterTypes().length == 0 &&
-                m.getName().startsWith("test") &&
-                m.getReturnType().equals(Void.TYPE);
+        return m.getParameterTypes().length == 0
+                && m.getName().startsWith("test")
+                && m.getReturnType().equals(Void.TYPE);
     }
 }

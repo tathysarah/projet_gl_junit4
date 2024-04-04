@@ -64,8 +64,7 @@ public class TestWithParameters {
             return false;
         }
         TestWithParameters other = (TestWithParameters) obj;
-        return name.equals(other.name)
-                && parameters.equals(other.parameters)
+        return name.equals(other.name) && parameters.equals(other.parameters)
                 && testClass.equals(other.testClass);
     }
 

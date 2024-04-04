@@ -30,11 +30,13 @@ public class FrameworkMethod extends FrameworkMember<FrameworkMethod> {
         this.method = method;
 
         if (isPublic()) {
-            // This method could be a public method in a package-scope base class
+            // This method could be a public method in a package-scope base
+            // class
             try {
                 method.setAccessible(true);
-            } catch (SecurityException  e) {
-                // We may get an IllegalAccessException when we try to call the method
+            } catch (SecurityException e) {
+                // We may get an IllegalAccessException when we try to call the
+                // method
             }
         }
     }
@@ -79,13 +81,14 @@ public class FrameworkMethod extends FrameworkMember<FrameworkMethod> {
      * <li>is not static (given {@code isStatic is true}).
      * </ul>
      */
-    public void validatePublicVoidNoArg(boolean isStatic, List<Throwable> errors) {
+    public void validatePublicVoidNoArg(boolean isStatic,
+            List<Throwable> errors) {
         validatePublicVoid(isStatic, errors);
         if (method.getParameterTypes().length != 0) {
-            errors.add(new Exception("Method " + method.getName() + " should have no parameters"));
+            errors.add(new Exception("Method " + method.getName()
+                    + " should have no parameters"));
         }
     }
-
 
     /**
      * Adds to {@code errors} if this method:
@@ -99,13 +102,16 @@ public class FrameworkMethod extends FrameworkMember<FrameworkMethod> {
     public void validatePublicVoid(boolean isStatic, List<Throwable> errors) {
         if (isStatic() != isStatic) {
             String state = isStatic ? "should" : "should not";
-            errors.add(new Exception("Method " + method.getName() + "() " + state + " be static"));
+            errors.add(new Exception("Method " + method.getName() + "() "
+                    + state + " be static"));
         }
         if (!isPublic()) {
-            errors.add(new Exception("Method " + method.getName() + "() should be public"));
+            errors.add(new Exception(
+                    "Method " + method.getName() + "() should be public"));
         }
         if (method.getReturnType() != Void.TYPE) {
-            errors.add(new Exception("Method " + method.getName() + "() should be void"));
+            errors.add(new Exception(
+                    "Method " + method.getName() + "() should be void"));
         }
     }
 
@@ -179,10 +185,11 @@ public class FrameworkMethod extends FrameworkMember<FrameworkMethod> {
      * Returns true if this is a no-arg method that returns a value assignable
      * to {@code type}
      *
-     * @deprecated This is used only by the Theories runner, and does not
-     *             use all the generic type info that it ought to. It will be replaced
-     *             with a forthcoming ParameterSignature#canAcceptResultOf(FrameworkMethod)
-     *             once Theories moves to junit-contrib.
+     * @deprecated This is used only by the Theories runner, and does not use
+     *             all the generic type info that it ought to. It will be
+     *             replaced with a forthcoming
+     *             ParameterSignature#canAcceptResultOf(FrameworkMethod) once
+     *             Theories moves to junit-contrib.
      */
     @Deprecated
     public boolean producesType(Type type) {

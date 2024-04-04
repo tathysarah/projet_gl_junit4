@@ -64,8 +64,8 @@ public class MaxStarterTest {
         List<Description> things = fMax.sortedLeavesForTest(request);
         Description succeed = Description.createTestDescription(TwoTests.class,
                 "succeed");
-        Description dontSucceed = Description.createTestDescription(
-                TwoTests.class, "dontSucceed");
+        Description dontSucceed = Description
+                .createTestDescription(TwoTests.class, "dontSucceed");
         assertTrue(things.contains(succeed));
         assertTrue(things.contains(dontSucceed));
         assertEquals(2, things.size());
@@ -77,8 +77,8 @@ public class MaxStarterTest {
         fMax.run(one);
         Request two = Request.aClass(TwoTests.class);
         List<Description> things = fMax.sortedLeavesForTest(two);
-        Description dontSucceed = Description.createTestDescription(
-                TwoTests.class, "dontSucceed");
+        Description dontSucceed = Description
+                .createTestDescription(TwoTests.class, "dontSucceed");
         assertEquals(dontSucceed, things.get(0));
         assertEquals(2, things.size());
     }
@@ -105,8 +105,8 @@ public class MaxStarterTest {
         Request request = Request.aClass(TwoTests.class);
         fMax.run(request);
         List<Description> tests = fMax.sortedLeavesForTest(request);
-        Description dontSucceed = Description.createTestDescription(
-                TwoTests.class, "dontSucceed");
+        Description dontSucceed = Description
+                .createTestDescription(TwoTests.class, "dontSucceed");
         assertEquals(dontSucceed, tests.get(0));
     }
 
@@ -116,8 +116,8 @@ public class MaxStarterTest {
                 TwoTests.class);
         fMax.run(request);
         List<Description> tests = fMax.sortedLeavesForTest(request);
-        Description dontSucceed = Description.createTestDescription(
-                TwoTests.class, "dontSucceed");
+        Description dontSucceed = Description
+                .createTestDescription(TwoTests.class, "dontSucceed");
         assertEquals(dontSucceed, tests.get(0));
         assertEquals(dontSucceed, tests.get(1));
     }
@@ -195,8 +195,8 @@ public class MaxStarterTest {
 
     @Test
     public void filterSingleMethodFromOldTestClass() throws Exception {
-        final Description method = Description.createTestDescription(
-                TwoOldTests.class, "testOne");
+        final Description method = Description
+                .createTestDescription(TwoOldTests.class, "testOne");
         Filter filter = Filter.matchMethodDescription(method);
         JUnit38ClassRunner child = new JUnit38ClassRunner(TwoOldTests.class);
         child.filter(filter);
@@ -256,7 +256,8 @@ public class MaxStarterTest {
         Runner runner = sorted.getRunner();
         Result result = core.run(runner);
         Failure failure = result.getFailures().get(0);
-        assertThat(failure.toString(), containsString("MalformedJUnit38TestMethod"));
+        assertThat(failure.toString(),
+                containsString("MalformedJUnit38TestMethod"));
         assertThat(failure.toString(), containsString("testNothing"));
         assertThat(failure.toString(), containsString("isn't public"));
     }
@@ -276,7 +277,6 @@ public class MaxStarterTest {
                 .getFailureCount(), is(1));
     }
 
-
     @Test
     public void correctErrorFromHalfMalformedTest() {
         Request request = Request.aClass(HalfMalformedJUnit38TestMethod.class);
@@ -285,7 +285,8 @@ public class MaxStarterTest {
         Runner runner = sorted.getRunner();
         Result result = core.run(runner);
         Failure failure = result.getFailures().get(0);
-        assertThat(failure.toString(), containsString("MalformedJUnit38TestMethod"));
+        assertThat(failure.toString(),
+                containsString("MalformedJUnit38TestMethod"));
         assertThat(failure.toString(), containsString("testNothing"));
         assertThat(failure.toString(), containsString("isn't public"));
     }

@@ -1,5 +1,10 @@
 package org.junit.runner;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,18 +16,17 @@ import org.junit.experimental.categories.IncludeCategories;
 import org.junit.runner.notification.RunListener;
 import org.junit.tests.TestSystem;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 public class FilterOptionIntegrationTest {
-    private static final String INCLUDES_DUMMY_CATEGORY_0 = "--filter=" +
-            IncludeCategories.class.getName() + "=" + DummyCategory0.class.getName();
-    private static final String EXCLUDES_DUMMY_CATEGORY_1 = "--filter=" +
-            ExcludeCategories.class.getName() + "=" + DummyCategory1.class.getName();
+    private static final String INCLUDES_DUMMY_CATEGORY_0 = "--filter="
+            + IncludeCategories.class.getName() + "="
+            + DummyCategory0.class.getName();
+
+    private static final String EXCLUDES_DUMMY_CATEGORY_1 = "--filter="
+            + ExcludeCategories.class.getName() + "="
+            + DummyCategory1.class.getName();
 
     private JUnitCore jUnitCore = new JUnitCore();
+
     private TestListener testListener = new TestListener();
 
     @Before
@@ -32,8 +36,7 @@ public class FilterOptionIntegrationTest {
 
     @Test
     public void shouldRunAllTests() {
-        Result result = runJUnit(
-                DummyTestClass.class.getName(),
+        Result result = runJUnit(DummyTestClass.class.getName(),
                 DummyTestClass0.class.getName(),
                 DummyTestClass1.class.getName(),
                 DummyTestClass01.class.getName(),
@@ -45,15 +48,14 @@ public class FilterOptionIntegrationTest {
         assertWasRun(DummyTestClass01.class);
         assertWasRun(DummyTestClass0TestMethod1.class);
         assertThat("runCount does not match", result.getRunCount(), is(5));
-        assertThat("failureCount does not match", result.getFailureCount(), is(0));
+        assertThat("failureCount does not match", result.getFailureCount(),
+                is(0));
     }
 
     @Test
     public void shouldExcludeSomeTests() {
-        Result result = runJUnit(
-                EXCLUDES_DUMMY_CATEGORY_1,
-                DummyTestClass.class.getName(),
-                DummyTestClass0.class.getName(),
+        Result result = runJUnit(EXCLUDES_DUMMY_CATEGORY_1,
+                DummyTestClass.class.getName(), DummyTestClass0.class.getName(),
                 DummyTestClass1.class.getName(),
                 DummyTestClass01.class.getName(),
                 DummyTestClass0TestMethod1.class.getName());
@@ -64,15 +66,14 @@ public class FilterOptionIntegrationTest {
         assertWasNotRun(DummyTestClass01.class);
         assertWasNotRun(DummyTestClass0TestMethod1.class);
         assertThat("runCount does not match", result.getRunCount(), is(2));
-        assertThat("failureCount does not match", result.getFailureCount(), is(0));
+        assertThat("failureCount does not match", result.getFailureCount(),
+                is(0));
     }
 
     @Test
     public void shouldIncludeSomeTests() {
-        Result result = runJUnit(
-                INCLUDES_DUMMY_CATEGORY_0,
-                DummyTestClass.class.getName(),
-                DummyTestClass0.class.getName(),
+        Result result = runJUnit(INCLUDES_DUMMY_CATEGORY_0,
+                DummyTestClass.class.getName(), DummyTestClass0.class.getName(),
                 DummyTestClass1.class.getName(),
                 DummyTestClass01.class.getName(),
                 DummyTestClass0TestMethod1.class.getName());
@@ -83,15 +84,14 @@ public class FilterOptionIntegrationTest {
         assertWasRun(DummyTestClass01.class);
         assertWasRun(DummyTestClass0TestMethod1.class);
         assertThat("runCount does not match", result.getRunCount(), is(3));
-        assertThat("failureCount does not match", result.getFailureCount(), is(0));
+        assertThat("failureCount does not match", result.getFailureCount(),
+                is(0));
     }
 
     @Test
     public void shouldCombineFilters() {
-        Result result = runJUnit(
-                INCLUDES_DUMMY_CATEGORY_0,
-                EXCLUDES_DUMMY_CATEGORY_1,
-                DummyTestClass.class.getName(),
+        Result result = runJUnit(INCLUDES_DUMMY_CATEGORY_0,
+                EXCLUDES_DUMMY_CATEGORY_1, DummyTestClass.class.getName(),
                 DummyTestClass0.class.getName(),
                 DummyTestClass1.class.getName(),
                 DummyTestClass01.class.getName(),
@@ -103,7 +103,8 @@ public class FilterOptionIntegrationTest {
         assertWasNotRun(DummyTestClass01.class);
         assertWasNotRun(DummyTestClass0TestMethod1.class);
         assertThat("runCount does not match", result.getRunCount(), is(1));
-        assertThat("failureCount does not match", result.getFailureCount(), is(0));
+        assertThat("failureCount does not match", result.getFailureCount(),
+                is(0));
     }
 
     private Result runJUnit(final String... args) {
@@ -111,17 +112,20 @@ public class FilterOptionIntegrationTest {
     }
 
     private void assertWasRun(Class<?> testClass) {
-        assertTrue(testClass.getName() + " expected to finish but did not", testListener.wasRun(testClass));
+        assertTrue(testClass.getName() + " expected to finish but did not",
+                testListener.wasRun(testClass));
     }
 
     private void assertWasNotRun(Class<?> testClass) {
         assertFalse(
-                testClass.getName() + " expected not to have been started but was",
+                testClass.getName()
+                        + " expected not to have been started but was",
                 testListener.wasRun(testClass));
     }
 
     private static class TestListener extends RunListener {
         private Set<String> startedTests = new HashSet<String>();
+
         private Set<String> finishedTests = new HashSet<String>();
 
         @Override
@@ -167,7 +171,7 @@ public class FilterOptionIntegrationTest {
         }
     }
 
-    @Category({DummyCategory0.class, DummyCategory1.class})
+    @Category({ DummyCategory0.class, DummyCategory1.class })
     public static class DummyTestClass01 {
         @Test
         public void dummyTest() {

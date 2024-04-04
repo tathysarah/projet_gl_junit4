@@ -48,9 +48,7 @@ public class RuleContainerTest {
     }
 
     private enum Rule implements TestRule {
-        A,
-        B,
-        C;
+        A, B, C;
 
         public Statement apply(Statement base, Description description) {
             return base;
@@ -58,10 +56,10 @@ public class RuleContainerTest {
     }
 
     private enum MRule implements MethodRule {
-        M1,
-        M2;
+        M1, M2;
 
-        public Statement apply(Statement base, FrameworkMethod method, Object target) {
+        public Statement apply(Statement base, FrameworkMethod method,
+                Object target) {
             return base;
         }
     }

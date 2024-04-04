@@ -18,8 +18,8 @@ import org.junit.runners.model.FrameworkMethod;
 @RunWith(Theories.class)
 public class ObjectContractTest {
     @DataPoints
-    public static Object[] objects = {new FrameworkMethod(toStringMethod()),
-            new FrameworkMethod(toStringMethod()), 3, null};
+    public static Object[] objects = { new FrameworkMethod(toStringMethod()),
+            new FrameworkMethod(toStringMethod()), 3, null };
 
     @Theory
     @Test(expected = None.class)

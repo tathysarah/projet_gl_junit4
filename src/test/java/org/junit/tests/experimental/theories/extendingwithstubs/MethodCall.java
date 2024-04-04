@@ -7,6 +7,7 @@ import java.util.List;
 
 public class MethodCall {
     private final Method method;
+
     private final Object[] args;
 
     public MethodCall(Method method, Object... args) {
@@ -38,7 +39,8 @@ public class MethodCall {
         if (args == null) {
             return null;
         }
-        return argList().toString().substring(1, argList().toString().length() - 1);
+        return argList().toString().substring(1,
+                argList().toString().length() - 1);
     }
 
     private List<Object> argList() {

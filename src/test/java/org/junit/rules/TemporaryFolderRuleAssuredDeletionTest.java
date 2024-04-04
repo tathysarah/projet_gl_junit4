@@ -20,20 +20,20 @@ public class TemporaryFolderRuleAssuredDeletionTest {
 
         @Test
         public void alwaysPassesButDeletesRootFolder() {
-            //we delete the folder in the test so that it cannot be deleted by
-            //the rule
+            // we delete the folder in the test so that it cannot be deleted by
+            // the rule
             folder.getRoot().delete();
         }
     }
 
     @Test
     public void testFailsWhenCreatedFolderCannotBeDeletedButDeletionIsAssured() {
-        TestClass.injectedRule = TemporaryFolder.builder()
-                .assureDeletion()
+        TestClass.injectedRule = TemporaryFolder.builder().assureDeletion()
                 .build();
         PrintableResult result = testResult(TestClass.class);
         assertThat(result, failureCountIs(1));
-        assertThat(result.toString(), containsString("Unable to clean up temporary folder"));
+        assertThat(result.toString(),
+                containsString("Unable to clean up temporary folder"));
     }
 
     @Test

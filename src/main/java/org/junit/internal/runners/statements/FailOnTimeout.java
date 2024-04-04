@@ -18,8 +18,11 @@ import org.junit.runners.model.TestTimedOutException;
 
 public class FailOnTimeout extends Statement {
     private final Statement originalStatement;
+
     private final TimeUnit timeUnit;
+
     private final long timeout;
+
     private final boolean lookForStuckThread;
 
     /**
@@ -32,15 +35,19 @@ public class FailOnTimeout extends Statement {
     }
 
     /**
-     * Creates an instance wrapping the given statement with the given timeout in milliseconds.
+     * Creates an instance wrapping the given statement with the given timeout
+     * in milliseconds.
      *
-     * @param statement the statement to wrap
-     * @param timeoutMillis the timeout in milliseconds
+     * @param statement
+     *            the statement to wrap
+     * @param timeoutMillis
+     *            the timeout in milliseconds
      * @deprecated use {@link #builder()} instead.
      */
     @Deprecated
     public FailOnTimeout(Statement statement, long timeoutMillis) {
-        this(builder().withTimeout(timeoutMillis, TimeUnit.MILLISECONDS), statement);
+        this(builder().withTimeout(timeoutMillis, TimeUnit.MILLISECONDS),
+                statement);
     }
 
     private FailOnTimeout(Builder builder, Statement statement) {
@@ -57,7 +64,9 @@ public class FailOnTimeout extends Statement {
      */
     public static class Builder {
         private boolean lookForStuckThread = false;
+
         private long timeout = 0;
+
         private TimeUnit unit = TimeUnit.SECONDS;
 
         private Builder() {
@@ -66,19 +75,23 @@ public class FailOnTimeout extends Statement {
         /**
          * Specifies the time to wait before timing out the test.
          *
-         * <p>If this is not called, or is called with a {@code timeout} of
+         * <p>
+         * If this is not called, or is called with a {@code timeout} of
          * {@code 0}, the returned {@code Statement} will wait forever for the
          * test to complete, however the test will still launch from a separate
          * thread. This can be useful for disabling timeouts in environments
          * where they are dynamically set based on some property.
          *
-         * @param timeout the maximum time to wait
-         * @param unit the time unit of the {@code timeout} argument
+         * @param timeout
+         *            the maximum time to wait
+         * @param unit
+         *            the time unit of the {@code timeout} argument
          * @return {@code this} for method chaining.
          */
         public Builder withTimeout(long timeout, TimeUnit unit) {
             if (timeout < 0) {
-                throw new IllegalArgumentException("timeout must be non-negative");
+                throw new IllegalArgumentException(
+                        "timeout must be non-negative");
             }
             if (unit == null) {
                 throw new NullPointerException("TimeUnit cannot be null");
@@ -89,12 +102,13 @@ public class FailOnTimeout extends Statement {
         }
 
         /**
-         * Specifies whether to look for a stuck thread.  If a timeout occurs and this
-         * feature is enabled, the test will look for a thread that appears to be stuck
-         * and dump its backtrace.  This feature is experimental.  Behavior may change
-         * after the 4.12 release in response to feedback.
+         * Specifies whether to look for a stuck thread. If a timeout occurs and
+         * this feature is enabled, the test will look for a thread that appears
+         * to be stuck and dump its backtrace. This feature is experimental.
+         * Behavior may change after the 4.12 release in response to feedback.
          *
-         * @param enable {@code true} to enable the feature
+         * @param enable
+         *            {@code true} to enable the feature
          * @return {@code this} for method chaining.
          */
         public Builder withLookingForStuckThread(boolean enable) {
@@ -103,10 +117,11 @@ public class FailOnTimeout extends Statement {
         }
 
         /**
-         * Builds a {@link FailOnTimeout} instance using the values in this builder,
-         * wrapping the given statement.
+         * Builds a {@link FailOnTimeout} instance using the values in this
+         * builder, wrapping the given statement.
          *
-         * @param statement statement to build
+         * @param statement
+         *            statement to build
          */
         public FailOnTimeout build(Statement statement) {
             if (statement == null) {
@@ -144,13 +159,16 @@ public class FailOnTimeout extends Statement {
         ThreadGroup threadGroup = new ThreadGroup("FailOnTimeoutGroup");
         if (!threadGroup.isDaemon()) {
             // Mark the new ThreadGroup as a daemon thread group, so it will be
-            // destroyed after the time-limited thread completes. By ensuring the
-            // ThreadGroup is destroyed, any data associated with the ThreadGroup
+            // destroyed after the time-limited thread completes. By ensuring
+            // the
+            // ThreadGroup is destroyed, any data associated with the
+            // ThreadGroup
             // (ex: via java.beans.ThreadGroupContext) is destroyed.
             try {
                 threadGroup.setDaemon(true);
             } catch (SecurityException e) {
-                // Swallow the exception to keep the same behavior as in JUnit 4.12.
+                // Swallow the exception to keep the same behavior as in JUnit
+                // 4.12.
             }
         }
         return threadGroup;
@@ -169,9 +187,11 @@ public class FailOnTimeout extends Statement {
                 return task.get();
             }
         } catch (InterruptedException e) {
-            return e; // caller will re-throw; no need to call Thread.interrupt()
+            return e; // caller will re-throw; no need to call
+                      // Thread.interrupt()
         } catch (ExecutionException e) {
-            // test failed; have caller re-throw the exception thrown by the test
+            // test failed; have caller re-throw the exception thrown by the
+            // test
             return e.getCause();
         } catch (TimeoutException e) {
             return createTimeoutException(thread);
@@ -180,19 +200,20 @@ public class FailOnTimeout extends Statement {
 
     private Exception createTimeoutException(Thread thread) {
         StackTraceElement[] stackTrace = thread.getStackTrace();
-        final Thread stuckThread = lookForStuckThread ? getStuckThread(thread) : null;
-        Exception currThreadException = new TestTimedOutException(timeout, timeUnit);
+        final Thread stuckThread = lookForStuckThread ? getStuckThread(thread)
+                : null;
+        Exception currThreadException = new TestTimedOutException(timeout,
+                timeUnit);
         if (stackTrace != null) {
             currThreadException.setStackTrace(stackTrace);
             thread.interrupt();
         }
         if (stuckThread != null) {
-            Exception stuckThreadException = 
-                new Exception("Appears to be stuck in thread " +
-                               stuckThread.getName());
+            Exception stuckThreadException = new Exception(
+                    "Appears to be stuck in thread " + stuckThread.getName());
             stuckThreadException.setStackTrace(getStackTrace(stuckThread));
-            return new MultipleFailureException(
-                Arrays.<Throwable>asList(currThreadException, stuckThreadException));
+            return new MultipleFailureException(Arrays.<Throwable> asList(
+                    currThreadException, stuckThreadException));
         } else {
             return currThreadException;
         }
@@ -200,9 +221,12 @@ public class FailOnTimeout extends Statement {
 
     /**
      * Retrieves the stack trace for a given thread.
-     * @param thread The thread whose stack is to be retrieved.
-     * @return The stack trace; returns a zero-length array if the thread has 
-     * terminated or the stack cannot be retrieved for some other reason.
+     * 
+     * @param thread
+     *            The thread whose stack is to be retrieved.
+     * @return The stack trace; returns a zero-length array if the thread has
+     *         terminated or the stack cannot be retrieved for some other
+     *         reason.
      */
     private StackTraceElement[] getStackTrace(Thread thread) {
         try {
@@ -214,24 +238,32 @@ public class FailOnTimeout extends Statement {
 
     /**
      * Determines whether the test appears to be stuck in some thread other than
-     * the "main thread" (the one created to run the test).  This feature is experimental.
-     * Behavior may change after the 4.12 release in response to feedback.
-     * @param mainThread The main thread created by {@code evaluate()}
-     * @return The thread which appears to be causing the problem, if different from
-     * {@code mainThread}, or {@code null} if the main thread appears to be the
-     * problem or if the thread cannot be determined.  The return value is never equal 
-     * to {@code mainThread}.
+     * the "main thread" (the one created to run the test). This feature is
+     * experimental. Behavior may change after the 4.12 release in response to
+     * feedback.
+     * 
+     * @param mainThread
+     *            The main thread created by {@code evaluate()}
+     * @return The thread which appears to be causing the problem, if different
+     *         from {@code mainThread}, or {@code null} if the main thread
+     *         appears to be the problem or if the thread cannot be determined.
+     *         The return value is never equal to {@code mainThread}.
      */
     private Thread getStuckThread(Thread mainThread) {
-        List<Thread> threadsInGroup = getThreadsInGroup(mainThread.getThreadGroup());
+        List<Thread> threadsInGroup = getThreadsInGroup(
+                mainThread.getThreadGroup());
         if (threadsInGroup.isEmpty()) {
             return null;
         }
 
-        // Now that we have all the threads in the test's thread group: Assume that
-        // any thread we're "stuck" in is RUNNABLE.  Look for all RUNNABLE threads. 
-        // If just one, we return that (unless it equals threadMain).  If there's more
-        // than one, pick the one that's using the most CPU time, if this feature is
+        // Now that we have all the threads in the test's thread group: Assume
+        // that
+        // any thread we're "stuck" in is RUNNABLE. Look for all RUNNABLE
+        // threads.
+        // If just one, we return that (unless it equals threadMain). If there's
+        // more
+        // than one, pick the one that's using the most CPU time, if this
+        // feature is
         // supported.
         Thread stuckThread = null;
         long maxCpuTime = 0;
@@ -242,21 +274,24 @@ public class FailOnTimeout extends Statement {
                     stuckThread = thread;
                     maxCpuTime = threadCpuTime;
                 }
-            }               
+            }
         }
         return (stuckThread == mainThread) ? null : stuckThread;
     }
 
     /**
-     * Returns all active threads belonging to a thread group.  
-     * @param group The thread group.
-     * @return The active threads in the thread group.  The result should be a
-     * complete list of the active threads at some point in time.  Returns an empty list
-     * if this cannot be determined, e.g. because new threads are being created at an
-     * extremely fast rate.
+     * Returns all active threads belonging to a thread group.
+     * 
+     * @param group
+     *            The thread group.
+     * @return The active threads in the thread group. The result should be a
+     *         complete list of the active threads at some point in time.
+     *         Returns an empty list if this cannot be determined, e.g. because
+     *         new threads are being created at an extremely fast rate.
      */
     private List<Thread> getThreadsInGroup(ThreadGroup group) {
-        final int activeThreadCount = group.activeCount(); // this is just an estimate
+        final int activeThreadCount = group.activeCount(); // this is just an
+                                                           // estimate
         int threadArraySize = Math.max(activeThreadCount * 2, 100);
         for (int loopCount = 0; loopCount < 5; loopCount++) {
             Thread[] threads = new Thread[threadArraySize];
@@ -264,20 +299,25 @@ public class FailOnTimeout extends Statement {
             if (enumCount < threadArraySize) {
                 return Arrays.asList(threads).subList(0, enumCount);
             }
-            // if there are too many threads to fit into the array, enumerate's result
-            // is >= the array's length; therefore we can't trust that it returned all
-            // the threads.  Try again.
+            // if there are too many threads to fit into the array, enumerate's
+            // result
+            // is >= the array's length; therefore we can't trust that it
+            // returned all
+            // the threads. Try again.
             threadArraySize += 100;
         }
-        // threads are proliferating too fast for us.  Bail before we get into 
+        // threads are proliferating too fast for us. Bail before we get into
         // trouble.
         return Collections.emptyList();
     }
 
     /**
      * Returns the CPU time used by a thread, if possible.
-     * @param thr The thread to query.
-     * @return The CPU time used by {@code thr}, or 0 if it cannot be determined.
+     * 
+     * @param thr
+     *            The thread to query.
+     * @return The CPU time used by {@code thr}, or 0 if it cannot be
+     *         determined.
      */
     private long cpuTime(Thread thr) {
         ThreadMXBean mxBean = ManagementFactory.getThreadMXBean();

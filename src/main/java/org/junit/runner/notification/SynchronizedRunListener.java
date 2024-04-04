@@ -4,14 +4,16 @@ import org.junit.runner.Description;
 import org.junit.runner.Result;
 
 /**
- * Thread-safe decorator for {@link RunListener} implementations that synchronizes
- * calls to the delegate.
+ * Thread-safe decorator for {@link RunListener} implementations that
+ * synchronizes calls to the delegate.
  *
- * <p>This class synchronizes all listener calls on a RunNotifier instance. This is done because
- * prior to JUnit 4.12, all listeners were called in a synchronized block in RunNotifier,
- * so no two listeners were ever called concurrently. If we instead made the methods here
- * synchronized, clients that added multiple listeners that called common code might see
- * issues due to the reduced synchronization.
+ * <p>
+ * This class synchronizes all listener calls on a RunNotifier instance. This is
+ * done because prior to JUnit 4.12, all listeners were called in a synchronized
+ * block in RunNotifier, so no two listeners were ever called concurrently. If
+ * we instead made the methods here synchronized, clients that added multiple
+ * listeners that called common code might see issues due to the reduced
+ * synchronization.
  *
  * @author Tibor Digana (tibor17)
  * @author Kevin Cooney (kcooney)
@@ -22,6 +24,7 @@ import org.junit.runner.Result;
 @RunListener.ThreadSafe
 final class SynchronizedRunListener extends RunListener {
     private final RunListener listener;
+
     private final Object monitor;
 
     SynchronizedRunListener(RunListener listener, Object monitor) {
@@ -46,10 +49,14 @@ final class SynchronizedRunListener extends RunListener {
     /**
      * {@inheritDoc}
      * <p/>
-     * Synchronized decorator for {@link RunListener#testSuiteStarted(Description)}.
-     * @param description the description of the test suite that is about to be run
-     *                    (generally a class name).
-     * @throws Exception if any occurs.
+     * Synchronized decorator for
+     * {@link RunListener#testSuiteStarted(Description)}.
+     * 
+     * @param description
+     *            the description of the test suite that is about to be run
+     *            (generally a class name).
+     * @throws Exception
+     *             if any occurs.
      * @since 4.13
      */
     @Override
@@ -62,8 +69,11 @@ final class SynchronizedRunListener extends RunListener {
     /**
      * {@inheritDoc}
      * <p/>
-     * Synchronized decorator for {@link RunListener#testSuiteFinished(Description)}.
-     * @param description the description of the test suite that just ran.
+     * Synchronized decorator for
+     * {@link RunListener#testSuiteFinished(Description)}.
+     * 
+     * @param description
+     *            the description of the test suite that just ran.
      * @since 4.13
      */
     @Override
@@ -122,7 +132,7 @@ final class SynchronizedRunListener extends RunListener {
             return false;
         }
         SynchronizedRunListener that = (SynchronizedRunListener) other;
-        
+
         return listener.equals(that.listener);
     }
 

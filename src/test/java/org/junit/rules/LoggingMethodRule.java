@@ -5,6 +5,7 @@ import org.junit.runners.model.Statement;
 
 class LoggingMethodRule implements MethodRule {
     private final StringBuilder log;
+
     private final String name;
 
     LoggingMethodRule(StringBuilder log, String name) {
@@ -12,7 +13,8 @@ class LoggingMethodRule implements MethodRule {
         this.log = log;
     }
 
-    public Statement apply(Statement base, FrameworkMethod method, Object target) {
+    public Statement apply(Statement base, FrameworkMethod method,
+            Object target) {
         return new LoggingStatement(base, log, name);
     }
 }

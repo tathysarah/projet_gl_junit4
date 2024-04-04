@@ -5,10 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({
-        CommandLineTest.class,
-        JUnitCoreReturnsCorrectExitCodeTest.class,
-        SystemExitTest.class
-})
+@SuiteClasses({ CommandLineTest.class,
+        JUnitCoreReturnsCorrectExitCodeTest.class, SystemExitTest.class })
 public class AllCoreTests {
 }

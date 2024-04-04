@@ -11,9 +11,13 @@ import junit.framework.TestResult;
  */
 public class TestListenerTest extends TestCase implements TestListener {
     private TestResult fResult;
+
     private int fStartCount;
+
     private int fEndCount;
+
     private int fFailureCount;
+
     private int fErrorCount;
 
     public void addError(Test test, Throwable e) {

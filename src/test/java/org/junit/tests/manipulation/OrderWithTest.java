@@ -1,6 +1,7 @@
 package org.junit.tests.manipulation;
 
 import static org.junit.Assert.assertEquals;
+
 import junit.framework.JUnit4TestAdapter;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +17,7 @@ import org.junit.runner.notification.RunNotifier;
 
 @RunWith(Enclosed.class)
 public class OrderWithTest {
- 
+
     public static class TestClassRunnerIsOrderableViaOrderWith {
         private static String log = "";
 
@@ -60,7 +61,8 @@ public class OrderWithTest {
 
         @Test
         public void orderingBackwardWorksOnTestClassRunner() {
-            Request backward = Request.aClass(OrderedReverseAlphanumerically.class);
+            Request backward = Request
+                    .aClass(OrderedReverseAlphanumerically.class);
 
             new JUnitCore().run(backward);
             assertEquals("cba", log);
@@ -104,16 +106,19 @@ public class OrderWithTest {
         }
 
         @OrderWith(AlphanumericOrdering.class)
-        public static class SuiteOrderedAlphanumerically extends UnorderedSuite {
+        public static class SuiteOrderedAlphanumerically
+                extends UnorderedSuite {
         }
 
         @OrderWith(ReverseAlphanumericOrdering.class)
-        public static class SuiteOrderedReverseAlphanumerically extends UnorderedSuite {
+        public static class SuiteOrderedReverseAlphanumerically
+                extends UnorderedSuite {
         }
 
         @Test
         public void orderingForwardWorksOnSuite() {
-            Request forward = Request.aClass(SuiteOrderedAlphanumerically.class);
+            Request forward = Request
+                    .aClass(SuiteOrderedAlphanumerically.class);
 
             new JUnitCore().run(forward);
             assertEquals("AaAbAcBaBbBc", log);
@@ -121,7 +126,8 @@ public class OrderWithTest {
 
         @Test
         public void orderingBackwardWorksOnSuite() {
-            Request backward = Request.aClass(SuiteOrderedReverseAlphanumerically.class);
+            Request backward = Request
+                    .aClass(SuiteOrderedReverseAlphanumerically.class);
 
             new JUnitCore().run(backward);
             assertEquals("BcBbBaAcAbAa", log);
@@ -160,7 +166,7 @@ public class OrderWithTest {
         @OrderWith(ReverseAlphanumericSorter.class)
         public static class SortedReverseAlphanumerically extends Unordered {
         }
- 
+
         @Test
         public void sortingForwardWorksOnTestClassRunner() {
             Request forward = Request.aClass(SortedAlphanumerically.class);
@@ -171,7 +177,8 @@ public class OrderWithTest {
 
         @Test
         public void sortingBackwardWorksOnTestClassRunner() {
-            Request backward = Request.aClass(SortedReverseAlphanumerically.class);
+            Request backward = Request
+                    .aClass(SortedReverseAlphanumerically.class);
 
             new JUnitCore().run(backward);
             assertEquals("cba", log);
@@ -197,10 +204,10 @@ public class OrderWithTest {
                 log += "c";
             }
         }
-        
+
         @OrderWith(AlphanumericOrdering.class)
         public static class OrderedAlphanumerically extends Unordered {
- 
+
             public static junit.framework.Test suite() {
                 return new JUnit4TestAdapter(OrderedAlphanumerically.class);
             }
@@ -210,7 +217,8 @@ public class OrderWithTest {
         public static class OrderedReverseAlphanumerically extends Unordered {
 
             public static junit.framework.Test suite() {
-                return new JUnit4TestAdapter(OrderedReverseAlphanumerically.class);
+                return new JUnit4TestAdapter(
+                        OrderedReverseAlphanumerically.class);
             }
         }
 
@@ -229,7 +237,8 @@ public class OrderWithTest {
 
         @Test
         public void orderingBackwardWorksOnTestClassRunner() {
-            Request backward = Request.aClass(OrderedReverseAlphanumerically.class);
+            Request backward = Request
+                    .aClass(OrderedReverseAlphanumerically.class);
 
             new JUnitCore().run(backward);
             assertEquals("cba", log);
@@ -260,8 +269,8 @@ public class OrderWithTest {
 
         @Test
         public void unOrderablesAreHandledWithoutCrashing() {
-            Request unordered = Request.aClass(UnOrderable.class).orderWith(
-                    AlphanumericOrdering.INSTANCE);
+            Request unordered = Request.aClass(UnOrderable.class)
+                    .orderWith(AlphanumericOrdering.INSTANCE);
             new JUnitCore().run(unordered);
         }
     }

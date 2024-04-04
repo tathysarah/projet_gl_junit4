@@ -15,7 +15,7 @@ public class TheoriesPerformanceTest {
     @RunWith(Theories.class)
     public static class UpToTen {
         @DataPoints
-        public static int[] ints = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        public static int[] ints = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
         @Theory
         public void threeInts(int x, int y, int z) {

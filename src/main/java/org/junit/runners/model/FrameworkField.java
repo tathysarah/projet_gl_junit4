@@ -17,7 +17,8 @@ public class FrameworkField extends FrameworkMember<FrameworkField> {
     /**
      * Returns a new {@code FrameworkField} for {@code field}.
      *
-     * <p>Access relaxed to {@code public} since version 4.13.1.
+     * <p>
+     * Access relaxed to {@code public} since version 4.13.1.
      */
     public FrameworkField(Field field) {
         if (field == null) {
@@ -31,7 +32,8 @@ public class FrameworkField extends FrameworkMember<FrameworkField> {
             try {
                 field.setAccessible(true);
             } catch (SecurityException e) {
-                // We may get an IllegalAccessException when we try to access the field
+                // We may get an IllegalAccessException when we try to access
+                // the field
             }
         }
     }
@@ -79,7 +81,7 @@ public class FrameworkField extends FrameworkMember<FrameworkField> {
     public Class<?> getType() {
         return field.getType();
     }
-    
+
     @Override
     public Class<?> getDeclaringClass() {
         return field.getDeclaringClass();
@@ -88,7 +90,8 @@ public class FrameworkField extends FrameworkMember<FrameworkField> {
     /**
      * Attempts to retrieve the value of this field on {@code target}
      */
-    public Object get(Object target) throws IllegalArgumentException, IllegalAccessException {
+    public Object get(Object target)
+            throws IllegalArgumentException, IllegalAccessException {
         return field.get(target);
     }
 

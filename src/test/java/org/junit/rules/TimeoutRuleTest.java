@@ -66,12 +66,14 @@ public class TimeoutRuleTest {
             byte[] data = new byte[1024];
             File tmp = tmpFile.newFile();
             while (true) {
-                RandomAccessFile randomAccessFile = new RandomAccessFile(tmp, "rw");
+                RandomAccessFile randomAccessFile = new RandomAccessFile(tmp,
+                        "rw");
                 try {
                     FileChannel channel = randomAccessFile.getChannel();
                     rnd.nextBytes(data);
                     ByteBuffer buffer = ByteBuffer.wrap(data);
-                    // Interrupted thread closes channel and throws ClosedByInterruptException.
+                    // Interrupted thread closes channel and throws
+                    // ClosedByInterruptException.
                     channel.write(buffer);
                 } finally {
                     randomAccessFile.close();
@@ -97,14 +99,15 @@ public class TimeoutRuleTest {
     public static class HasGlobalTimeUnitTimeout extends AbstractTimeoutTest {
 
         @Rule
-        public final TestRule globalTimeout = new Timeout(200, TimeUnit.MILLISECONDS);
+        public final TestRule globalTimeout = new Timeout(200,
+                TimeUnit.MILLISECONDS);
     }
-    
+
     public static class HasNullTimeUnit {
 
         @Rule
         public final TestRule globalTimeout = new Timeout(200, null);
-        
+
         @Test
         public void wouldPass() {
         }
@@ -128,12 +131,18 @@ public class TimeoutRuleTest {
         HasGlobalTimeUnitTimeout.logger.setLength(0);
         Result result = JUnitCore.runClasses(HasGlobalTimeUnitTimeout.class);
         assertEquals(6, result.getFailureCount());
-        assertThat(HasGlobalTimeUnitTimeout.logger.toString(), containsString("run1"));
-        assertThat(HasGlobalTimeUnitTimeout.logger.toString(), containsString("run2"));
-        assertThat(HasGlobalTimeUnitTimeout.logger.toString(), containsString("run3"));
-        assertThat(HasGlobalTimeUnitTimeout.logger.toString(), containsString("run4"));
-        assertThat(HasGlobalTimeUnitTimeout.logger.toString(), containsString("run5"));
-        assertThat(HasGlobalTimeUnitTimeout.logger.toString(), containsString("run6"));
+        assertThat(HasGlobalTimeUnitTimeout.logger.toString(),
+                containsString("run1"));
+        assertThat(HasGlobalTimeUnitTimeout.logger.toString(),
+                containsString("run2"));
+        assertThat(HasGlobalTimeUnitTimeout.logger.toString(),
+                containsString("run3"));
+        assertThat(HasGlobalTimeUnitTimeout.logger.toString(),
+                containsString("run4"));
+        assertThat(HasGlobalTimeUnitTimeout.logger.toString(),
+                containsString("run5"));
+        assertThat(HasGlobalTimeUnitTimeout.logger.toString(),
+                containsString("run6"));
     }
 
     @Test
@@ -141,12 +150,18 @@ public class TimeoutRuleTest {
         HasGlobalLongTimeout.logger.setLength(0);
         Result result = JUnitCore.runClasses(HasGlobalLongTimeout.class);
         assertEquals(6, result.getFailureCount());
-        assertThat(HasGlobalLongTimeout.logger.toString(), containsString("run1"));
-        assertThat(HasGlobalLongTimeout.logger.toString(), containsString("run2"));
-        assertThat(HasGlobalLongTimeout.logger.toString(), containsString("run3"));
-        assertThat(HasGlobalLongTimeout.logger.toString(), containsString("run4"));
-        assertThat(HasGlobalLongTimeout.logger.toString(), containsString("run5"));
-        assertThat(HasGlobalLongTimeout.logger.toString(), containsString("run6"));
+        assertThat(HasGlobalLongTimeout.logger.toString(),
+                containsString("run1"));
+        assertThat(HasGlobalLongTimeout.logger.toString(),
+                containsString("run2"));
+        assertThat(HasGlobalLongTimeout.logger.toString(),
+                containsString("run3"));
+        assertThat(HasGlobalLongTimeout.logger.toString(),
+                containsString("run4"));
+        assertThat(HasGlobalLongTimeout.logger.toString(),
+                containsString("run5"));
+        assertThat(HasGlobalLongTimeout.logger.toString(),
+                containsString("run6"));
     }
 
     @Test
@@ -157,6 +172,7 @@ public class TimeoutRuleTest {
         assertThat(failure.getException().getMessage(),
                 containsString("Invalid parameters for Timeout"));
         Throwable cause = failure.getException().getCause();
-        assertThat(cause.getMessage(), containsString("TimeUnit cannot be null"));
+        assertThat(cause.getMessage(),
+                containsString("TimeUnit cannot be null"));
     }
 }

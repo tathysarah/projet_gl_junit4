@@ -1,8 +1,8 @@
 package org.junit.rules;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.hamcrest.core.Is.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -24,14 +24,21 @@ import org.junit.runner.Result;
  * @since 4.12
  */
 public class StopwatchTest {
-    private static enum TestStatus { SUCCEEDED, FAILED, SKIPPED }
+    private static enum TestStatus {
+        SUCCEEDED, FAILED, SKIPPED
+    }
+
     private static Record record;
+
     private static Record finishedRecord;
+
     private static long fakeTimeNanos = 1234;
 
     private static class Record {
         final long duration;
+
         final String name;
+
         final TestStatus status;
 
         Record() {
@@ -45,15 +52,16 @@ public class StopwatchTest {
         Record(long duration, TestStatus status, Description description) {
             this.duration = duration;
             this.status = status;
-            this.name = description == null ? null : description.getMethodName();
+            this.name = description == null ? null
+                    : description.getMethodName();
         }
     }
 
     public abstract static class AbstractStopwatchTest {
 
         /**
-         * Fake implementation of {@link Stopwatch.Clock} that increments the time
-         * every time it is asked.
+         * Fake implementation of {@link Stopwatch.Clock} that increments the
+         * time every time it is asked.
          */
         private final Stopwatch.Clock fakeClock = new Stopwatch.Clock() {
             @Override
@@ -65,19 +73,24 @@ public class StopwatchTest {
         protected final Stopwatch stopwatch = new Stopwatch(fakeClock) {
             @Override
             protected void succeeded(long nanos, Description description) {
-                StopwatchTest.record = new Record(nanos, TestStatus.SUCCEEDED, description);
+                StopwatchTest.record = new Record(nanos, TestStatus.SUCCEEDED,
+                        description);
                 simulateTimePassing(1);
             }
 
             @Override
-            protected void failed(long nanos, Throwable e, Description description) {
-                StopwatchTest.record = new Record(nanos, TestStatus.FAILED, description);
+            protected void failed(long nanos, Throwable e,
+                    Description description) {
+                StopwatchTest.record = new Record(nanos, TestStatus.FAILED,
+                        description);
                 simulateTimePassing(1);
             }
 
             @Override
-            protected void skipped(long nanos, AssumptionViolatedException e, Description description) {
-                StopwatchTest.record = new Record(nanos, TestStatus.SKIPPED, description);
+            protected void skipped(long nanos, AssumptionViolatedException e,
+                    Description description) {
+                StopwatchTest.record = new Record(nanos, TestStatus.SKIPPED,
+                        description);
                 simulateTimePassing(1);
             }
 
@@ -95,9 +108,8 @@ public class StopwatchTest {
         };
 
         @Rule
-        public final RuleChain chain = RuleChain
-            .outerRule(watcher)
-            .around(stopwatch);
+        public final RuleChain chain = RuleChain.outerRule(watcher)
+                .around(stopwatch);
 
         protected void afterStopwatchRule() {
         }
@@ -204,7 +216,7 @@ public class StopwatchTest {
         assertTrue(result.wasSuccessful());
     }
 
-  @Test
+    @Test
     public void runtimeAfterTestShouldReturnRunDuration() {
         Result result = runTest(DurationAfterTestTest.class);
         assertTrue(result.wasSuccessful());

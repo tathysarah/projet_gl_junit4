@@ -13,11 +13,15 @@ import org.junit.Test;
 
 public class MoneyTest {
     private Money f12CHF;
+
     private Money f14CHF;
+
     private Money f7USD;
+
     private Money f21USD;
 
     private IMoney fMB1;
+
     private IMoney fMB2;
 
     public static junit.framework.Test suite() {
@@ -38,7 +42,8 @@ public class MoneyTest {
     @Test
     public void testBagMultiply() {
         // {[12 CHF][7 USD]} *2 == {[24 CHF][14 USD]}
-        IMoney expected = MoneyBag.create(new Money(24, "CHF"), new Money(14, "USD"));
+        IMoney expected = MoneyBag.create(new Money(24, "CHF"),
+                new Money(14, "USD"));
         assertEquals(expected, fMB1.multiply(2));
         assertEquals(fMB1, fMB1.multiply(1));
         assertTrue(fMB1.multiply(0).isZero());
@@ -47,35 +52,40 @@ public class MoneyTest {
     @Test
     public void testBagNegate() {
         // {[12 CHF][7 USD]} negate == {[-12 CHF][-7 USD]}
-        IMoney expected = MoneyBag.create(new Money(-12, "CHF"), new Money(-7, "USD"));
+        IMoney expected = MoneyBag.create(new Money(-12, "CHF"),
+                new Money(-7, "USD"));
         assertEquals(expected, fMB1.negate());
     }
 
     @Test
     public void testBagSimpleAdd() {
         // {[12 CHF][7 USD]} + [14 CHF] == {[26 CHF][7 USD]}
-        IMoney expected = MoneyBag.create(new Money(26, "CHF"), new Money(7, "USD"));
+        IMoney expected = MoneyBag.create(new Money(26, "CHF"),
+                new Money(7, "USD"));
         assertEquals(expected, fMB1.add(f14CHF));
     }
 
     @Test
     public void testBagSubtract() {
         // {[12 CHF][7 USD]} - {[14 CHF][21 USD] == {[-2 CHF][-14 USD]}
-        IMoney expected = MoneyBag.create(new Money(-2, "CHF"), new Money(-14, "USD"));
+        IMoney expected = MoneyBag.create(new Money(-2, "CHF"),
+                new Money(-14, "USD"));
         assertEquals(expected, fMB1.subtract(fMB2));
     }
 
     @Test
     public void testBagSumAdd() {
         // {[12 CHF][7 USD]} + {[14 CHF][21 USD]} == {[26 CHF][28 USD]}
-        IMoney expected = MoneyBag.create(new Money(26, "CHF"), new Money(28, "USD"));
+        IMoney expected = MoneyBag.create(new Money(26, "CHF"),
+                new Money(28, "USD"));
         assertEquals(expected, fMB1.add(fMB2));
     }
 
     @Test
     public void testIsZero() {
         assertTrue(fMB1.subtract(fMB1).isZero());
-        assertTrue(MoneyBag.create(new Money(0, "CHF"), new Money(0, "USD")).isZero());
+        assertTrue(MoneyBag.create(new Money(0, "CHF"), new Money(0, "USD"))
+                .isZero());
     }
 
     @Test
@@ -96,7 +106,8 @@ public class MoneyTest {
         assertTrue(!fMB1.equals(null));
 
         assertEquals(fMB1, fMB1);
-        IMoney equal = MoneyBag.create(new Money(12, "CHF"), new Money(7, "USD"));
+        IMoney equal = MoneyBag.create(new Money(12, "CHF"),
+                new Money(7, "USD"));
         assertTrue(fMB1.equals(equal));
         assertTrue(!fMB1.equals(f12CHF));
         assertTrue(!f12CHF.equals(fMB1));
@@ -105,7 +116,8 @@ public class MoneyTest {
 
     @Test
     public void testMoneyBagHash() {
-        IMoney equal = MoneyBag.create(new Money(12, "CHF"), new Money(7, "USD"));
+        IMoney equal = MoneyBag.create(new Money(12, "CHF"),
+                new Money(7, "USD"));
         assertEquals(fMB1.hashCode(), equal.hashCode());
     }
 
@@ -137,7 +149,8 @@ public class MoneyTest {
 
     @Test
     public void testSimplify() {
-        IMoney money = MoneyBag.create(new Money(26, "CHF"), new Money(28, "CHF"));
+        IMoney money = MoneyBag.create(new Money(26, "CHF"),
+                new Money(28, "CHF"));
         assertEquals(new Money(54, "CHF"), money);
     }
 
@@ -178,7 +191,8 @@ public class MoneyTest {
     @Test
     public void testSimpleBagAdd() {
         // [14 CHF] + {[12 CHF][7 USD]} == {[26 CHF][7 USD]}
-        IMoney expected = MoneyBag.create(new Money(26, "CHF"), new Money(7, "USD"));
+        IMoney expected = MoneyBag.create(new Money(26, "CHF"),
+                new Money(7, "USD"));
         assertEquals(expected, f14CHF.add(fMB1));
     }
 

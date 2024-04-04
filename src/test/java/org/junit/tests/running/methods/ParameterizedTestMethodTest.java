@@ -134,6 +134,7 @@ public class ParameterizedTestMethodTest {
     }
 
     private Class<?> fClass;
+
     private int fErrorCount;
 
     public static class SuperWrong {
@@ -162,9 +163,9 @@ public class ParameterizedTestMethodTest {
 
     @Parameters
     public static Collection<Object[]> params() {
-        return Arrays.asList(new Object[][]{
-                {EverythingWrong.class, 1 + 4 * 5}, {SubWrong.class, 1},
-                {SubShadows.class, 0}});
+        return Arrays
+                .asList(new Object[][] { { EverythingWrong.class, 1 + 4 * 5 },
+                        { SubWrong.class, 1 }, { SubShadows.class, 0 } });
     }
 
     private List<Throwable> validateAllMethods(Class<?> clazz) {

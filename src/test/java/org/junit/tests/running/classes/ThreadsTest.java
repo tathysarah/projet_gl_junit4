@@ -1,5 +1,12 @@
 package org.junit.tests.running.classes;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.Description;
@@ -10,16 +17,10 @@ import org.junit.runner.RunWith;
 import org.junit.runner.notification.RunListener;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static org.junit.Assert.assertEquals;
-
 public class ThreadsTest {
 
     private List<Boolean> interruptedFlags = new ArrayList<Boolean>();
+
     private JUnitCore core = new JUnitCore();
 
     public static class TestWithInterrupt {

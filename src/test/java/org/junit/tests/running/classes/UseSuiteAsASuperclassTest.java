@@ -27,7 +27,7 @@ public class UseSuiteAsASuperclassTest {
 
     public static class MySuite extends Suite {
         public MySuite(Class<?> klass) throws InitializationError {
-            super(klass, new Class[]{TestA.class, TestB.class});
+            super(klass, new Class[] { TestA.class, TestB.class });
         }
     }
 

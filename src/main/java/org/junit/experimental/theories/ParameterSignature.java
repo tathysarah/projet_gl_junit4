@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ParameterSignature {
-    
+
     private static final Map<Class<?>, Class<?>> CONVERTABLE_TYPES_MAP = buildConvertableTypesMap();
-    
+
     private static Map<Class<?>, Class<?>> buildConvertableTypesMap() {
         Map<Class<?>, Class<?>> map = new HashMap<Class<?>, Class<?>>();
 
@@ -28,20 +28,21 @@ public class ParameterSignature {
 
         return Collections.unmodifiableMap(map);
     }
-    
+
     private static <T> void putSymmetrically(Map<T, T> map, T a, T b) {
         map.put(a, b);
         map.put(b, a);
     }
-    
+
     public static ArrayList<ParameterSignature> signatures(Method method) {
-        return signatures(method.getParameterTypes(), method
-                .getParameterAnnotations());
+        return signatures(method.getParameterTypes(),
+                method.getParameterAnnotations());
     }
 
-    public static List<ParameterSignature> signatures(Constructor<?> constructor) {
-        return signatures(constructor.getParameterTypes(), constructor
-                .getParameterAnnotations());
+    public static List<ParameterSignature> signatures(
+            Constructor<?> constructor) {
+        return signatures(constructor.getParameterTypes(),
+                constructor.getParameterAnnotations());
     }
 
     private static ArrayList<ParameterSignature> signatures(
@@ -64,21 +65,23 @@ public class ParameterSignature {
     }
 
     public boolean canAcceptValue(Object candidate) {
-        return (candidate == null) ? !type.isPrimitive() : canAcceptType(candidate.getClass());
+        return (candidate == null) ? !type.isPrimitive()
+                : canAcceptType(candidate.getClass());
     }
 
     public boolean canAcceptType(Class<?> candidate) {
-        return type.isAssignableFrom(candidate) ||
-                isAssignableViaTypeConversion(type, candidate);
-    }
-    
-    public boolean canPotentiallyAcceptType(Class<?> candidate) {
-        return candidate.isAssignableFrom(type) ||
-                isAssignableViaTypeConversion(candidate, type) ||
-                canAcceptType(candidate);
+        return type.isAssignableFrom(candidate)
+                || isAssignableViaTypeConversion(type, candidate);
     }
 
-    private boolean isAssignableViaTypeConversion(Class<?> targetType, Class<?> candidate) {
+    public boolean canPotentiallyAcceptType(Class<?> candidate) {
+        return candidate.isAssignableFrom(type)
+                || isAssignableViaTypeConversion(candidate, type)
+                || canAcceptType(candidate);
+    }
+
+    private boolean isAssignableViaTypeConversion(Class<?> targetType,
+            Class<?> candidate) {
         if (CONVERTABLE_TYPES_MAP.containsKey(candidate)) {
             Class<?> wrapperClass = CONVERTABLE_TYPES_MAP.get(candidate);
             return targetType.isAssignableFrom(wrapperClass);
@@ -99,7 +102,8 @@ public class ParameterSignature {
         return getAnnotation(type) != null;
     }
 
-    public <T extends Annotation> T findDeepAnnotation(Class<T> annotationType) {
+    public <T extends Annotation> T findDeepAnnotation(
+            Class<T> annotationType) {
         Annotation[] annotations2 = annotations;
         return findDeepAnnotation(annotations2, annotationType, 3);
     }
@@ -113,8 +117,9 @@ public class ParameterSignature {
             if (annotationType.isInstance(each)) {
                 return annotationType.cast(each);
             }
-            Annotation candidate = findDeepAnnotation(each.annotationType()
-                    .getAnnotations(), annotationType, depth - 1);
+            Annotation candidate = findDeepAnnotation(
+                    each.annotationType().getAnnotations(), annotationType,
+                    depth - 1);
             if (candidate != null) {
                 return annotationType.cast(candidate);
             }

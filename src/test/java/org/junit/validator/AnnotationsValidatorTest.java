@@ -17,11 +17,11 @@ import org.junit.runners.model.TestClass;
 
 public class AnnotationsValidatorTest {
     public static class ExampleAnnotationValidator extends AnnotationValidator {
-        private static final String ANNOTATED_METHOD_CALLED= "annotated method called";
+        private static final String ANNOTATED_METHOD_CALLED = "annotated method called";
 
-        private static final String ANNOTATED_FIELD_CALLED= "annotated field called";
+        private static final String ANNOTATED_FIELD_CALLED = "annotated field called";
 
-        private static final String ANNOTATED_CLASS_CALLED= "annotated class called";
+        private static final String ANNOTATED_CLASS_CALLED = "annotated class called";
 
         @Override
         public List<Exception> validateAnnotatedClass(TestClass testClass) {
@@ -88,11 +88,10 @@ public class AnnotationsValidatorTest {
 
     private void assertClassHasFailureMessage(Class<?> klass,
             String expectedFailure) {
-        AnnotationsValidator validator= new AnnotationsValidator();
-        Collection<Exception> errors= validator
+        AnnotationsValidator validator = new AnnotationsValidator();
+        Collection<Exception> errors = validator
                 .validateTestClass(new TestClass(klass));
         assertThat(errors.size(), is(1));
-        assertThat(errors.iterator().next().getMessage(),
-                is(expectedFailure));
+        assertThat(errors.iterator().next().getMessage(), is(expectedFailure));
     }
 }

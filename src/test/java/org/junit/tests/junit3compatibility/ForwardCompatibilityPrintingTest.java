@@ -20,8 +20,8 @@ public class ForwardCompatibilityPrintingTest extends TestCase {
         }
 
         /*
-           * Spoof printing time so the tests are deterministic
-           */
+         * Spoof printing time so the tests are deterministic
+         */
         @Override
         protected String elapsedTimeAsString(long runTime) {
             return "0";
@@ -30,12 +30,12 @@ public class ForwardCompatibilityPrintingTest extends TestCase {
 
     public void testError() {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        TestRunner runner = new TestRunner(new TestResultPrinter(
-                new PrintStream(output)));
+        TestRunner runner = new TestRunner(
+                new TestResultPrinter(new PrintStream(output)));
 
-        String expected = expected(new String[]{".E", "Time: 0",
+        String expected = expected(new String[] { ".E", "Time: 0",
                 "Errors here", "", "FAILURES!!!",
-                "Tests run: 1,  Failures: 0,  Errors: 1", ""});
+                "Tests run: 1,  Failures: 0,  Errors: 1", "" });
         ResultPrinter printer = new TestResultPrinter(new PrintStream(output)) {
             @Override
             public void printErrors(TestResult result) {
@@ -63,12 +63,12 @@ public class ForwardCompatibilityPrintingTest extends TestCase {
 
     public void testErrorAdapted() {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        TestRunner runner = new TestRunner(new TestResultPrinter(
-                new PrintStream(output)));
+        TestRunner runner = new TestRunner(
+                new TestResultPrinter(new PrintStream(output)));
 
-        String expected = expected(new String[]{".E", "Time: 0",
+        String expected = expected(new String[] { ".E", "Time: 0",
                 "Errors here", "", "FAILURES!!!",
-                "Tests run: 1,  Failures: 0,  Errors: 1", ""});
+                "Tests run: 1,  Failures: 0,  Errors: 1", "" });
         ResultPrinter printer = new TestResultPrinter(new PrintStream(output)) {
             @Override
             public void printErrors(TestResult result) {

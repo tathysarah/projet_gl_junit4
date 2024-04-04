@@ -6,19 +6,23 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
- * A <code>TestResult</code> collects the results of executing
- * a test case. It is an instance of the Collecting Parameter pattern.
- * The test framework distinguishes between <i>failures</i> and <i>errors</i>.
- * A failure is anticipated and checked for with assertions. Errors are
- * unanticipated problems like an {@link ArrayIndexOutOfBoundsException}.
+ * A <code>TestResult</code> collects the results of executing a test case. It
+ * is an instance of the Collecting Parameter pattern. The test framework
+ * distinguishes between <i>failures</i> and <i>errors</i>. A failure is
+ * anticipated and checked for with assertions. Errors are unanticipated
+ * problems like an {@link ArrayIndexOutOfBoundsException}.
  *
  * @see Test
  */
 public class TestResult {
     protected List<TestFailure> fFailures;
+
     protected List<TestFailure> fErrors;
+
     protected List<TestListener> fListeners;
+
     protected int fRunTests;
+
     private boolean fStop;
 
     public TestResult() {
@@ -30,8 +34,8 @@ public class TestResult {
     }
 
     /**
-     * Adds an error to the list of errors. The passed in exception
-     * caused the error.
+     * Adds an error to the list of errors. The passed in exception caused the
+     * error.
      */
     public synchronized void addError(Test test, Throwable e) {
         fErrors.add(new TestFailure(test, e));
@@ -41,8 +45,8 @@ public class TestResult {
     }
 
     /**
-     * Adds a failure to the list of failures. The passed in exception
-     * caused the failure.
+     * Adds a failure to the list of failures. The passed in exception caused
+     * the failure.
      */
     public synchronized void addFailure(Test test, AssertionFailedError e) {
         fFailures.add(new TestFailure(test, e));
@@ -96,7 +100,6 @@ public class TestResult {
     public synchronized Enumeration<TestFailure> errors() {
         return Collections.enumeration(fErrors);
     }
-
 
     /**
      * Gets the number of detected failures.

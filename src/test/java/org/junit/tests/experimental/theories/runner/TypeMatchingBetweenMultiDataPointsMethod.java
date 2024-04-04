@@ -16,11 +16,11 @@ public class TypeMatchingBetweenMultiDataPointsMethod {
     @RunWith(Theories.class)
     public static class WithWrongfullyTypedDataPointsMethod {
         @DataPoint
-        public static String[] correctlyTyped = {"Good", "Morning"};
+        public static String[] correctlyTyped = { "Good", "Morning" };
 
         @DataPoints
         public static String[] wrongfullyTyped() {
-            return new String[]{"Hello", "World"};
+            return new String[] { "Hello", "World" };
         }
 
         @Theory
@@ -30,19 +30,18 @@ public class TypeMatchingBetweenMultiDataPointsMethod {
 
     @Test
     public void ignoreWrongTypedDataPointsMethod() {
-        assertThat(testResult(WithWrongfullyTypedDataPointsMethod.class), isSuccessful());
+        assertThat(testResult(WithWrongfullyTypedDataPointsMethod.class),
+                isSuccessful());
     }
 
     @RunWith(Theories.class)
     public static class WithCorrectlyTypedDataPointsMethod {
         @DataPoint
-        public static String[] correctlyTyped = {"Good", "Morning"};
+        public static String[] correctlyTyped = { "Good", "Morning" };
 
         @DataPoints
         public static String[][] anotherCorrectlyTyped() {
-            return new String[][]{
-                    {"Hello", "World"}
-            };
+            return new String[][] { { "Hello", "World" } };
         }
 
         @Theory
@@ -52,6 +51,7 @@ public class TypeMatchingBetweenMultiDataPointsMethod {
 
     @Test
     public void pickUpMultiPointDataPointMethods() throws Exception {
-        assertThat(testResult(WithCorrectlyTypedDataPointsMethod.class), isSuccessful());
+        assertThat(testResult(WithCorrectlyTypedDataPointsMethod.class),
+                isSuccessful());
     }
 }

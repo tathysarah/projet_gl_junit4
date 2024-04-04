@@ -6,7 +6,6 @@ import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeTrue;
 import static org.junit.experimental.results.PrintableResult.testResult;
 import static org.junit.experimental.results.ResultMatchers.failureCountIs;
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
@@ -14,7 +13,6 @@ import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Set;
@@ -62,12 +60,15 @@ public class TempFolderRuleTest {
             String subfolder = "subfolder";
             String filename = "a.txt";
             // force usage of folder.newFolder(String),
-            // check is available and works, to avoid a potential NoSuchMethodError with non-recompiled code.
-            Method method = folder.getClass().getMethod("newFolder", new Class<?>[]{String.class});
+            // check is available and works, to avoid a potential
+            // NoSuchMethodError with non-recompiled code.
+            Method method = folder.getClass().getMethod("newFolder",
+                    new Class<?>[] { String.class });
             createdFiles[0] = (File) method.invoke(folder, subfolder);
             new File(createdFiles[0], filename).createNewFile();
 
-            File expectedFile = new File(folder.getRoot(), join(subfolder, filename));
+            File expectedFile = new File(folder.getRoot(),
+                    join(subfolder, filename));
 
             assertTrue(expectedFile.exists());
         }
@@ -80,7 +81,8 @@ public class TempFolderRuleTest {
             createdFiles[0] = folder.newFolder(subfolder);
             new File(createdFiles[0], filename).createNewFile();
 
-            File expectedFile = new File(folder.getRoot(), join(subfolder, filename));
+            File expectedFile = new File(folder.getRoot(),
+                    join(subfolder, filename));
 
             assertTrue(expectedFile.exists());
         }
@@ -94,7 +96,8 @@ public class TempFolderRuleTest {
             createdFiles[0] = folder.newFolder(subfolder, anotherfolder);
             new File(createdFiles[0], filename).createNewFile();
 
-            File expectedFile = new File(folder.getRoot(), join(subfolder, anotherfolder, filename));
+            File expectedFile = new File(folder.getRoot(),
+                    join(subfolder, anotherfolder, filename));
 
             assertTrue(expectedFile.exists());
         }
@@ -122,7 +125,8 @@ public class TempFolderRuleTest {
         public void testUsingRandomTempFolders() throws IOException {
             for (int i = 0; i < 20; i++) {
                 File newFolder = folder.newFolder();
-                assertThat(Arrays.asList(createdFiles), not(hasItem(newFolder)));
+                assertThat(Arrays.asList(createdFiles),
+                        not(hasItem(newFolder)));
                 createdFiles[i] = newFolder;
                 new File(newFolder, "a.txt").createNewFile();
                 assertTrue(newFolder.exists());
@@ -194,26 +198,33 @@ public class TempFolderRuleTest {
         TemporaryFolder folder = new TemporaryFolder();
         folder.create();
 
-        Set<String> expectedPermissions = new TreeSet<String>(Arrays.asList("OWNER_READ", "OWNER_WRITE", "OWNER_EXECUTE"));
-        Set<String> actualPermissions = getPosixFilePermissions(folder.getRoot());
+        Set<String> expectedPermissions = new TreeSet<String>(
+                Arrays.asList("OWNER_READ", "OWNER_WRITE", "OWNER_EXECUTE"));
+        Set<String> actualPermissions = getPosixFilePermissions(
+                folder.getRoot());
         assertEquals(expectedPermissions, actualPermissions);
     }
 
     private Set<String> getPosixFilePermissions(File root) {
         try {
             Class<?> pathClass = Class.forName("java.nio.file.Path");
-            Object linkOptionArray = Array.newInstance(Class.forName("java.nio.file.LinkOption"), 0);
+            Object linkOptionArray = Array
+                    .newInstance(Class.forName("java.nio.file.LinkOption"), 0);
             Class<?> filesClass = Class.forName("java.nio.file.Files");
             Object path = File.class.getDeclaredMethod("toPath").invoke(root);
-            Method posixFilePermissionsMethod = filesClass.getDeclaredMethod("getPosixFilePermissions", pathClass, linkOptionArray.getClass());
-            Set<?> permissions = (Set<?>) posixFilePermissionsMethod.invoke(null, path, linkOptionArray);
+            Method posixFilePermissionsMethod = filesClass.getDeclaredMethod(
+                    "getPosixFilePermissions", pathClass,
+                    linkOptionArray.getClass());
+            Set<?> permissions = (Set<?>) posixFilePermissionsMethod
+                    .invoke(null, path, linkOptionArray);
             SortedSet<String> convertedPermissions = new TreeSet<String>();
             for (Object item : permissions) {
                 convertedPermissions.add(item.toString());
             }
             return convertedPermissions;
         } catch (Exception e) {
-            throw new AssumptionViolatedException("Test requires at least Java 1.7", e);
+            throw new AssumptionViolatedException(
+                    "Test requires at least Java 1.7", e);
         }
     }
 
@@ -267,9 +278,12 @@ public class TempFolderRuleTest {
     @Test
     public void incorrectUsageWithoutApplyingTheRuleShouldNotPolluteTheCurrentWorkingDirectory() {
         assertThat(testResult(IncorrectUsage.class), failureCountIs(3));
-        assertFalse("getRoot should have failed early", new File(GET_ROOT_DUMMY).exists());
-        assertFalse("newFile should have failed early", new File(NEW_FILE_DUMMY).exists());
-        assertFalse("newFolder should have failed early", new File(NEW_FOLDER_DUMMY).exists());
+        assertFalse("getRoot should have failed early",
+                new File(GET_ROOT_DUMMY).exists());
+        assertFalse("newFile should have failed early",
+                new File(NEW_FILE_DUMMY).exists());
+        assertFalse("newFolder should have failed early",
+                new File(NEW_FOLDER_DUMMY).exists());
     }
 
     @After

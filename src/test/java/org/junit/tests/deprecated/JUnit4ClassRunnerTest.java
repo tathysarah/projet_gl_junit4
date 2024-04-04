@@ -11,8 +11,9 @@ import org.junit.runner.Result;
 import org.junit.runner.RunWith;
 
 /**
- * @deprecated This is a simple smoke test to make sure the old JUnit4ClassRunner basically works.
- *             Delete this test when JUnit4ClassRunner goes to the Great Heap In The Sky.
+ * @deprecated This is a simple smoke test to make sure the old
+ *             JUnit4ClassRunner basically works. Delete this test when
+ *             JUnit4ClassRunner goes to the Great Heap In The Sky.
  */
 @Deprecated
 public class JUnit4ClassRunnerTest {
@@ -53,7 +54,6 @@ public class JUnit4ClassRunnerTest {
             fail();
         }
     }
-
 
     @Test
     public void runWithOldJUnit4ClassRunnerAndBadConstructor() {

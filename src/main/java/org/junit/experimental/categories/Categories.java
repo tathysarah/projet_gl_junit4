@@ -24,6 +24,7 @@ import org.junit.runners.model.RunnerBuilder;
  * Categories must be annotated on the direct method or class.
  * <p>
  * Example:
+ * 
  * <pre>
  * public interface FastTests {
  * }
@@ -68,31 +69,37 @@ import org.junit.runners.model.RunnerBuilder;
  * </pre>
  * <p>
  * Example to run multiple categories:
- * <pre>
+ * 
+ * <pre>i
  * &#064;RunWith(Categories.class)
- * &#064;IncludeCategory({FastTests.class, SmokeTests.class})
- * &#064;SuiteClasses({A.class, B.class})
+ * &#064;IncludeCategory({ FastTests.class, SmokeTests.class })
+ * &#064;SuiteClasses({ A.class, B.class })
  * public static class FastOrSmokeTestSuite {
- *     // Will run A.c and B.d, but not A.b because it is not any of FastTests or SmokeTests
+ *     // Will run A.c and B.d, but not A.b because it is not any of FastTests
+ *     // or SmokeTests
  * }
  * </pre>
  *
  * @version 4.12
- * @see <a href="https://github.com/junit-team/junit4/wiki/Categories">Categories at JUnit wiki</a>
+ * @see <a href=
+ *      "https://github.com/junit-team/junit4/wiki/Categories">Categories at
+ *      JUnit wiki</a>
  */
 public class Categories extends Suite {
 
     @Retention(RetentionPolicy.RUNTIME)
     public @interface IncludeCategory {
         /**
-         * Determines the tests to run that are annotated with categories specified in
-         * the value of this annotation or their subtypes unless excluded with {@link ExcludeCategory}.
+         * Determines the tests to run that are annotated with categories
+         * specified in the value of this annotation or their subtypes unless
+         * excluded with {@link ExcludeCategory}.
          */
         Class<?>[] value() default {};
 
         /**
-         * If <tt>true</tt>, runs tests annotated with <em>any</em> of the categories in
-         * {@link IncludeCategory#value()}. Otherwise, runs tests only if annotated with <em>all</em> of the categories.
+         * If <tt>true</tt>, runs tests annotated with <em>any</em> of the
+         * categories in {@link IncludeCategory#value()}. Otherwise, runs tests
+         * only if annotated with <em>all</em> of the categories.
          */
         boolean matchAny() default true;
     }
@@ -100,25 +107,33 @@ public class Categories extends Suite {
     @Retention(RetentionPolicy.RUNTIME)
     public @interface ExcludeCategory {
         /**
-         * Determines the tests which do not run if they are annotated with categories specified in the
-         * value of this annotation or their subtypes regardless of being included in {@link IncludeCategory#value()}.
+         * Determines the tests which do not run if they are annotated with
+         * categories specified in the value of this annotation or their
+         * subtypes regardless of being included in
+         * {@link IncludeCategory#value()}.
          */
         Class<?>[] value() default {};
 
         /**
-         * If <tt>true</tt>, the tests annotated with <em>any</em> of the categories in {@link ExcludeCategory#value()}
-         * do not run. Otherwise, the tests do not run if and only if annotated with <em>all</em> categories.
+         * If <tt>true</tt>, the tests annotated with <em>any</em> of the
+         * categories in {@link ExcludeCategory#value()} do not run. Otherwise,
+         * the tests do not run if and only if annotated with <em>all</em>
+         * categories.
          */
         boolean matchAny() default true;
     }
 
     public static class CategoryFilter extends Filter {
         private final Set<Class<?>> included;
+
         private final Set<Class<?>> excluded;
+
         private final boolean includedAny;
+
         private final boolean excludedAny;
 
-        public static CategoryFilter include(boolean matchAny, Class<?>... categories) {
+        public static CategoryFilter include(boolean matchAny,
+                Class<?>... categories) {
             return new CategoryFilter(matchAny, categories, true, null);
         }
 
@@ -130,7 +145,8 @@ public class Categories extends Suite {
             return include(true, categories);
         }
 
-        public static CategoryFilter exclude(boolean matchAny, Class<?>... categories) {
+        public static CategoryFilter exclude(boolean matchAny,
+                Class<?>... categories) {
             return new CategoryFilter(true, null, matchAny, categories);
         }
 
@@ -142,21 +158,25 @@ public class Categories extends Suite {
             return exclude(true, categories);
         }
 
-        public static CategoryFilter categoryFilter(boolean matchAnyInclusions, Set<Class<?>> inclusions,
-                                                    boolean matchAnyExclusions, Set<Class<?>> exclusions) {
-            return new CategoryFilter(matchAnyInclusions, inclusions, matchAnyExclusions, exclusions);
+        public static CategoryFilter categoryFilter(boolean matchAnyInclusions,
+                Set<Class<?>> inclusions, boolean matchAnyExclusions,
+                Set<Class<?>> exclusions) {
+            return new CategoryFilter(matchAnyInclusions, inclusions,
+                    matchAnyExclusions, exclusions);
         }
 
         @Deprecated
-        public CategoryFilter(Class<?> includedCategory, Class<?> excludedCategory) {
+        public CategoryFilter(Class<?> includedCategory,
+                Class<?> excludedCategory) {
             includedAny = true;
             excludedAny = true;
             included = nullableClassToSet(includedCategory);
             excluded = nullableClassToSet(excludedCategory);
         }
 
-        protected CategoryFilter(boolean matchAnyIncludes, Set<Class<?>> includes,
-                                 boolean matchAnyExcludes, Set<Class<?>> excludes) {
+        protected CategoryFilter(boolean matchAnyIncludes,
+                Set<Class<?>> includes, boolean matchAnyExcludes,
+                Set<Class<?>> excludes) {
             includedAny = matchAnyIncludes;
             excludedAny = matchAnyExcludes;
             included = copyAndRefine(includes);
@@ -164,8 +184,8 @@ public class Categories extends Suite {
         }
 
         private CategoryFilter(boolean matchAnyIncludes, Class<?>[] inclusions,
-                               boolean matchAnyExcludes, Class<?>[] exclusions) {
-            includedAny = matchAnyIncludes; 
+                boolean matchAnyExcludes, Class<?>[] exclusions) {
+            includedAny = matchAnyIncludes;
             excludedAny = matchAnyExcludes;
             included = createSet(inclusions);
             excluded = createSet(exclusions);
@@ -180,21 +200,26 @@ public class Categories extends Suite {
         }
 
         /**
-         * Returns string in the form <tt>&quot;[included categories] - [excluded categories]&quot;</tt>, where both
-         * sets have comma separated names of categories.
+         * Returns string in the form
+         * <tt>&quot;[included categories] - [excluded categories]&quot;</tt>,
+         * where both sets have comma separated names of categories.
          *
-         * @return string representation for the relative complement of excluded categories set
-         * in the set of included categories. Examples:
-         * <ul>
-         *  <li> <tt>&quot;categories [all]&quot;</tt> for all included categories and no excluded ones;
-         *  <li> <tt>&quot;categories [all] - [A, B]&quot;</tt> for all included categories and given excluded ones;
-         *  <li> <tt>&quot;categories [A, B] - [C, D]&quot;</tt> for given included categories and given excluded ones.
-         * </ul>
+         * @return string representation for the relative complement of excluded
+         *         categories set in the set of included categories. Examples:
+         *         <ul>
+         *         <li><tt>&quot;categories [all]&quot;</tt> for all included
+         *         categories and no excluded ones;
+         *         <li><tt>&quot;categories [all] - [A, B]&quot;</tt> for all
+         *         included categories and given excluded ones;
+         *         <li><tt>&quot;categories [A, B] - [C, D]&quot;</tt> for given
+         *         included categories and given excluded ones.
+         *         </ul>
          * @see Class#toString() name of category
          */
-        @Override public String toString() {
-            StringBuilder description= new StringBuilder("categories ")
-                .append(included.isEmpty() ? "[all]" : included);
+        @Override
+        public String toString() {
+            StringBuilder description = new StringBuilder("categories ")
+                    .append(included.isEmpty() ? "[all]" : included);
             if (!excluded.isEmpty()) {
                 description.append(" - ").append(excluded);
             }
@@ -217,7 +242,7 @@ public class Categories extends Suite {
         }
 
         private boolean hasCorrectCategoryAnnotation(Description description) {
-            final Set<Class<?>> childCategories= categories(description);
+            final Set<Class<?>> childCategories = categories(description);
 
             // If a child has no categories, immediately return.
             if (childCategories.isEmpty()) {
@@ -237,22 +262,27 @@ public class Categories extends Suite {
             }
 
             if (included.isEmpty()) {
-                // Couldn't be excluded, and with no suite's included categories treated as should run.
+                // Couldn't be excluded, and with no suite's included categories
+                // treated as should run.
                 return true;
             } else {
                 if (includedAny) {
-                    return matchesAnyParentCategories(childCategories, included);
+                    return matchesAnyParentCategories(childCategories,
+                            included);
                 } else {
-                    return matchesAllParentCategories(childCategories, included);
+                    return matchesAllParentCategories(childCategories,
+                            included);
                 }
             }
         }
 
         /**
-         * @return <tt>true</tt> if at least one (any) parent category match a child, otherwise <tt>false</tt>.
-         * If empty <tt>parentCategories</tt>, returns <tt>false</tt>.
+         * @return <tt>true</tt> if at least one (any) parent category match a
+         *         child, otherwise <tt>false</tt>. If empty
+         *         <tt>parentCategories</tt>, returns <tt>false</tt>.
          */
-        private boolean matchesAnyParentCategories(Set<Class<?>> childCategories, Set<Class<?>> parentCategories) {
+        private boolean matchesAnyParentCategories(
+                Set<Class<?>> childCategories, Set<Class<?>> parentCategories) {
             for (Class<?> parentCategory : parentCategories) {
                 if (hasAssignableTo(childCategories, parentCategory)) {
                     return true;
@@ -262,10 +292,12 @@ public class Categories extends Suite {
         }
 
         /**
-         * @return <tt>false</tt> if at least one parent category does not match children, otherwise <tt>true</tt>.
-         * If empty <tt>parentCategories</tt>, returns <tt>true</tt>.
+         * @return <tt>false</tt> if at least one parent category does not match
+         *         children, otherwise <tt>true</tt>. If empty
+         *         <tt>parentCategories</tt>, returns <tt>true</tt>.
          */
-        private boolean matchesAllParentCategories(Set<Class<?>> childCategories, Set<Class<?>> parentCategories) {
+        private boolean matchesAllParentCategories(
+                Set<Class<?>> childCategories, Set<Class<?>> parentCategories) {
             for (Class<?> parentCategory : parentCategories) {
                 if (!hasAssignableTo(childCategories, parentCategory)) {
                     return false;
@@ -275,15 +307,17 @@ public class Categories extends Suite {
         }
 
         private static Set<Class<?>> categories(Description description) {
-            Set<Class<?>> categories= new HashSet<Class<?>>();
+            Set<Class<?>> categories = new HashSet<Class<?>>();
             Collections.addAll(categories, directCategories(description));
-            Collections.addAll(categories, directCategories(parentDescription(description)));
+            Collections.addAll(categories,
+                    directCategories(parentDescription(description)));
             return categories;
         }
 
         private static Description parentDescription(Description description) {
-            Class<?> testClass= description.getTestClass();
-            return testClass == null ? null : Description.createSuiteDescription(testClass);
+            Class<?> testClass = description.getTestClass();
+            return testClass == null ? null
+                    : Description.createSuiteDescription(testClass);
         }
 
         private static Class<?>[] directCategories(Description description) {
@@ -291,12 +325,12 @@ public class Categories extends Suite {
                 return new Class<?>[0];
             }
 
-            Category annotation= description.getAnnotation(Category.class);
+            Category annotation = description.getAnnotation(Category.class);
             return annotation == null ? new Class<?>[0] : annotation.value();
         }
 
         private static Set<Class<?>> copyAndRefine(Set<Class<?>> classes) {
-            Set<Class<?>> c= new LinkedHashSet<Class<?>>();
+            Set<Class<?>> c = new LinkedHashSet<Class<?>>();
             if (classes != null) {
                 c.addAll(classes);
             }
@@ -305,37 +339,39 @@ public class Categories extends Suite {
         }
     }
 
-    public Categories(Class<?> klass, RunnerBuilder builder) throws InitializationError {
+    public Categories(Class<?> klass, RunnerBuilder builder)
+            throws InitializationError {
         super(klass, builder);
         try {
-            Set<Class<?>> included= getIncludedCategory(klass);
-            Set<Class<?>> excluded= getExcludedCategory(klass);
-            boolean isAnyIncluded= isAnyIncluded(klass);
-            boolean isAnyExcluded= isAnyExcluded(klass);
+            Set<Class<?>> included = getIncludedCategory(klass);
+            Set<Class<?>> excluded = getExcludedCategory(klass);
+            boolean isAnyIncluded = isAnyIncluded(klass);
+            boolean isAnyExcluded = isAnyExcluded(klass);
 
-            filter(CategoryFilter.categoryFilter(isAnyIncluded, included, isAnyExcluded, excluded));
+            filter(CategoryFilter.categoryFilter(isAnyIncluded, included,
+                    isAnyExcluded, excluded));
         } catch (NoTestsRemainException e) {
             throw new InitializationError(e);
         }
     }
 
     private static Set<Class<?>> getIncludedCategory(Class<?> klass) {
-        IncludeCategory annotation= klass.getAnnotation(IncludeCategory.class);
+        IncludeCategory annotation = klass.getAnnotation(IncludeCategory.class);
         return createSet(annotation == null ? null : annotation.value());
     }
 
     private static boolean isAnyIncluded(Class<?> klass) {
-        IncludeCategory annotation= klass.getAnnotation(IncludeCategory.class);
+        IncludeCategory annotation = klass.getAnnotation(IncludeCategory.class);
         return annotation == null || annotation.matchAny();
     }
 
     private static Set<Class<?>> getExcludedCategory(Class<?> klass) {
-        ExcludeCategory annotation= klass.getAnnotation(ExcludeCategory.class);
+        ExcludeCategory annotation = klass.getAnnotation(ExcludeCategory.class);
         return createSet(annotation == null ? null : annotation.value());
     }
 
     private static boolean isAnyExcluded(Class<?> klass) {
-        ExcludeCategory annotation= klass.getAnnotation(ExcludeCategory.class);
+        ExcludeCategory annotation = klass.getAnnotation(ExcludeCategory.class);
         return annotation == null || annotation.matchAny();
     }
 
@@ -349,7 +385,8 @@ public class Categories extends Suite {
     }
 
     private static Set<Class<?>> createSet(Class<?>[] classes) {
-        // Not throwing a NPE if t is null is a bad idea, but it's the behavior from JUnit 4.12
+        // Not throwing a NPE if t is null is a bad idea, but it's the behavior
+        // from JUnit 4.12
         // for include(boolean, Class<?>...) and exclude(boolean, Class<?>...)
         if (classes == null || classes.length == 0) {
             return Collections.emptySet();
@@ -361,15 +398,16 @@ public class Categories extends Suite {
         }
 
         return classes.length == 1
-            ? Collections.<Class<?>>singleton(classes[0])
-            : new LinkedHashSet<Class<?>>(Arrays.asList(classes));
+                ? Collections.<Class<?>> singleton(classes[0])
+                : new LinkedHashSet<Class<?>>(Arrays.asList(classes));
     }
 
     private static Set<Class<?>> nullableClassToSet(Class<?> nullableClass) {
-        // Not throwing a NPE if t is null is a bad idea, but it's the behavior from JUnit 4.11
-        // for CategoryFilter(Class<?> includedCategory, Class<?> excludedCategory)
-        return nullableClass == null
-                ? Collections.<Class<?>>emptySet()
-                : Collections.<Class<?>>singleton(nullableClass);
+        // Not throwing a NPE if t is null is a bad idea, but it's the behavior
+        // from JUnit 4.11
+        // for CategoryFilter(Class<?> includedCategory, Class<?>
+        // excludedCategory)
+        return nullableClass == null ? Collections.<Class<?>> emptySet()
+                : Collections.<Class<?>> singleton(nullableClass);
     }
 }

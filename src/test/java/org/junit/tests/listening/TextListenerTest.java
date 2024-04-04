@@ -1,8 +1,8 @@
 package org.junit.tests.listening;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.StringContains.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -17,6 +17,7 @@ import org.junit.tests.TestSystem;
 public class TextListenerTest extends TestCase {
 
     private JUnitCore runner;
+
     private OutputStream results;
 
     @Override
@@ -49,7 +50,8 @@ public class TextListenerTest extends TestCase {
     public void testError() throws Exception {
         runner.run(ErrorTest.class);
         assertTrue(results.toString().startsWith(convert(".E\nTime: ")));
-        assertTrue(results.toString().indexOf(convert("\nThere was 1 failure:\n1) error(org.junit.tests.listening.TextListenerTest$ErrorTest)\njava.lang.Exception")) != -1);
+        assertTrue(results.toString().indexOf(convert(
+                "\nThere was 1 failure:\n1) error(org.junit.tests.listening.TextListenerTest$ErrorTest)\njava.lang.Exception")) != -1);
     }
 
     public static class Time {
@@ -61,7 +63,8 @@ public class TextListenerTest extends TestCase {
     public void testTime() {
         runner.run(Time.class);
         assertThat(results.toString(), containsString("Time: "));
-        assertThat(results.toString(), not(containsString(convert("Time: \n"))));
+        assertThat(results.toString(),
+                not(containsString(convert("Time: \n"))));
     }
 
     private String convert(String string) {

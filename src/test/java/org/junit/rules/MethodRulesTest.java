@@ -10,6 +10,7 @@ import static org.junit.experimental.results.PrintableResult.testResult;
 import static org.junit.experimental.results.ResultMatchers.failureCountIs;
 import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -24,7 +25,8 @@ public class MethodRulesTest {
 
     private static class TestMethodRule implements MethodRule {
 
-        public Statement apply(final Statement base, FrameworkMethod method, Object target) {
+        public Statement apply(final Statement base, FrameworkMethod method,
+                Object target) {
             return new Statement() {
                 @Override
                 public void evaluate() throws Throwable {
@@ -85,8 +87,8 @@ public class MethodRulesTest {
     private static int runCount;
 
     private static class Increment implements MethodRule {
-        public Statement apply(final Statement base,
-                FrameworkMethod method, Object target) {
+        public Statement apply(final Statement base, FrameworkMethod method,
+                Object target) {
             return new Statement() {
                 @Override
                 public void evaluate() throws Throwable {
@@ -96,7 +98,7 @@ public class MethodRulesTest {
             };
         }
     }
-    
+
     public static class MultipleRuleTest {
 
         @Rule
@@ -187,8 +189,10 @@ public class MethodRulesTest {
     public void succeeded() {
         WatchmanTest.watchedLog = "";
         assertThat(testResult(WatchmanTest.class), failureCountIs(1));
-        assertThat(WatchmanTest.watchedLog, containsString("fails AssertionError"));
-        assertThat(WatchmanTest.watchedLog, containsString("succeeds success!"));
+        assertThat(WatchmanTest.watchedLog,
+                containsString("fails AssertionError"));
+        assertThat(WatchmanTest.watchedLog,
+                containsString("succeeds success!"));
     }
 
     public static class BeforesAndAfters {
@@ -232,7 +236,8 @@ public class MethodRulesTest {
     public void beforesAndAfters() {
         BeforesAndAfters.watchedLog = "";
         assertThat(testResult(BeforesAndAfters.class), isSuccessful());
-        assertThat(BeforesAndAfters.watchedLog, is("starting before test after succeeded finished "));
+        assertThat(BeforesAndAfters.watchedLog,
+                is("starting before test after succeeded finished "));
     }
 
     public static class WrongTypedField {
@@ -278,7 +283,8 @@ public class MethodRulesTest {
     public static class CustomTestName implements TestRule {
         public String name = null;
 
-        public Statement apply(final Statement base, final Description description) {
+        public Statement apply(final Statement base,
+                final Description description) {
             return new Statement() {
                 @Override
                 public void evaluate() throws Throwable {
@@ -303,12 +309,13 @@ public class MethodRulesTest {
     public void useCustomMethodRule() {
         assertThat(testResult(UsesCustomMethodRule.class), isSuccessful());
     }
-    
+
     public static class HasMethodReturningMethodRule {
         private MethodRule methodRule = new MethodRule() {
-            public Statement apply(final Statement base, FrameworkMethod method, Object target) {
+            public Statement apply(final Statement base, FrameworkMethod method,
+                    Object target) {
                 return new Statement() {
-                    
+
                     @Override
                     public void evaluate() throws Throwable {
                         ruleWasEvaluated = true;
@@ -317,73 +324,79 @@ public class MethodRulesTest {
                 };
             }
         };
-        
+
         @Rule
         public MethodRule methodRule() {
             return methodRule;
         }
-        
+
         @Test
         public void doNothing() {
-            
+
         }
     }
 
     /**
-     * If there are any public methods annotated with @Rule returning a {@link MethodRule}
-     * then it should also be run.
+     * If there are any public methods annotated with @Rule returning a
+     * {@link MethodRule} then it should also be run.
      * 
-     * <p>This case has been added with 
-     * <a href="https://github.com/junit-team/junit4/issues/589">Issue #589</a> - 
-     * Support @Rule for methods works only for TestRule but not for MethodRule
+     * <p>
+     * This case has been added with
+     * <a href="https://github.com/junit-team/junit4/issues/589">Issue #589</a>
+     * - Support @Rule for methods works only for TestRule but not for
+     * MethodRule
      */
     @Test
     public void runsMethodRuleThatIsReturnedByMethod() {
         ruleWasEvaluated = false;
-        assertThat(testResult(HasMethodReturningMethodRule.class), isSuccessful());
+        assertThat(testResult(HasMethodReturningMethodRule.class),
+                isSuccessful());
         assertTrue(ruleWasEvaluated);
     }
-    
+
     public static class HasMultipleMethodsReturningMethodRule {
         @Rule
         public Increment methodRule1() {
             return new Increment();
         }
-        
+
         @Rule
         public Increment methodRule2() {
             return new Increment();
         }
-        
+
         @Test
         public void doNothing() {
-            
+
         }
     }
 
     /**
-     * If there are multiple public methods annotated with @Rule returning a {@link MethodRule}
-     * then all the rules returned should be run.
+     * If there are multiple public methods annotated with @Rule returning a
+     * {@link MethodRule} then all the rules returned should be run.
      * 
-     * <p>This case has been added with 
-     * <a href="https://github.com/junit-team/junit4/issues/589">Issue #589</a> - 
-     * Support @Rule for methods works only for TestRule but not for MethodRule
+     * <p>
+     * This case has been added with
+     * <a href="https://github.com/junit-team/junit4/issues/589">Issue #589</a>
+     * - Support @Rule for methods works only for TestRule but not for
+     * MethodRule
      */
     @Test
     public void runsAllMethodRulesThatAreReturnedByMethods() {
         runCount = 0;
-        assertThat(testResult(HasMultipleMethodsReturningMethodRule.class), isSuccessful());
+        assertThat(testResult(HasMultipleMethodsReturningMethodRule.class),
+                isSuccessful());
         assertEquals(2, runCount);
     }
-    
-    
+
     public static class CallsMethodReturningRuleOnlyOnce {
         int callCount = 0;
-        
+
         private static class Dummy implements MethodRule {
-            public Statement apply(final Statement base, FrameworkMethod method, Object target) {
+            public Statement apply(final Statement base, FrameworkMethod method,
+                    Object target) {
                 return new Statement() {
-                    
+
                     @Override
                     public void evaluate() throws Throwable {
                         base.evaluate();
@@ -391,14 +404,13 @@ public class MethodRulesTest {
                 };
             }
         }
-       
-        
+
         @Rule
         public MethodRule methodRule() {
             callCount++;
             return new Dummy();
         }
-        
+
         @Test
         public void doNothing() {
             assertEquals(1, callCount);
@@ -406,15 +418,18 @@ public class MethodRulesTest {
     }
 
     /**
-     * If there are any public methods annotated with @Rule returning a {@link MethodRule}
-     * then method should be called only once.
+     * If there are any public methods annotated with @Rule returning a
+     * {@link MethodRule} then method should be called only once.
      * 
-     * <p>This case has been added with 
-     * <a href="https://github.com/junit-team/junit4/issues/589">Issue #589</a> - 
-     * Support @Rule for methods works only for TestRule but not for MethodRule
+     * <p>
+     * This case has been added with
+     * <a href="https://github.com/junit-team/junit4/issues/589">Issue #589</a>
+     * - Support @Rule for methods works only for TestRule but not for
+     * MethodRule
      */
     @Test
     public void callsMethodReturningRuleOnlyOnce() {
-        assertThat(testResult(CallsMethodReturningRuleOnlyOnce.class), isSuccessful());
+        assertThat(testResult(CallsMethodReturningRuleOnlyOnce.class),
+                isSuccessful());
     }
 }

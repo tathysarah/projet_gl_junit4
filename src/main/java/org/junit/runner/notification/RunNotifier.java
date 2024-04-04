@@ -10,16 +10,19 @@ import org.junit.runner.Description;
 import org.junit.runner.Result;
 
 /**
- * If you write custom runners, you may need to notify JUnit of your progress running tests.
- * Do this by invoking the <code>RunNotifier</code> passed to your implementation of
- * {@link org.junit.runner.Runner#run(RunNotifier)}. Future evolution of this class is likely to
- * move {@link #fireTestRunStarted(Description)} and {@link #fireTestRunFinished(Result)}
- * to a separate class since they should only be called once per run.
+ * If you write custom runners, you may need to notify JUnit of your progress
+ * running tests. Do this by invoking the <code>RunNotifier</code> passed to
+ * your implementation of {@link org.junit.runner.Runner#run(RunNotifier)}.
+ * Future evolution of this class is likely to move
+ * {@link #fireTestRunStarted(Description)} and
+ * {@link #fireTestRunFinished(Result)} to a separate class since they should
+ * only be called once per run.
  *
  * @since 4.0
  */
 public class RunNotifier {
     private final List<RunListener> listeners = new CopyOnWriteArrayList<RunListener>();
+
     private volatile boolean pleaseStop = false;
 
     /**
@@ -43,14 +46,14 @@ public class RunNotifier {
     }
 
     /**
-     * Wraps the given listener with {@link SynchronizedRunListener} if
-     * it is not annotated with {@link RunListener.ThreadSafe}.
+     * Wraps the given listener with {@link SynchronizedRunListener} if it is
+     * not annotated with {@link RunListener.ThreadSafe}.
      */
     RunListener wrapIfNotThreadSafe(RunListener listener) {
-        return listener.getClass().isAnnotationPresent(RunListener.ThreadSafe.class) ?
-                listener : new SynchronizedRunListener(listener, this);
+        return listener.getClass()
+                .isAnnotationPresent(RunListener.ThreadSafe.class) ? listener
+                        : new SynchronizedRunListener(listener, this);
     }
-
 
     private abstract class SafeNotifier {
         private final List<RunListener> currentListeners;
@@ -65,7 +68,8 @@ public class RunNotifier {
 
         void run() {
             int capacity = currentListeners.size();
-            List<RunListener> safeListeners = new ArrayList<RunListener>(capacity);
+            List<RunListener> safeListeners = new ArrayList<RunListener>(
+                    capacity);
             List<Failure> failures = new ArrayList<Failure>(capacity);
             for (RunListener listener : currentListeners) {
                 try {
@@ -78,7 +82,8 @@ public class RunNotifier {
             fireTestFailures(safeListeners, failures);
         }
 
-        protected abstract void notifyListener(RunListener each) throws Exception;
+        protected abstract void notifyListener(RunListener each)
+                throws Exception;
     }
 
     /**
@@ -106,12 +111,14 @@ public class RunNotifier {
     }
 
     /**
-     * Invoke to tell listeners that a test suite is about to start. Runners are strongly
-     * encouraged--but not required--to call this method. If this method is called for
-     * a given {@link Description} then {@link #fireTestSuiteFinished(Description)} MUST
-     * be called for the same {@code Description}.
+     * Invoke to tell listeners that a test suite is about to start. Runners are
+     * strongly encouraged--but not required--to call this method. If this
+     * method is called for a given {@link Description} then
+     * {@link #fireTestSuiteFinished(Description)} MUST be called for the same
+     * {@code Description}.
      *
-     * @param description the description of the suite test (generally a class name)
+     * @param description
+     *            the description of the suite test (generally a class name)
      * @since 4.13
      */
     public void fireTestSuiteStarted(final Description description) {
@@ -124,11 +131,13 @@ public class RunNotifier {
     }
 
     /**
-     * Invoke to tell listeners that a test suite is about to finish. Always invoke
-     * this method if you invoke {@link #fireTestSuiteStarted(Description)}
-     * as listeners are likely to expect them to come in pairs.
+     * Invoke to tell listeners that a test suite is about to finish. Always
+     * invoke this method if you invoke
+     * {@link #fireTestSuiteStarted(Description)} as listeners are likely to
+     * expect them to come in pairs.
      *
-     * @param description the description of the suite test (generally a class name)
+     * @param description
+     *            the description of the suite test (generally a class name)
      * @since 4.13
      */
     public void fireTestSuiteFinished(final Description description) {
@@ -143,10 +152,14 @@ public class RunNotifier {
     /**
      * Invoke to tell listeners that an atomic test is about to start.
      *
-     * @param description the description of the atomic test (generally a class and method name)
-     * @throws StoppedByUserException thrown if a user has requested that the test run stop
+     * @param description
+     *            the description of the atomic test (generally a class and
+     *            method name)
+     * @throws StoppedByUserException
+     *             thrown if a user has requested that the test run stop
      */
-    public void fireTestStarted(final Description description) throws StoppedByUserException {
+    public void fireTestStarted(final Description description)
+            throws StoppedByUserException {
         if (pleaseStop) {
             throw new StoppedByUserException();
         }
@@ -161,7 +174,9 @@ public class RunNotifier {
     /**
      * Invoke to tell listeners that an atomic test failed.
      *
-     * @param failure the description of the test that failed and the exception thrown
+     * @param failure
+     *            the description of the test that failed and the exception
+     *            thrown
      */
     public void fireTestFailure(Failure failure) {
         fireTestFailures(listeners, asList(failure));
@@ -172,7 +187,8 @@ public class RunNotifier {
         if (!failures.isEmpty()) {
             new SafeNotifier(listeners) {
                 @Override
-                protected void notifyListener(RunListener listener) throws Exception {
+                protected void notifyListener(RunListener listener)
+                        throws Exception {
                     for (Failure each : failures) {
                         listener.testFailure(each);
                     }
@@ -185,8 +201,9 @@ public class RunNotifier {
      * Invoke to tell listeners that an atomic test flagged that it assumed
      * something false.
      *
-     * @param failure the description of the test that failed and the
-     * {@link org.junit.AssumptionViolatedException} thrown
+     * @param failure
+     *            the description of the test that failed and the
+     *            {@link org.junit.AssumptionViolatedException} thrown
      */
     public void fireTestAssumptionFailed(final Failure failure) {
         new SafeNotifier() {
@@ -200,7 +217,8 @@ public class RunNotifier {
     /**
      * Invoke to tell listeners that an atomic test was ignored.
      *
-     * @param description the description of the ignored test
+     * @param description
+     *            the description of the ignored test
      */
     public void fireTestIgnored(final Description description) {
         new SafeNotifier() {
@@ -212,11 +230,12 @@ public class RunNotifier {
     }
 
     /**
-     * Invoke to tell listeners that an atomic test finished. Always invoke
-     * this method if you invoke {@link #fireTestStarted(Description)}
-     * as listeners are likely to expect them to come in pairs.
+     * Invoke to tell listeners that an atomic test finished. Always invoke this
+     * method if you invoke {@link #fireTestStarted(Description)} as listeners
+     * are likely to expect them to come in pairs.
      *
-     * @param description the description of the test that finished
+     * @param description
+     *            the description of the test that finished
      */
     public void fireTestFinished(final Description description) {
         new SafeNotifier() {
@@ -228,10 +247,11 @@ public class RunNotifier {
     }
 
     /**
-     * Ask that the tests run stop before starting the next test. Phrased politely because
-     * the test currently running will not be interrupted. It seems a little odd to put this
-     * functionality here, but the <code>RunNotifier</code> is the only object guaranteed
-     * to be shared amongst the many runners involved.
+     * Ask that the tests run stop before starting the next test. Phrased
+     * politely because the test currently running will not be interrupted. It
+     * seems a little odd to put this functionality here, but the
+     * <code>RunNotifier</code> is the only object guaranteed to be shared
+     * amongst the many runners involved.
      */
     public void pleaseStop() {
         pleaseStop = true;

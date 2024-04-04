@@ -27,15 +27,17 @@ import org.junit.validator.AnnotationValidator;
 public final class CategoryValidator extends AnnotationValidator {
 
     @SuppressWarnings("unchecked")
-    private static final Set<Class<? extends Annotation>> INCOMPATIBLE_ANNOTATIONS = unmodifiableSet(new HashSet<Class<? extends Annotation>>(
-            asList(BeforeClass.class, AfterClass.class, Before.class, After.class)));
+    private static final Set<Class<? extends Annotation>> INCOMPATIBLE_ANNOTATIONS = unmodifiableSet(
+            new HashSet<Class<? extends Annotation>>(asList(BeforeClass.class,
+                    AfterClass.class, Before.class, After.class)));
 
     /**
      * Adds to {@code errors} a throwable for each problem detected. Looks for
      * {@code BeforeClass}, {@code AfterClass}, {@code Before} and {@code After}
      * annotations.
      *
-     * @param method the method that is being validated
+     * @param method
+     *            the method that is being validated
      * @return A list of exceptions detected
      *
      * @since 4.12

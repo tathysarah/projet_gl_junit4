@@ -46,30 +46,40 @@ public class CategoryValidatorTest {
 
     @Test
     public void errorIsAddedWhenCategoryIsUsedWithBeforeClass() {
-        FrameworkMethod method = new TestClass(CategoryTest.class).getAnnotatedMethods(BeforeClass.class).get(0);
-        testAndAssertErrorMessage(method, "@BeforeClass can not be combined with @Category");
+        FrameworkMethod method = new TestClass(CategoryTest.class)
+                .getAnnotatedMethods(BeforeClass.class).get(0);
+        testAndAssertErrorMessage(method,
+                "@BeforeClass can not be combined with @Category");
     }
 
     @Test
     public void errorIsAddedWhenCategoryIsUsedWithAfterClass() {
-        FrameworkMethod method = new TestClass(CategoryTest.class).getAnnotatedMethods(AfterClass.class).get(0);
-        testAndAssertErrorMessage(method, "@AfterClass can not be combined with @Category");
+        FrameworkMethod method = new TestClass(CategoryTest.class)
+                .getAnnotatedMethods(AfterClass.class).get(0);
+        testAndAssertErrorMessage(method,
+                "@AfterClass can not be combined with @Category");
     }
 
     @Test
     public void errorIsAddedWhenCategoryIsUsedWithBefore() {
-        FrameworkMethod method = new TestClass(CategoryTest.class).getAnnotatedMethods(Before.class).get(0);
-        testAndAssertErrorMessage(method, "@Before can not be combined with @Category");
+        FrameworkMethod method = new TestClass(CategoryTest.class)
+                .getAnnotatedMethods(Before.class).get(0);
+        testAndAssertErrorMessage(method,
+                "@Before can not be combined with @Category");
     }
 
     @Test
     public void errorIsAddedWhenCategoryIsUsedWithAfter() {
-        FrameworkMethod method = new TestClass(CategoryTest.class).getAnnotatedMethods(After.class).get(0);
-        testAndAssertErrorMessage(method, "@After can not be combined with @Category");
+        FrameworkMethod method = new TestClass(CategoryTest.class)
+                .getAnnotatedMethods(After.class).get(0);
+        testAndAssertErrorMessage(method,
+                "@After can not be combined with @Category");
     }
 
-    private void testAndAssertErrorMessage(FrameworkMethod method, String expectedErrorMessage) {
-        List<Exception> errors = new CategoryValidator().validateAnnotatedMethod(method);
+    private void testAndAssertErrorMessage(FrameworkMethod method,
+            String expectedErrorMessage) {
+        List<Exception> errors = new CategoryValidator()
+                .validateAnnotatedMethod(method);
 
         assertThat(errors.size(), is(1));
         Exception exception = errors.get(0);
@@ -77,9 +87,12 @@ public class CategoryValidatorTest {
     }
 
     @Test
-    public void errorIsNotAddedWhenCategoryIsNotCombinedWithIllegalCombination() throws NoSuchMethodException {
-        FrameworkMethod method = new FrameworkMethod(CategoryTest.class.getMethod("methodWithCategory"));
-        List<Exception> errors = new CategoryValidator().validateAnnotatedMethod(method);
+    public void errorIsNotAddedWhenCategoryIsNotCombinedWithIllegalCombination()
+            throws NoSuchMethodException {
+        FrameworkMethod method = new FrameworkMethod(
+                CategoryTest.class.getMethod("methodWithCategory"));
+        List<Exception> errors = new CategoryValidator()
+                .validateAnnotatedMethod(method);
 
         assertThat(errors.size(), is(0));
     }

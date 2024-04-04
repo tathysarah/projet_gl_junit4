@@ -36,7 +36,8 @@ import org.junit.runners.model.Statement;
  *     &#064;Test
  *     public void myTest() {
  *         int i = 0;
- *         assertEquals(0, i); // suppose you had a break point here to inspect i
+ *         assertEquals(0, i); // suppose you had a break point here to inspect
+ *                             // i
  *     }
  * }
  * </pre>
@@ -45,23 +46,25 @@ import org.junit.runners.model.Statement;
  */
 public class DisableOnDebug implements TestRule {
     private final TestRule rule;
+
     private final boolean debugging;
 
     /**
      * Create a {@code DisableOnDebug} instance with the timeout specified in
      * milliseconds.
      * 
-     * @param rule to disable during debugging
+     * @param rule
+     *            to disable during debugging
      */
     public DisableOnDebug(TestRule rule) {
-        this(rule, ManagementFactory.getRuntimeMXBean()
-                .getInputArguments());
+        this(rule, ManagementFactory.getRuntimeMXBean().getInputArguments());
     }
 
     /**
      * Visible for testing purposes only.
      * 
-     * @param rule the rule to disable during debugging
+     * @param rule
+     *            the rule to disable during debugging
      * @param inputArguments
      *            arguments provided to the Java runtime
      */
@@ -86,12 +89,14 @@ public class DisableOnDebug implements TestRule {
      * <p>
      * Options specified in:
      * <ul>
-     * <li>
-     * <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/jpda/conninv.html#Invocation"
+     * <li><a href=
+     * "http://docs.oracle.com/javase/6/docs/technotes/guides/jpda/conninv.html#Invocation"
      * >javase-6</a></li>
-     * <li><a href="http://docs.oracle.com/javase/7/docs/technotes/guides/jpda/conninv.html#Invocation"
+     * <li><a href=
+     * "http://docs.oracle.com/javase/7/docs/technotes/guides/jpda/conninv.html#Invocation"
      * >javase-7</a></li>
-     * <li><a href="http://docs.oracle.com/javase/8/docs/technotes/guides/jpda/conninv.html#Invocation"
+     * <li><a href=
+     * "http://docs.oracle.com/javase/8/docs/technotes/guides/jpda/conninv.html#Invocation"
      * >javase-8</a></li>
      * 
      * 
@@ -103,7 +108,8 @@ public class DisableOnDebug implements TestRule {
      */
     private static boolean isDebugging(List<String> arguments) {
         for (final String argument : arguments) {
-            if ("-Xdebug".equals(argument) || argument.startsWith("-agentlib:jdwp")) {
+            if ("-Xdebug".equals(argument)
+                    || argument.startsWith("-agentlib:jdwp")) {
                 return true;
             }
         }

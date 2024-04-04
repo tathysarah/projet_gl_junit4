@@ -3,13 +3,14 @@ package org.junit.experimental.theories;
 import java.util.List;
 
 /**
- * Abstract parent class for suppliers of input data points for theories. Extend this class to customize how {@link
- * org.junit.experimental.theories.Theories Theories} runner
- * finds accepted data points. Then use your class together with <b>&#064;ParametersSuppliedBy</b> on input
- * parameters for theories.
+ * Abstract parent class for suppliers of input data points for theories. Extend
+ * this class to customize how {@link org.junit.experimental.theories.Theories
+ * Theories} runner finds accepted data points. Then use your class together
+ * with <b>&#064;ParametersSuppliedBy</b> on input parameters for theories.
  *
  * <p>
- * For example, here is a supplier for values between two integers, and an annotation that references it:
+ * For example, here is a supplier for values between two integers, and an
+ * annotation that references it:
  *
  * <pre>
  *     &#064;Retention(RetentionPolicy.RUNTIME)
@@ -39,5 +40,6 @@ import java.util.List;
  * @see org.junit.experimental.theories.FromDataPoints
  */
 public abstract class ParameterSupplier {
-    public abstract List<PotentialAssignment> getValueSources(ParameterSignature sig) throws Throwable;
+    public abstract List<PotentialAssignment> getValueSources(
+            ParameterSignature sig) throws Throwable;
 }

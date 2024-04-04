@@ -73,7 +73,8 @@ public class EventCollector extends RunListener {
         return hasNumberOfAssumptionFailures(0);
     }
 
-    public static Matcher<EventCollector> hasSingleFailureWithMessage(String message) {
+    public static Matcher<EventCollector> hasSingleFailureWithMessage(
+            String message) {
         return hasSingleFailureWithMessage(equalTo(message));
     }
 
@@ -82,9 +83,8 @@ public class EventCollector extends RunListener {
         return new TypeSafeMatcher<EventCollector>() {
             @Override
             public boolean matchesSafely(EventCollector item) {
-                return hasSingleFailure().matches(item)
-                        && messageMatcher.matches(item.fFailures.get(0)
-                        .getMessage());
+                return hasSingleFailure().matches(item) && messageMatcher
+                        .matches(item.fFailures.get(0).getMessage());
             }
 
             public void describeTo(org.hamcrest.Description description) {
@@ -98,7 +98,7 @@ public class EventCollector extends RunListener {
                 description.appendText("was ");
                 hasSingleFailure().describeMismatch(item, description);
                 description.appendText(": ");
-                boolean first= true;
+                boolean first = true;
                 for (Failure f : item.fFailures) {
                     if (!first) {
                         description.appendText(" ,");
@@ -106,13 +106,14 @@ public class EventCollector extends RunListener {
                     description.appendText("'");
                     description.appendText(f.getMessage());
                     description.appendText("'");
-                    first= false;
+                    first = false;
                 }
             }
         };
     }
 
-    static Matcher<EventCollector> failureIs(final Matcher<? super Throwable> exceptionMatcher) {
+    static Matcher<EventCollector> failureIs(
+            final Matcher<? super Throwable> exceptionMatcher) {
         return new TypeSafeMatcher<EventCollector>() {
             @Override
             public boolean matchesSafely(EventCollector item) {
@@ -181,11 +182,11 @@ public class EventCollector extends RunListener {
     @Override
     public String toString() {
         return fTestRunsStarted.size() + " test runs started, "
-            + fTestRunsFinished.size() + " test runs finished, "
-            + fTestsStarted.size() + " tests started, "
-            + fTestsFinished.size() + " tests finished, "
-            + fFailures.size() + " failures, "
-            + fAssumptionFailures.size() + " assumption failures, "
-            + fTestsIgnored.size() + " tests ignored";
+                + fTestRunsFinished.size() + " test runs finished, "
+                + fTestsStarted.size() + " tests started, "
+                + fTestsFinished.size() + " tests finished, " + fFailures.size()
+                + " failures, " + fAssumptionFailures.size()
+                + " assumption failures, " + fTestsIgnored.size()
+                + " tests ignored";
     }
 }

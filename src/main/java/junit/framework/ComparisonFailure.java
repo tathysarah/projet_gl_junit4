@@ -7,17 +7,22 @@ package junit.framework;
  */
 public class ComparisonFailure extends AssertionFailedError {
     private static final int MAX_CONTEXT_LENGTH = 20;
+
     private static final long serialVersionUID = 1L;
 
     private String fExpected;
+
     private String fActual;
 
     /**
      * Constructs a comparison failure.
      *
-     * @param message the identifying message or null
-     * @param expected the expected string value
-     * @param actual the actual string value
+     * @param message
+     *            the identifying message or null
+     * @param expected
+     *            the expected string value
+     * @param actual
+     *            the actual string value
      */
     public ComparisonFailure(String message, String expected, String actual) {
         super(message);
@@ -26,14 +31,15 @@ public class ComparisonFailure extends AssertionFailedError {
     }
 
     /**
-     * Returns "..." in place of common prefix and "..." in
-     * place of common suffix between expected and actual.
+     * Returns "..." in place of common prefix and "..." in place of common
+     * suffix between expected and actual.
      *
      * @see Throwable#getMessage()
      */
     @Override
     public String getMessage() {
-        return new ComparisonCompactor(MAX_CONTEXT_LENGTH, fExpected, fActual).compact(super.getMessage());
+        return new ComparisonCompactor(MAX_CONTEXT_LENGTH, fExpected, fActual)
+                .compact(super.getMessage());
     }
 
     /**

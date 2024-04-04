@@ -31,7 +31,6 @@ import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestTimedOutException;
 
-
 /**
  * @author Asaf Ary, Stefan Birkner
  */
@@ -58,8 +57,7 @@ public class FailOnTimeoutTest {
 
     @Test
     public void throwsTestTimedOutExceptionWithMeaningfulMessage() {
-        Exception e = assertThrows(
-                TestTimedOutException.class,
+        Exception e = assertThrows(TestTimedOutException.class,
                 run(failAfter50Ms(new RunForASecond())));
         assertEquals("test timed out after 50 milliseconds", e.getMessage());
     }
@@ -67,8 +65,7 @@ public class FailOnTimeoutTest {
     @Test
     public void sendUpExceptionThrownByStatement() {
         Exception exception = new RuntimeException();
-        Exception e = assertThrows(
-                Exception.class,
+        Exception e = assertThrows(Exception.class,
                 run(failAfter50Ms(new Fail(exception))));
         assertSame(exception, e);
     }
@@ -83,9 +80,7 @@ public class FailOnTimeoutTest {
         failOnTimeout.evaluate();
 
         statement.delegate = new RunForASecond();
-        assertThrows(
-                TestTimedOutException.class,
-                run(failOnTimeout));
+        assertThrows(TestTimedOutException.class, run(failOnTimeout));
     }
 
     @Test
@@ -93,34 +88,29 @@ public class FailOnTimeoutTest {
         DelegatingStatement statement = new DelegatingStatement();
         FailOnTimeout failOnTimeout = failAfter50Ms(statement);
 
-        statement.delegate = new Fail(new AssertionError("first execution failed"));
-        assertThrows(
-                AssertionError.class,
-                run(failOnTimeout)
-        );
+        statement.delegate = new Fail(
+                new AssertionError("first execution failed"));
+        assertThrows(AssertionError.class, run(failOnTimeout));
 
         statement.delegate = new RunForASecond();
-        assertThrows(
-                TestTimedOutException.class,
-                run(failOnTimeout));
+        assertThrows(TestTimedOutException.class, run(failOnTimeout));
     }
 
     @Test
     public void throwsExceptionWithTimeoutValueAndTimeUnitSet() {
-        TestTimedOutException e = assertThrows(
-                TestTimedOutException.class,
+        TestTimedOutException e = assertThrows(TestTimedOutException.class,
                 run(failAfter50Ms(new RunForASecond())));
         assertEquals(50, e.getTimeout());
         assertEquals(MILLISECONDS, e.getTimeUnit());
     }
 
     @Test
-    public void statementThatCanBeInterruptedIsStoppedAfterTimeout() throws Throwable {
+    public void statementThatCanBeInterruptedIsStoppedAfterTimeout()
+            throws Throwable {
         // RunForASecond can be interrupted because it checks the Thread's
         // interrupted flag.
         RunForASecond runForASecond = new RunForASecond();
-        assertThrows(
-                TestTimedOutException.class,
+        assertThrows(TestTimedOutException.class,
                 run(failAfter50Ms(runForASecond)));
 
         // Thread is explicitly stopped if it finishes faster than its
@@ -147,8 +137,7 @@ public class FailOnTimeoutTest {
                 stackTraceContainsOtherThanTheRealCauseOfTheTimeout = true;
             }
         }
-        assertTrue(
-                "Stack trace does not contain the real cause of the timeout",
+        assertTrue("Stack trace does not contain the real cause of the timeout",
                 stackTraceContainsTheRealCauseOfTheTimeout);
         assertFalse(
                 "Stack trace contains other than the real cause of the timeout, which can be very misleading",
@@ -174,7 +163,8 @@ public class FailOnTimeoutTest {
         }
 
         private void notTheRealCauseOfTheTimeout() {
-            for (long now = currentTimeMillis(), eta = now + 1000L; now < eta; now = currentTimeMillis()) {
+            for (long now = currentTimeMillis(),
+                    eta = now + 1000L; now < eta; now = currentTimeMillis()) {
                 // Doesn't matter, just pretend to be busy
                 atan(now);
             }
@@ -192,10 +182,12 @@ public class FailOnTimeoutTest {
             public void evaluate() {
                 innerThread.set(currentThread());
                 ThreadGroup group = currentThread().getThreadGroup();
-                assertNotSame("inner thread should use a different thread group",
+                assertNotSame(
+                        "inner thread should use a different thread group",
                         outerThreadGroup, group);
                 innerThreadGroup.set(group);
-                assertTrue("the 'FailOnTimeoutGroup' thread group should be a daemon thread group",
+                assertTrue(
+                        "the 'FailOnTimeoutGroup' thread group should be a daemon thread group",
                         group.isDaemon());
             }
         });
@@ -204,12 +196,14 @@ public class FailOnTimeoutTest {
 
         assertNotNull("the Statement was never run", innerThread.get());
         innerThread.get().join();
-        assertTrue("the 'FailOnTimeoutGroup' thread group should be destroyed after running the test",
+        assertTrue(
+                "the 'FailOnTimeoutGroup' thread group should be destroyed after running the test",
                 innerThreadGroup.get().isDestroyed());
     }
 
     @Test
-    public void notLookingForStuckThread_usesSameThreadGroup() throws Throwable {
+    public void notLookingForStuckThread_usesSameThreadGroup()
+            throws Throwable {
         assumeFalse(lookingForStuckThread);
         final AtomicBoolean statementWasExecuted = new AtomicBoolean();
         final ThreadGroup outerThreadGroup = currentThread().getThreadGroup();
@@ -218,7 +212,8 @@ public class FailOnTimeoutTest {
             public void evaluate() {
                 statementWasExecuted.set(true);
                 ThreadGroup group = currentThread().getThreadGroup();
-                assertSame("inner thread should use the same thread group", outerThreadGroup, group);
+                assertSame("inner thread should use the same thread group",
+                        outerThreadGroup, group);
             }
         });
 
@@ -228,8 +223,7 @@ public class FailOnTimeoutTest {
     }
 
     private FailOnTimeout failAfter50Ms(Statement statement) {
-        return FailOnTimeout.builder()
-                .withTimeout(50, MILLISECONDS)
+        return FailOnTimeout.builder().withTimeout(50, MILLISECONDS)
                 .withLookingForStuckThread(lookingForStuckThread)
                 .build(statement);
     }

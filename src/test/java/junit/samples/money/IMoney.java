@@ -16,8 +16,8 @@ public interface IMoney {
     IMoney addMoney(Money m);
 
     /**
-     * Adds a MoneyBag to this money. This is a helper method for
-     * implementing double dispatch
+     * Adds a MoneyBag to this money. This is a helper method for implementing
+     * double dispatch
      */
     IMoney addMoneyBag(MoneyBag s);
 
@@ -42,10 +42,9 @@ public interface IMoney {
     IMoney subtract(IMoney m);
 
     /**
-     * Append this to a MoneyBag m.
-     * appendTo() needs to be public because it is used
-     * polymorphically, but it should not be used by clients
-     * because it modifies the argument m.
+     * Append this to a MoneyBag m. appendTo() needs to be public because it is
+     * used polymorphically, but it should not be used by clients because it
+     * modifies the argument m.
      */
     void appendTo(MoneyBag m);
 }

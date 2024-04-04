@@ -8,7 +8,9 @@ import org.junit.internal.JUnitSystem;
 
 public class TestSystem implements JUnitSystem {
     private PrintStream out;
+
     public int fCode;
+
     private ByteArrayOutputStream fOutContents;
 
     public TestSystem() {

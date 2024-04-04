@@ -13,12 +13,15 @@ import org.junit.runner.manipulation.Filter;
  */
 abstract class CategoryFilterFactory implements FilterFactory {
     /**
-     * Creates a {@link org.junit.experimental.categories.Categories.CategoryFilter} given a
-     * {@link FilterFactoryParams} argument.
+     * Creates a
+     * {@link org.junit.experimental.categories.Categories.CategoryFilter} given
+     * a {@link FilterFactoryParams} argument.
      *
-     * @param params Parameters needed to create the {@link Filter}
+     * @param params
+     *            Parameters needed to create the {@link Filter}
      */
-    public Filter createFilter(FilterFactoryParams params) throws FilterNotCreatedException {
+    public Filter createFilter(FilterFactoryParams params)
+            throws FilterNotCreatedException {
         try {
             return createFilter(parseCategories(params.getArgs()));
         } catch (ClassNotFoundException e) {
@@ -27,19 +30,23 @@ abstract class CategoryFilterFactory implements FilterFactory {
     }
 
     /**
-     * Creates a {@link org.junit.experimental.categories.Categories.CategoryFilter} given an array of classes.
+     * Creates a
+     * {@link org.junit.experimental.categories.Categories.CategoryFilter} given
+     * an array of classes.
      *
-     * @param categories Category classes.
+     * @param categories
+     *            Category classes.
      */
     protected abstract Filter createFilter(List<Class<?>> categories);
 
-    private List<Class<?>> parseCategories(String categories) throws ClassNotFoundException {
+    private List<Class<?>> parseCategories(String categories)
+            throws ClassNotFoundException {
         List<Class<?>> categoryClasses = new ArrayList<Class<?>>();
 
         for (String category : categories.split(",")) {
             /*
-             * Load the category class using the context class loader.
-             * If there is no context class loader, use the class loader for this class.
+             * Load the category class using the context class loader. If there
+             * is no context class loader, use the class loader for this class.
              */
             Class<?> categoryClass = Classes.getClass(category, getClass());
 

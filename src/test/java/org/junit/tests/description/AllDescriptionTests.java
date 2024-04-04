@@ -5,11 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({
-        AnnotatedDescriptionTest.class,
-        SuiteDescriptionTest.class,
-        TestDescriptionMethodNameTest.class,
-        TestDescriptionTest.class
-})
+@SuiteClasses({ AnnotatedDescriptionTest.class, SuiteDescriptionTest.class,
+        TestDescriptionMethodNameTest.class, TestDescriptionTest.class })
 public class AllDescriptionTests {
 }

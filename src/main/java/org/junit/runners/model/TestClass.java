@@ -30,10 +30,13 @@ import org.junit.internal.MethodSorter;
  */
 public class TestClass implements Annotatable {
     private static final FieldComparator FIELD_COMPARATOR = new FieldComparator();
+
     private static final MethodComparator METHOD_COMPARATOR = new MethodComparator();
 
     private final Class<?> clazz;
+
     private final Map<Class<? extends Annotation>, List<FrameworkMethod>> methodsForAnnotations;
+
     private final Map<Class<? extends Annotation>, List<FrameworkField>> fieldsForAnnotations;
 
     /**
@@ -49,26 +52,31 @@ public class TestClass implements Annotatable {
                     "Test class can only have one constructor");
         }
 
-        Map<Class<? extends Annotation>, List<FrameworkMethod>> methodsForAnnotations =
-                new LinkedHashMap<Class<? extends Annotation>, List<FrameworkMethod>>();
-        Map<Class<? extends Annotation>, List<FrameworkField>> fieldsForAnnotations =
-                new LinkedHashMap<Class<? extends Annotation>, List<FrameworkField>>();
+        Map<Class<? extends Annotation>, List<FrameworkMethod>> methodsForAnnotations = new LinkedHashMap<Class<? extends Annotation>, List<FrameworkMethod>>();
+        Map<Class<? extends Annotation>, List<FrameworkField>> fieldsForAnnotations = new LinkedHashMap<Class<? extends Annotation>, List<FrameworkField>>();
 
         scanAnnotatedMembers(methodsForAnnotations, fieldsForAnnotations);
 
-        this.methodsForAnnotations = makeDeeplyUnmodifiable(methodsForAnnotations);
-        this.fieldsForAnnotations = makeDeeplyUnmodifiable(fieldsForAnnotations);
+        this.methodsForAnnotations = makeDeeplyUnmodifiable(
+                methodsForAnnotations);
+        this.fieldsForAnnotations = makeDeeplyUnmodifiable(
+                fieldsForAnnotations);
     }
 
-    protected void scanAnnotatedMembers(Map<Class<? extends Annotation>, List<FrameworkMethod>> methodsForAnnotations, Map<Class<? extends Annotation>, List<FrameworkField>> fieldsForAnnotations) {
+    protected void scanAnnotatedMembers(
+            Map<Class<? extends Annotation>, List<FrameworkMethod>> methodsForAnnotations,
+            Map<Class<? extends Annotation>, List<FrameworkField>> fieldsForAnnotations) {
         for (Class<?> eachClass : getSuperClasses(clazz)) {
-            for (Method eachMethod : MethodSorter.getDeclaredMethods(eachClass)) {
-                addToAnnotationLists(new FrameworkMethod(eachMethod), methodsForAnnotations);
+            for (Method eachMethod : MethodSorter
+                    .getDeclaredMethods(eachClass)) {
+                addToAnnotationLists(new FrameworkMethod(eachMethod),
+                        methodsForAnnotations);
             }
             // ensuring fields are sorted to make sure that entries are inserted
             // and read from fieldForAnnotations in a deterministic order
             for (Field eachField : getSortedDeclaredFields(eachClass)) {
-                addToAnnotationLists(new FrameworkField(eachField), fieldsForAnnotations);
+                addToAnnotationLists(new FrameworkField(eachField),
+                        fieldsForAnnotations);
             }
         }
     }
@@ -79,8 +87,8 @@ public class TestClass implements Annotatable {
         return declaredFields;
     }
 
-    protected static <T extends FrameworkMember<T>> void addToAnnotationLists(T member,
-            Map<Class<? extends Annotation>, List<T>> map) {
+    protected static <T extends FrameworkMember<T>> void addToAnnotationLists(
+            T member, Map<Class<? extends Annotation>, List<T>> map) {
         for (Annotation each : member.getAnnotations()) {
             Class<? extends Annotation> type = each.annotationType();
             List<T> members = getAnnotatedMembers(map, type, true);
@@ -96,12 +104,13 @@ public class TestClass implements Annotatable {
         }
     }
 
-    private static <T extends FrameworkMember<T>> Map<Class<? extends Annotation>, List<T>>
-            makeDeeplyUnmodifiable(Map<Class<? extends Annotation>, List<T>> source) {
-        Map<Class<? extends Annotation>, List<T>> copy =
-                new LinkedHashMap<Class<? extends Annotation>, List<T>>();
-        for (Map.Entry<Class<? extends Annotation>, List<T>> entry : source.entrySet()) {
-            copy.put(entry.getKey(), Collections.unmodifiableList(entry.getValue()));
+    private static <T extends FrameworkMember<T>> Map<Class<? extends Annotation>, List<T>> makeDeeplyUnmodifiable(
+            Map<Class<? extends Annotation>, List<T>> source) {
+        Map<Class<? extends Annotation>, List<T>> copy = new LinkedHashMap<Class<? extends Annotation>, List<T>>();
+        for (Map.Entry<Class<? extends Annotation>, List<T>> entry : source
+                .entrySet()) {
+            copy.put(entry.getKey(),
+                    Collections.unmodifiableList(entry.getValue()));
         }
         return Collections.unmodifiableMap(copy);
     }
@@ -124,7 +133,8 @@ public class TestClass implements Annotatable {
      */
     public List<FrameworkMethod> getAnnotatedMethods(
             Class<? extends Annotation> annotationClass) {
-        return Collections.unmodifiableList(getAnnotatedMembers(methodsForAnnotations, annotationClass, false));
+        return Collections.unmodifiableList(getAnnotatedMembers(
+                methodsForAnnotations, annotationClass, false));
     }
 
     /**
@@ -143,7 +153,8 @@ public class TestClass implements Annotatable {
      */
     public List<FrameworkField> getAnnotatedFields(
             Class<? extends Annotation> annotationClass) {
-        return Collections.unmodifiableList(getAnnotatedMembers(fieldsForAnnotations, annotationClass, false));
+        return Collections.unmodifiableList(getAnnotatedMembers(
+                fieldsForAnnotations, annotationClass, false));
     }
 
     private <T> List<T> collectValues(Map<?, List<T>> map) {
@@ -154,16 +165,18 @@ public class TestClass implements Annotatable {
         return new ArrayList<T>(values);
     }
 
-    private static <T> List<T> getAnnotatedMembers(Map<Class<? extends Annotation>, List<T>> map,
+    private static <T> List<T> getAnnotatedMembers(
+            Map<Class<? extends Annotation>, List<T>> map,
             Class<? extends Annotation> type, boolean fillIfAbsent) {
         if (!map.containsKey(type) && fillIfAbsent) {
             map.put(type, new ArrayList<T>());
         }
         List<T> members = map.get(type);
-        return members == null ? Collections.<T>emptyList() : members;
+        return members == null ? Collections.<T> emptyList() : members;
     }
 
-    private static boolean runsTopToBottom(Class<? extends Annotation> annotation) {
+    private static boolean runsTopToBottom(
+            Class<? extends Annotation> annotation) {
         return annotation.equals(Before.class)
                 || annotation.equals(BeforeClass.class);
     }
@@ -236,8 +249,9 @@ public class TestClass implements Annotatable {
     }
 
     /**
-     * Finds the fields annotated with the specified annotation and having the specified type,
-     * retrieves the values and passes those to the specified consumer.
+     * Finds the fields annotated with the specified annotation and having the
+     * specified type, retrieves the values and passes those to the specified
+     * consumer.
      *
      * @since 4.13
      */
@@ -252,7 +266,8 @@ public class TestClass implements Annotatable {
                 }
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(
-                        "How did getFields return a field we couldn't access?", e);
+                        "How did getFields return a field we couldn't access?",
+                        e);
             }
         }
     }
@@ -270,8 +285,9 @@ public class TestClass implements Annotatable {
     }
 
     /**
-     * Finds the methods annotated with the specified annotation and returning the specified type,
-     * invokes it and pass the return value to the specified consumer.
+     * Finds the methods annotated with the specified annotation and returning
+     * the specified type, invokes it and pass the return value to the specified
+     * consumer.
      *
      * @since 4.13
      */
@@ -281,20 +297,20 @@ public class TestClass implements Annotatable {
         for (FrameworkMethod each : getAnnotatedMethods(annotationClass)) {
             try {
                 /*
-                 * A method annotated with @Rule may return a @TestRule or a @MethodRule,
-                 * we cannot call the method to check whether the return type matches our
-                 * expectation i.e. subclass of valueClass. If we do that then the method 
-                 * will be invoked twice and we do not want to do that. So we first check
-                 * whether return type matches our expectation and only then call the method
-                 * to fetch the MethodRule
+                 * A method annotated with @Rule may return a @TestRule or
+                 * a @MethodRule, we cannot call the method to check whether the
+                 * return type matches our expectation i.e. subclass of
+                 * valueClass. If we do that then the method will be invoked
+                 * twice and we do not want to do that. So we first check
+                 * whether return type matches our expectation and only then
+                 * call the method to fetch the MethodRule
                  */
                 if (valueClass.isAssignableFrom(each.getReturnType())) {
                     Object fieldValue = each.invokeExplosively(test);
                     consumer.accept(each, valueClass.cast(fieldValue));
                 }
             } catch (Throwable e) {
-                throw new RuntimeException(
-                        "Exception in " + each.getName(), e);
+                throw new RuntimeException("Exception in " + each.getName(), e);
             }
         }
     }
@@ -339,8 +355,8 @@ public class TestClass implements Annotatable {
     /**
      * Compares two methods by its name.
      */
-    private static class MethodComparator implements
-            Comparator<FrameworkMethod> {
+    private static class MethodComparator
+            implements Comparator<FrameworkMethod> {
         public int compare(FrameworkMethod left, FrameworkMethod right) {
             return NAME_ASCENDING.compare(left.getMethod(), right.getMethod());
         }

@@ -20,7 +20,9 @@ import org.junit.runners.model.Statement;
  */
 class RuleContainer {
     private final IdentityHashMap<Object, Integer> orderValues = new IdentityHashMap<Object, Integer>();
+
     private final List<TestRule> testRules = new ArrayList<TestRule>();
+
     private final List<MethodRule> methodRules = new ArrayList<MethodRule>();
 
     /**
@@ -50,26 +52,30 @@ class RuleContainer {
     };
 
     /**
-     * Returns entries in the order how they should be applied, i.e. inner-to-outer.
+     * Returns entries in the order how they should be applied, i.e.
+     * inner-to-outer.
      */
     private List<RuleEntry> getSortedEntries() {
         List<RuleEntry> ruleEntries = new ArrayList<RuleEntry>(
                 methodRules.size() + testRules.size());
         for (MethodRule rule : methodRules) {
-            ruleEntries.add(new RuleEntry(rule, RuleEntry.TYPE_METHOD_RULE, orderValues.get(rule)));
+            ruleEntries.add(new RuleEntry(rule, RuleEntry.TYPE_METHOD_RULE,
+                    orderValues.get(rule)));
         }
         for (TestRule rule : testRules) {
-            ruleEntries.add(new RuleEntry(rule, RuleEntry.TYPE_TEST_RULE, orderValues.get(rule)));
+            ruleEntries.add(new RuleEntry(rule, RuleEntry.TYPE_TEST_RULE,
+                    orderValues.get(rule)));
         }
         Collections.sort(ruleEntries, ENTRY_COMPARATOR);
         return ruleEntries;
     }
 
     /**
-     * Applies all the rules ordered accordingly to the specified {@code statement}.
+     * Applies all the rules ordered accordingly to the specified
+     * {@code statement}.
      */
-    public Statement apply(FrameworkMethod method, Description description, Object target,
-            Statement statement) {
+    public Statement apply(FrameworkMethod method, Description description,
+            Object target, Statement statement) {
         if (methodRules.isEmpty() && testRules.isEmpty()) {
             return statement;
         }
@@ -78,15 +84,16 @@ class RuleContainer {
             if (ruleEntry.type == RuleEntry.TYPE_TEST_RULE) {
                 result = ((TestRule) ruleEntry.rule).apply(result, description);
             } else {
-                result = ((MethodRule) ruleEntry.rule).apply(result, method, target);
+                result = ((MethodRule) ruleEntry.rule).apply(result, method,
+                        target);
             }
         }
         return result;
     }
 
     /**
-     * Returns rule instances in the order how they should be applied, i.e. inner-to-outer.
-     * VisibleForTesting
+     * Returns rule instances in the order how they should be applied, i.e.
+     * inner-to-outer. VisibleForTesting
      */
     List<Object> getSortedRules() {
         List<Object> result = new ArrayList<Object>();
@@ -98,10 +105,13 @@ class RuleContainer {
 
     static class RuleEntry {
         static final int TYPE_TEST_RULE = 1;
+
         static final int TYPE_METHOD_RULE = 0;
 
         final Object rule;
+
         final int type;
+
         final int order;
 
         RuleEntry(Object rule, int type, Integer order) {

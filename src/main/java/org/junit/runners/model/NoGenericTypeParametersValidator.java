@@ -21,21 +21,24 @@ class NoGenericTypeParametersValidator {
         }
     }
 
-    private void validateNoTypeParameterOnType(Type type, List<Throwable> errors) {
+    private void validateNoTypeParameterOnType(Type type,
+            List<Throwable> errors) {
         if (type instanceof TypeVariable<?>) {
             errors.add(new Exception("Method " + method.getName()
                     + "() contains unresolved type variable " + type));
         } else if (type instanceof ParameterizedType) {
-            validateNoTypeParameterOnParameterizedType((ParameterizedType) type, errors);
+            validateNoTypeParameterOnParameterizedType((ParameterizedType) type,
+                    errors);
         } else if (type instanceof WildcardType) {
             validateNoTypeParameterOnWildcardType((WildcardType) type, errors);
         } else if (type instanceof GenericArrayType) {
-            validateNoTypeParameterOnGenericArrayType((GenericArrayType) type, errors);
+            validateNoTypeParameterOnGenericArrayType((GenericArrayType) type,
+                    errors);
         }
     }
 
-    private void validateNoTypeParameterOnParameterizedType(ParameterizedType parameterized,
-            List<Throwable> errors) {
+    private void validateNoTypeParameterOnParameterizedType(
+            ParameterizedType parameterized, List<Throwable> errors) {
         for (Type each : parameterized.getActualTypeArguments()) {
             validateNoTypeParameterOnType(each, errors);
         }
@@ -53,6 +56,7 @@ class NoGenericTypeParametersValidator {
 
     private void validateNoTypeParameterOnGenericArrayType(
             GenericArrayType arrayType, List<Throwable> errors) {
-        validateNoTypeParameterOnType(arrayType.getGenericComponentType(), errors);
+        validateNoTypeParameterOnType(arrayType.getGenericComponentType(),
+                errors);
     }
 }

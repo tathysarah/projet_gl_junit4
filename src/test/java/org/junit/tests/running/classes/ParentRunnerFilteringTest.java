@@ -79,7 +79,7 @@ public class ParentRunnerFilteringTest {
     }
 
     @RunWith(Suite.class)
-    @SuiteClasses({ExampleTest.class})
+    @SuiteClasses({ ExampleTest.class })
     public static class ExampleSuite {
     }
 
@@ -97,9 +97,8 @@ public class ParentRunnerFilteringTest {
 
     public static class SuiteWithUnmodifiableChildList extends Suite {
 
-        public SuiteWithUnmodifiableChildList(
-                Class<?> klass, RunnerBuilder builder)
-                throws InitializationError {
+        public SuiteWithUnmodifiableChildList(Class<?> klass,
+                RunnerBuilder builder) throws InitializationError {
             super(klass, builder);
         }
 
@@ -110,13 +109,14 @@ public class ParentRunnerFilteringTest {
     }
 
     @RunWith(SuiteWithUnmodifiableChildList.class)
-    @SuiteClasses({ExampleTest.class})
+    @SuiteClasses({ ExampleTest.class })
     public static class ExampleSuiteWithUnmodifiableChildList {
     }
 
     @Test
     public void testSuiteFilteringWithUnmodifiableChildList() throws Exception {
-        Runner runner = Request.aClass(ExampleSuiteWithUnmodifiableChildList.class)
+        Runner runner = Request
+                .aClass(ExampleSuiteWithUnmodifiableChildList.class)
                 .getRunner();
         Filter filter = notThisMethodName("test1");
         try {
@@ -130,7 +130,8 @@ public class ParentRunnerFilteringTest {
     @Test
     public void testRunSuiteFiltering() throws Exception {
         Request request = Request.aClass(ExampleSuite.class);
-        Request requestFiltered = request.filterWith(notThisMethodName("test1"));
+        Request requestFiltered = request
+                .filterWith(notThisMethodName("test1"));
         assertThat(testResult(requestFiltered),
                 hasSingleFailureContaining("don't run method name: test1"));
     }

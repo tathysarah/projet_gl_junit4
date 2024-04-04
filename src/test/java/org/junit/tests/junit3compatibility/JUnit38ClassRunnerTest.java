@@ -1,13 +1,14 @@
 package org.junit.tests.junit3compatibility;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
 import junit.extensions.TestDecorator;
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.TestCase;
@@ -18,10 +19,10 @@ import org.junit.internal.runners.JUnit38ClassRunner;
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
-import org.junit.runner.notification.Failure;
-import org.junit.runner.notification.RunListener;
 import org.junit.runner.manipulation.Filter;
 import org.junit.runner.manipulation.NoTestsRemainException;
+import org.junit.runner.notification.Failure;
+import org.junit.runner.notification.RunListener;
 
 public class JUnit38ClassRunnerTest {
     public static class MyTest extends TestCase {
@@ -32,7 +33,8 @@ public class JUnit38ClassRunnerTest {
 
     @Test
     public void plansDecoratorCorrectly() {
-        JUnit38ClassRunner runner = new JUnit38ClassRunner(new TestDecorator(new TestSuite(MyTest.class)));
+        JUnit38ClassRunner runner = new JUnit38ClassRunner(
+                new TestDecorator(new TestSuite(MyTest.class)));
         assertEquals(1, runner.testCount());
     }
 
@@ -45,10 +47,13 @@ public class JUnit38ClassRunnerTest {
 
     @Test
     public void canUnadaptAnAdapter() {
-        JUnit38ClassRunner runner = new JUnit38ClassRunner(new JUnit4TestAdapter(AnnotatedTest.class));
+        JUnit38ClassRunner runner = new JUnit38ClassRunner(
+                new JUnit4TestAdapter(AnnotatedTest.class));
         Result result = new JUnitCore().run(runner);
         Failure failure = result.getFailures().get(0);
-        assertEquals(Description.createTestDescription(AnnotatedTest.class, "foo"), failure.getDescription());
+        assertEquals(
+                Description.createTestDescription(AnnotatedTest.class, "foo"),
+                failure.getDescription());
     }
 
     static int count;
@@ -64,8 +69,8 @@ public class JUnit38ClassRunnerTest {
         RunListener listener = new RunListener() {
             @Override
             public void testStarted(Description description) {
-                assertEquals(Description.createTestDescription(OneTest.class, "testOne"),
-                        description);
+                assertEquals(Description.createTestDescription(OneTest.class,
+                        "testOne"), description);
                 count++;
             }
         };
@@ -88,7 +93,8 @@ public class JUnit38ClassRunnerTest {
         Result result = JUnitCore.runClasses(ClassWithInvalidMethod.class);
         Failure failure = result.getFailures().get(0);
         assertEquals("warning", failure.getDescription().getMethodName());
-        assertEquals("junit.framework.TestSuite$1", failure.getDescription().getClassName());
+        assertEquals("junit.framework.TestSuite$1",
+                failure.getDescription().getClassName());
     }
 
     @Retention(RetentionPolicy.RUNTIME)
@@ -105,18 +111,21 @@ public class JUnit38ClassRunnerTest {
         }
     }
 
-    public static class DerivedAnnotatedMethod extends JUnit3ClassWithAnnotatedMethod {
+    public static class DerivedAnnotatedMethod
+            extends JUnit3ClassWithAnnotatedMethod {
     }
 
     @Test
     public void getDescriptionWithAnnotation() {
-        JUnit38ClassRunner runner = new JUnit38ClassRunner(JUnit3ClassWithAnnotatedMethod.class);
+        JUnit38ClassRunner runner = new JUnit38ClassRunner(
+                JUnit3ClassWithAnnotatedMethod.class);
         assertAnnotationFiltering(runner);
     }
-    
+
     @Test
     public void getDescriptionWithAnnotationInSuper() {
-        JUnit38ClassRunner runner = new JUnit38ClassRunner(DerivedAnnotatedMethod.class);
+        JUnit38ClassRunner runner = new JUnit38ClassRunner(
+                DerivedAnnotatedMethod.class);
         assertAnnotationFiltering(runner);
     }
 
@@ -145,11 +154,12 @@ public class JUnit38ClassRunnerTest {
     }
 
     /**
-     * Test that NoTestsRemainException is thrown when all methods have been filtered.
+     * Test that NoTestsRemainException is thrown when all methods have been
+     * filtered.
      */
-    @Test(expected = NoTestsRemainException.class) 
+    @Test(expected = NoTestsRemainException.class)
     public void filterNoTestsRemain() throws NoTestsRemainException {
         JUnit38ClassRunner runner = new JUnit38ClassRunner(OneTest.class);
-        runner.filter(new RejectAllTestsFilter());  
+        runner.filter(new RejectAllTestsFilter());
     }
 }

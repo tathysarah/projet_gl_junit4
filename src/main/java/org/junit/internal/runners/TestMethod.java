@@ -14,11 +14,13 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 /**
  * @deprecated Included for backwards compatibility with JUnit 4.4. Will be
  *             removed in the next major release. Please use
- *             {@link BlockJUnit4ClassRunner} in place of {@link JUnit4ClassRunner}.
+ *             {@link BlockJUnit4ClassRunner} in place of
+ *             {@link JUnit4ClassRunner}.
  */
 @Deprecated
 public class TestMethod {
     private final Method method;
+
     private TestClass testClass;
 
     public TestMethod(Method method, TestClass testClass) {
@@ -64,7 +66,8 @@ public class TestMethod {
         return testClass.getAnnotatedMethods(After.class);
     }
 
-    public void invoke(Object test) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+    public void invoke(Object test) throws IllegalArgumentException,
+            IllegalAccessException, InvocationTargetException {
         method.invoke(test);
     }
 

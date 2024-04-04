@@ -10,38 +10,39 @@ import org.junit.runners.model.MultipleFailureException;
 import org.junit.runners.model.Statement;
 
 /**
- * TestWatcher is a base class for Rules that take note of the testing
- * action, without modifying it. For example, this class will keep a log of each
- * passing and failing test:
+ * TestWatcher is a base class for Rules that take note of the testing action,
+ * without modifying it. For example, this class will keep a log of each passing
+ * and failing test:
  *
  * <pre>
  * public static class WatchmanTest {
- *  private static String watchedLog;
+ *     private static String watchedLog;
  *
- *  &#064;Rule(order = Integer.MIN_VALUE)
- *  public TestWatcher watchman= new TestWatcher() {
- *      &#064;Override
- *      protected void failed(Throwable e, Description description) {
- *          watchedLog+= description + &quot;\n&quot;;
- *      }
+ *     &#064;Rule(order = Integer.MIN_VALUE)
+ *     public TestWatcher watchman = new TestWatcher() {
+ *         &#064;Override
+ *         protected void failed(Throwable e, Description description) {
+ *             watchedLog += description + &quot;\n&quot;;
+ *         }
  *
- *      &#064;Override
- *      protected void succeeded(Description description) {
- *          watchedLog+= description + &quot; &quot; + &quot;success!\n&quot;;
+ *         &#064;Override
+ *         protected void succeeded(Description description) {
+ *             watchedLog += description + &quot; &quot; + &quot;success!\n&quot;;
  *         }
  *     };
  *
- *  &#064;Test
- *  public void fails() {
- *      fail();
- *  }
+ *     &#064;Test
+ *     public void fails() {
+ *         fail();
+ *     }
  *
- *  &#064;Test
- *  public void succeeds() {
+ *     &#064;Test
+ *     public void succeeds() {
  *     }
  * }
  * </pre>
- * <p>It is recommended to always set the {@link Rule#order() order} of the
+ * <p>
+ * It is recommended to always set the {@link Rule#order() order} of the
  * {@code TestWatcher} to {@code Integer.MIN_VALUE} so that it encloses all
  * other rules. Otherwise it may see failed tests as successful and vice versa
  * if some rule changes the result of a test (e.g. {@link ErrorCollector} or
@@ -50,7 +51,8 @@ import org.junit.runners.model.Statement;
  * @since 4.9
  */
 public abstract class TestWatcher implements TestRule {
-    public Statement apply(final Statement base, final Description description) {
+    public Statement apply(final Statement base,
+            final Description description) {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
@@ -60,7 +62,7 @@ public abstract class TestWatcher implements TestRule {
                 try {
                     base.evaluate();
                     succeededQuietly(description, errors);
-                } catch (org.junit.internal.AssumptionViolatedException  e) {
+                } catch (org.junit.internal.AssumptionViolatedException e) {
                     errors.add(e);
                     skippedQuietly(e, description, errors);
                 } catch (Throwable e) {
@@ -94,8 +96,8 @@ public abstract class TestWatcher implements TestRule {
     }
 
     private void skippedQuietly(
-            org.junit.internal.AssumptionViolatedException e, Description description,
-            List<Throwable> errors) {
+            org.junit.internal.AssumptionViolatedException e,
+            Description description, List<Throwable> errors) {
         try {
             if (e instanceof AssumptionViolatedException) {
                 skipped((AssumptionViolatedException) e, description);
@@ -140,8 +142,10 @@ public abstract class TestWatcher implements TestRule {
     /**
      * Invoked when a test is skipped due to a failed assumption.
      */
-    protected void skipped(AssumptionViolatedException e, Description description) {
-        // For backwards compatibility with JUnit 4.11 and earlier, call the legacy version
+    protected void skipped(AssumptionViolatedException e,
+            Description description) {
+        // For backwards compatibility with JUnit 4.11 and earlier, call the
+        // legacy version
         org.junit.internal.AssumptionViolatedException asInternalException = e;
         skipped(asInternalException, description);
     }
@@ -149,11 +153,12 @@ public abstract class TestWatcher implements TestRule {
     /**
      * Invoked when a test is skipped due to a failed assumption.
      *
-     * @deprecated use {@link #skipped(AssumptionViolatedException, Description)}
+     * @deprecated use
+     *             {@link #skipped(AssumptionViolatedException, Description)}
      */
     @Deprecated
-    protected void skipped(
-            org.junit.internal.AssumptionViolatedException e, Description description) {
+    protected void skipped(org.junit.internal.AssumptionViolatedException e,
+            Description description) {
     }
 
     /**

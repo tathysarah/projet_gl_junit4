@@ -1,5 +1,7 @@
 package org.junit.internal.runners;
 
+import static java.util.Collections.singletonList;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -7,10 +9,8 @@ import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
-import org.junit.runners.model.InvalidTestClassError;
 import org.junit.runners.model.InitializationError;
-
-import static java.util.Collections.singletonList;
+import org.junit.runners.model.InvalidTestClassError;
 
 public class ErrorReportingRunner extends Runner {
     private final List<Throwable> causes;
@@ -20,10 +20,11 @@ public class ErrorReportingRunner extends Runner {
     public ErrorReportingRunner(Class<?> testClass, Throwable cause) {
         this(cause, testClass);
     }
-    
+
     public ErrorReportingRunner(Throwable cause, Class<?>... testClasses) {
         if (testClasses == null || testClasses.length == 0) {
-            throw new NullPointerException("Test classes cannot be null or empty");
+            throw new NullPointerException(
+                    "Test classes cannot be null or empty");
         }
         for (Class<?> testClass : testClasses) {
             if (testClass == null) {
@@ -33,13 +34,14 @@ public class ErrorReportingRunner extends Runner {
         classNames = getClassNames(testClasses);
         causes = getCauses(cause);
     }
-    
+
     @Override
     public Description getDescription() {
-        Description description = Description.createSuiteDescription(classNames);
+        Description description = Description
+                .createSuiteDescription(classNames);
         /*
-         * Use an indexed loop instead of a foreach: That avoids declaring a variable that some
-         * tools will see as "unused."
+         * Use an indexed loop instead of a foreach: That avoids declaring a
+         * variable that some tools will see as "unused."
          */
         for (int i = 0; i < causes.size(); i++) {
             description.addChild(describeCause());
@@ -84,7 +86,8 @@ public class ErrorReportingRunner extends Runner {
     }
 
     private Description describeCause() {
-        return Description.createTestDescription(classNames, "initializationError");
+        return Description.createTestDescription(classNames,
+                "initializationError");
     }
 
     private void runCause(Throwable child, RunNotifier notifier) {

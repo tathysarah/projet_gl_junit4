@@ -34,7 +34,8 @@ public class AllTestsTest {
     @org.junit.Test
     public void ensureTestIsRun() {
         JUnitCore runner = new JUnitCore();
-        run = false; // Have to explicitly set run here because the runner might independently run OneTest above
+        run = false; // Have to explicitly set run here because the runner might
+                     // independently run OneTest above
         runner.run(All.class);
         assertTrue(run);
     }
@@ -48,7 +49,8 @@ public class AllTestsTest {
     @org.junit.Test
     public void someUsefulDescription() throws Throwable {
         AllTests tests = new AllTests(All.class);
-        assertThat(tests.getDescription().toString(), containsString("OneTest"));
+        assertThat(tests.getDescription().toString(),
+                containsString("OneTest"));
     }
 
     public static class JUnit4Test {

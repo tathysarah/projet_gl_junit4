@@ -21,7 +21,8 @@ public class FrameworkFieldTest {
     @Test
     public void cannotBeCreatedWithoutUnderlyingField() {
         thrown.expect(NullPointerException.class);
-        thrown.expectMessage("FrameworkField cannot be created without an underlying field.");
+        thrown.expectMessage(
+                "FrameworkField cannot be created without an underlying field.");
         new FrameworkField(null);
     }
 

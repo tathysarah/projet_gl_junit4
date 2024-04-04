@@ -5,6 +5,7 @@ import org.junit.runners.model.Statement;
 
 public class InvokeMethod extends Statement {
     private final FrameworkMethod testMethod;
+
     private final Object target;
 
     public InvokeMethod(FrameworkMethod testMethod, Object target) {

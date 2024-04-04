@@ -6,6 +6,7 @@ package junit.samples.money;
 public class Money implements IMoney {
 
     private int fAmount;
+
     private String fCurrency;
 
     /**
@@ -86,7 +87,7 @@ public class Money implements IMoney {
         return "[" + amount() + " " + currency() + "]";
     }
 
-    public /*this makes no sense*/ void appendTo(MoneyBag m) {
+    public /* this makes no sense */ void appendTo(MoneyBag m) {
         m.appendMoney(this);
     }
 }

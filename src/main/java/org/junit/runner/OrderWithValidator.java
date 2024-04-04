@@ -22,7 +22,8 @@ public final class OrderWithValidator extends AnnotationValidator {
      * Adds to {@code errors} a throwable for each problem detected. Looks for
      * {@code FixMethodOrder} annotations.
      *
-     * @param testClass that is being validated
+     * @param testClass
+     *            that is being validated
      * @return A list of exceptions detected
      *
      * @since 4.13
@@ -30,8 +31,8 @@ public final class OrderWithValidator extends AnnotationValidator {
     @Override
     public List<Exception> validateAnnotatedClass(TestClass testClass) {
         if (testClass.getAnnotation(FixMethodOrder.class) != null) {
-            return singletonList(
-                    new Exception("@FixMethodOrder cannot be combined with @OrderWith"));
+            return singletonList(new Exception(
+                    "@FixMethodOrder cannot be combined with @OrderWith"));
         }
         return emptyList();
     }

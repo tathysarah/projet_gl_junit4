@@ -37,8 +37,9 @@ public class BlockJUnit4ClassRunnerWithParametersTest {
     @Test
     public void hasAllAnnotationsExceptRunWith() throws Exception {
         TestWithParameters testWithParameters = new TestWithParameters(
-                "dummy name", new TestClass(
-                        ClassWithParameterizedAnnotation.class), NO_PARAMETERS);
+                "dummy name",
+                new TestClass(ClassWithParameterizedAnnotation.class),
+                NO_PARAMETERS);
         BlockJUnit4ClassRunnerWithParameters runner = new BlockJUnit4ClassRunnerWithParameters(
                 testWithParameters);
         Annotation[] annotations = runner.getRunnerAnnotations();
@@ -65,15 +66,15 @@ public class BlockJUnit4ClassRunnerWithParametersTest {
     public void providesHelpfulMessageIfParameterFieldCannotBeSet()
             throws Exception {
         TestWithParameters testWithParameters = new TestWithParameters(
-                "dummy name",
-                new TestClass(ClassWithPrivateParameter.class),
-                Collections.<Object>singletonList("dummy parameter"));
+                "dummy name", new TestClass(ClassWithPrivateParameter.class),
+                Collections.<Object> singletonList("dummy parameter"));
         BlockJUnit4ClassRunnerWithParameters runner = new BlockJUnit4ClassRunnerWithParameters(
                 testWithParameters);
 
         thrown.expect(IllegalAccessException.class);
         thrown.expectCause(instanceOf(IllegalAccessException.class));
-        thrown.expectMessage("Cannot set parameter 'parameter'. Ensure that the field 'parameter' is public.");
+        thrown.expectMessage(
+                "Cannot set parameter 'parameter'. Ensure that the field 'parameter' is public.");
 
         runner.createTest();
     }

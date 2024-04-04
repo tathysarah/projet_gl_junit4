@@ -5,12 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({
-        ListenerTest.class,
-        RunnerTest.class,
-        TestListenerTest.class,
-        TextListenerTest.class,
-        UserStopTest.class
-})
+@SuiteClasses({ ListenerTest.class, RunnerTest.class, TestListenerTest.class,
+        TextListenerTest.class, UserStopTest.class })
 public class AllListeningTests {
 }

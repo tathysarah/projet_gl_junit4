@@ -14,7 +14,8 @@ public class RunAfters extends Statement {
 
     private final List<FrameworkMethod> afters;
 
-    public RunAfters(Statement next, List<FrameworkMethod> afters, Object target) {
+    public RunAfters(Statement next, List<FrameworkMethod> afters,
+            Object target) {
         this.next = next;
         this.afters = afters;
         this.target = target;

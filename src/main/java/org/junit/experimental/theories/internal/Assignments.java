@@ -39,11 +39,11 @@ public class Assignments {
     public static Assignments allUnassigned(Method testMethod,
             TestClass testClass) {
         List<ParameterSignature> signatures;
-        signatures = ParameterSignature.signatures(testClass
-                .getOnlyConstructor());
+        signatures = ParameterSignature
+                .signatures(testClass.getOnlyConstructor());
         signatures.addAll(ParameterSignature.signatures(testMethod));
-        return new Assignments(new ArrayList<PotentialAssignment>(),
-                signatures, testClass);
+        return new Assignments(new ArrayList<PotentialAssignment>(), signatures,
+                testClass);
     }
 
     public boolean isComplete() {
@@ -55,14 +55,15 @@ public class Assignments {
     }
 
     public Assignments assignNext(PotentialAssignment source) {
-        List<PotentialAssignment> potentialAssignments = new ArrayList<PotentialAssignment>(assigned);
+        List<PotentialAssignment> potentialAssignments = new ArrayList<PotentialAssignment>(
+                assigned);
         potentialAssignments.add(source);
 
-        return new Assignments(potentialAssignments, unassigned.subList(1,
-                unassigned.size()), clazz);
+        return new Assignments(potentialAssignments,
+                unassigned.subList(1, unassigned.size()), clazz);
     }
 
-    public Object[] getActualValues(int start, int stop) 
+    public Object[] getActualValues(int start, int stop)
             throws CouldNotGenerateValueException {
         Object[] values = new Object[stop - start];
         for (int i = start; i < stop; i++) {
@@ -74,21 +75,24 @@ public class Assignments {
     public List<PotentialAssignment> potentialsForNextUnassigned()
             throws Throwable {
         ParameterSignature unassigned = nextUnassigned();
-        List<PotentialAssignment> assignments = getSupplier(unassigned).getValueSources(unassigned);
-        
+        List<PotentialAssignment> assignments = getSupplier(unassigned)
+                .getValueSources(unassigned);
+
         if (assignments.isEmpty()) {
             assignments = generateAssignmentsFromTypeAlone(unassigned);
         }
-        
+
         return assignments;
     }
 
-    private List<PotentialAssignment> generateAssignmentsFromTypeAlone(ParameterSignature unassigned) {
+    private List<PotentialAssignment> generateAssignmentsFromTypeAlone(
+            ParameterSignature unassigned) {
         Class<?> paramType = unassigned.getType();
-        
+
         if (paramType.isEnum()) {
-            return new EnumSupplier(paramType).getValueSources(unassigned);  
-        } else if (paramType.equals(Boolean.class) || paramType.equals(boolean.class)) {
+            return new EnumSupplier(paramType).getValueSources(unassigned);
+        } else if (paramType.equals(Boolean.class)
+                || paramType.equals(boolean.class)) {
             return new BooleanSupplier().getValueSources(unassigned);
         } else {
             return emptyList();
@@ -99,7 +103,7 @@ public class Assignments {
             throws Exception {
         ParametersSuppliedBy annotation = unassigned
                 .findDeepAnnotation(ParametersSuppliedBy.class);
-        
+
         if (annotation != null) {
             return buildParameterSupplierFromClass(annotation.value());
         } else {

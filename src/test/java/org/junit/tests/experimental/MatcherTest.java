@@ -20,10 +20,12 @@ import org.junit.runner.notification.Failure;
 @RunWith(Theories.class)
 public class MatcherTest {
     @DataPoint
-    public static Matcher<Object> SINGLE_FAILURE = hasSingleFailureContaining("cheese");
+    public static Matcher<Object> SINGLE_FAILURE = hasSingleFailureContaining(
+            "cheese");
 
     @DataPoint
-    public static Matcher<PrintableResult> ANY_FAILURE = hasFailureContaining("cheese");
+    public static Matcher<PrintableResult> ANY_FAILURE = hasFailureContaining(
+            "cheese");
 
     @DataPoint
     public static PrintableResult TWO_FAILURES_ONE_CHEESE = new PrintableResult(
@@ -31,8 +33,8 @@ public class MatcherTest {
 
     @Theory
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void differentMatchersHaveDifferentDescriptions(
-            Matcher matcher1, Matcher matcher2, Object value) {
+    public void differentMatchersHaveDifferentDescriptions(Matcher matcher1,
+            Matcher matcher2, Object value) {
         assumeThat(value, matcher1);
         assumeThat(value, not(matcher2));
         assertThat(matcher1.toString(), not(matcher2.toString()));

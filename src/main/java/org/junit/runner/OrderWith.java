@@ -10,9 +10,10 @@ import org.junit.runner.manipulation.Ordering;
 import org.junit.validator.ValidateWith;
 
 /**
- * When a test class is annotated with <code>&#064;OrderWith</code> or extends a class annotated
- * with <code>&#064;OrderWith</code>, JUnit will order the tests in the test class (and child
- * test classes, if any) using the ordering defined by the {@link Ordering} class.
+ * When a test class is annotated with <code>&#064;OrderWith</code> or extends a
+ * class annotated with <code>&#064;OrderWith</code>, JUnit will order the tests
+ * in the test class (and child test classes, if any) using the ordering defined
+ * by the {@link Ordering} class.
  *
  * @since 4.13
  */
@@ -22,7 +23,8 @@ import org.junit.validator.ValidateWith;
 @ValidateWith(OrderWithValidator.class)
 public @interface OrderWith {
     /**
-     * Gets a class that extends {@link Ordering}. The class must have a public no-arg constructor.
+     * Gets a class that extends {@link Ordering}. The class must have a public
+     * no-arg constructor.
      */
     Class<? extends Ordering.Factory> value();
 }

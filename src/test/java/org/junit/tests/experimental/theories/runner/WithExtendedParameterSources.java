@@ -21,7 +21,7 @@ public class WithExtendedParameterSources {
     @RunWith(Theories.class)
     public static class ParameterAnnotations {
         @Theory
-        public void everythingIsOne(@TestedOn(ints = {1})
+        public void everythingIsOne(@TestedOn(ints = { 1 })
         int number) {
             assertThat(number, is(1));
         }
@@ -29,8 +29,8 @@ public class WithExtendedParameterSources {
 
     @Test
     public void testedOnLimitsParameters() throws Exception {
-        assertThat(testResult(ParameterAnnotations.class), ResultMatchers
-                .isSuccessful());
+        assertThat(testResult(ParameterAnnotations.class),
+                ResultMatchers.isSuccessful());
     }
 
     @RunWith(Theories.class)
@@ -38,7 +38,7 @@ public class WithExtendedParameterSources {
 
         @DataPoint
         public static String A = "a";
-        
+
         @DataPoint
         public static String NULL = null;
 
@@ -50,7 +50,8 @@ public class WithExtendedParameterSources {
 
     @Test
     public void shouldFilterOutNullSingleDataPoints() {
-        assertThat(testResult(ShouldFilterOutNullSingleDataPoints.class), isSuccessful());
+        assertThat(testResult(ShouldFilterOutNullSingleDataPoints.class),
+                isSuccessful());
     }
 
     @RunWith(Theories.class)
@@ -66,9 +67,12 @@ public class WithExtendedParameterSources {
 
     @Test
     public void shouldFilterOutNullElementsFromDataPointArrays() {
-        assertThat(testResult(ShouldFilterOutNullElementsFromDataPointArrays.class), isSuccessful());
+        assertThat(
+                testResult(
+                        ShouldFilterOutNullElementsFromDataPointArrays.class),
+                isSuccessful());
     }
-    
+
     @RunWith(Theories.class)
     public static class ShouldRejectTheoriesWithOnlyDisallowedNullData {
         @DataPoints
@@ -81,15 +85,18 @@ public class WithExtendedParameterSources {
 
     @Test
     public void ShouldRejectTheoriesWithOnlyDisallowedNullData() {
-        assertThat(testResult(ShouldRejectTheoriesWithOnlyDisallowedNullData.class), not(isSuccessful()));
-    }    
+        assertThat(
+                testResult(
+                        ShouldRejectTheoriesWithOnlyDisallowedNullData.class),
+                not(isSuccessful()));
+    }
 
     @RunWith(Theories.class)
     public static class DataPointArrays {
         public static String log = "";
 
         @DataPoints
-        public static String[] STRINGS = new String[]{"A", "B"};
+        public static String[] STRINGS = new String[] { "A", "B" };
 
         @Theory
         public void addToLog(String string) {
@@ -110,7 +117,7 @@ public class WithExtendedParameterSources {
 
         @DataPoints
         public static String[] STRINGS() {
-            return new String[]{"A", "B"};
+            return new String[] { "A", "B" };
         }
 
         @Theory
@@ -132,7 +139,7 @@ public class WithExtendedParameterSources {
 
         @DataPoints
         public static String[] STRINGS() {
-            return new String[]{"A", "B"};
+            return new String[] { "A", "B" };
         }
 
         @DataPoints
@@ -142,7 +149,7 @@ public class WithExtendedParameterSources {
 
         @DataPoints
         public static int[] INTS() {
-            return new int[]{1, 2, 3};
+            return new int[] { 1, 2, 3 };
         }
 
         @Theory
@@ -163,7 +170,7 @@ public class WithExtendedParameterSources {
         public static String log = "";
 
         @DataPoint
-        public static String[] STRINGS = new String[]{"A", "B"};
+        public static String[] STRINGS = new String[] { "A", "B" };
 
         @Theory
         public void addToLog(String[] strings) {

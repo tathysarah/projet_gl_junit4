@@ -23,7 +23,8 @@ public class RuleMemberValidatorTest {
     public void rejectProtectedClassRule() {
         TestClass target = new TestClass(TestWithProtectedClassRule.class);
         CLASS_RULE_VALIDATOR.validate(target, errors);
-        assertOneErrorWithMessage("The @ClassRule 'temporaryFolder' must be public.");
+        assertOneErrorWithMessage(
+                "The @ClassRule 'temporaryFolder' must be public.");
     }
 
     public static class TestWithProtectedClassRule {
@@ -35,7 +36,8 @@ public class RuleMemberValidatorTest {
     public void rejectNonStaticClassRule() {
         TestClass target = new TestClass(TestWithNonStaticClassRule.class);
         CLASS_RULE_VALIDATOR.validate(target, errors);
-        assertOneErrorWithMessage("The @ClassRule 'temporaryFolder' must be static.");
+        assertOneErrorWithMessage(
+                "The @ClassRule 'temporaryFolder' must be static.");
     }
 
     public static class TestWithNonStaticClassRule {
@@ -60,95 +62,115 @@ public class RuleMemberValidatorTest {
     public void rejectClassRuleInNonPublicClass() {
         TestClass target = new TestClass(NonPublicTestWithClassRule.class);
         CLASS_RULE_VALIDATOR.validate(target, errors);
-        assertOneErrorWithMessage("The @ClassRule 'temporaryFolder' must be declared in a public class.");
+        assertOneErrorWithMessage(
+                "The @ClassRule 'temporaryFolder' must be declared in a public class.");
     }
 
     static class NonPublicTestWithClassRule {
         @ClassRule
         public static TestRule temporaryFolder = new TemporaryFolder();
     }
-    
+
     /**
      * If there is any property annotated with @ClassRule then it must implement
      * {@link TestRule}
      * 
-     * <p>This case has been added with 
-     * <a href="https://github.com/junit-team/junit4/issues/1019">Issue #1019</a>
+     * <p>
+     * This case has been added with
+     * <a href="https://github.com/junit-team/junit4/issues/1019">Issue
+     * #1019</a>
      */
     @Test
     public void rejectClassRuleThatIsImplementationOfMethodRule() {
-        TestClass target = new TestClass(TestWithClassRuleIsImplementationOfMethodRule.class);
+        TestClass target = new TestClass(
+                TestWithClassRuleIsImplementationOfMethodRule.class);
         CLASS_RULE_VALIDATOR.validate(target, errors);
-        assertOneErrorWithMessage("The @ClassRule 'classRule' must implement TestRule.");
+        assertOneErrorWithMessage(
+                "The @ClassRule 'classRule' must implement TestRule.");
     }
-    
+
     public static class TestWithClassRuleIsImplementationOfMethodRule {
         @ClassRule
         public static MethodRule classRule = new MethodRule() {
-            
-            public Statement apply(Statement base, FrameworkMethod method, Object target) {
+
+            public Statement apply(Statement base, FrameworkMethod method,
+                    Object target) {
                 return base;
             }
         };
     }
 
     /**
-     * If there is any method annotated with @ClassRule then it must return an 
+     * If there is any method annotated with @ClassRule then it must return an
      * implementation of {@link TestRule}
      * 
-     * <p>This case has been added with 
-     * <a href="https://github.com/junit-team/junit4/issues/1019">Issue #1019</a>
+     * <p>
+     * This case has been added with
+     * <a href="https://github.com/junit-team/junit4/issues/1019">Issue
+     * #1019</a>
      */
     @Test
     public void rejectClassRuleThatReturnsImplementationOfMethodRule() {
-        TestClass target = new TestClass(TestWithClassRuleMethodThatReturnsMethodRule.class);
+        TestClass target = new TestClass(
+                TestWithClassRuleMethodThatReturnsMethodRule.class);
         CLASS_RULE_METHOD_VALIDATOR.validate(target, errors);
-        assertOneErrorWithMessage("The @ClassRule 'methodRule' must return an implementation of TestRule.");
+        assertOneErrorWithMessage(
+                "The @ClassRule 'methodRule' must return an implementation of TestRule.");
     }
 
     public static class TestWithClassRuleMethodThatReturnsMethodRule {
         @ClassRule
         public static MethodRule methodRule() {
             return new MethodRule() {
-                
-                public Statement apply(Statement base, FrameworkMethod method, Object target) {
+
+                public Statement apply(Statement base, FrameworkMethod method,
+                        Object target) {
                     return base;
                 }
             };
         }
     }
-    
+
     /**
      * If there is any property annotated with @ClassRule then it must implement
      * {@link TestRule}
      * 
-     * <p>This case has been added with 
-     * <a href="https://github.com/junit-team/junit4/issues/1019">Issue #1019</a>
+     * <p>
+     * This case has been added with
+     * <a href="https://github.com/junit-team/junit4/issues/1019">Issue
+     * #1019</a>
      */
     @Test
     public void rejectClassRuleIsAnArbitraryObject() throws Exception {
-        TestClass target = new TestClass(TestWithClassRuleIsAnArbitraryObject.class);
+        TestClass target = new TestClass(
+                TestWithClassRuleIsAnArbitraryObject.class);
         CLASS_RULE_VALIDATOR.validate(target, errors);
-        assertOneErrorWithMessage("The @ClassRule 'arbitraryObject' must implement TestRule.");
+        assertOneErrorWithMessage(
+                "The @ClassRule 'arbitraryObject' must implement TestRule.");
     }
 
     public static class TestWithClassRuleIsAnArbitraryObject {
         @ClassRule
         public static Object arbitraryObject = 1;
     }
-    
+
     /**
-     * If there is any method annotated with @ClassRule then it must return an 
+     * If there is any method annotated with @ClassRule then it must return an
      * implementation of {@link TestRule}
      * 
-     * <p>This case has been added with 
-     * <a href="https://github.com/junit-team/junit4/issues/1019">Issue #1019</a> 
+     * <p>
+     * This case has been added with
+     * <a href="https://github.com/junit-team/junit4/issues/1019">Issue
+     * #1019</a>
      */
     @Test
-    public void rejectClassRuleMethodReturnsAnArbitraryObject() throws Exception {
-        TestClass target = new TestClass(TestWithClassRuleMethodReturnsAnArbitraryObject.class);
+    public void rejectClassRuleMethodReturnsAnArbitraryObject()
+            throws Exception {
+        TestClass target = new TestClass(
+                TestWithClassRuleMethodReturnsAnArbitraryObject.class);
         CLASS_RULE_METHOD_VALIDATOR.validate(target, errors);
-        assertOneErrorWithMessage("The @ClassRule 'arbitraryObject' must return an implementation of TestRule.");
+        assertOneErrorWithMessage(
+                "The @ClassRule 'arbitraryObject' must return an implementation of TestRule.");
     }
 
     public static class TestWithClassRuleMethodReturnsAnArbitraryObject {
@@ -157,7 +179,7 @@ public class RuleMemberValidatorTest {
             return 1;
         }
     }
-    
+
     @Test
     public void acceptNonStaticTestRule() {
         TestClass target = new TestClass(TestWithNonStaticTestRule.class);
@@ -174,7 +196,8 @@ public class RuleMemberValidatorTest {
     public void rejectStaticTestRule() {
         TestClass target = new TestClass(TestWithStaticTestRule.class);
         RULE_VALIDATOR.validate(target, errors);
-        assertOneErrorWithMessage("The @Rule 'temporaryFolder' must not be static or it must be annotated with @ClassRule.");
+        assertOneErrorWithMessage(
+                "The @Rule 'temporaryFolder' must not be static or it must be annotated with @ClassRule.");
     }
 
     public static class TestWithStaticTestRule {
@@ -186,14 +209,15 @@ public class RuleMemberValidatorTest {
     public void rejectStaticMethodRule() {
         TestClass target = new TestClass(TestWithStaticMethodRule.class);
         RULE_VALIDATOR.validate(target, errors);
-        assertOneErrorWithMessage("The @Rule 'someMethodRule' must not be static.");
+        assertOneErrorWithMessage(
+                "The @Rule 'someMethodRule' must not be static.");
     }
 
     public static class TestWithStaticMethodRule {
         @Rule
         public static MethodRule someMethodRule = new SomeMethodRule();
     }
-    
+
     @Test
     public void acceptMethodRule() throws Exception {
         TestClass target = new TestClass(TestWithMethodRule.class);
@@ -213,9 +237,11 @@ public class RuleMemberValidatorTest {
 
     @Test
     public void rejectArbitraryObjectWithRuleAnnotation() throws Exception {
-        TestClass target = new TestClass(TestWithArbitraryObjectWithRuleAnnotation.class);
+        TestClass target = new TestClass(
+                TestWithArbitraryObjectWithRuleAnnotation.class);
         RULE_VALIDATOR.validate(target, errors);
-        assertOneErrorWithMessage("The @Rule 'arbitraryObject' must implement MethodRule or TestRule.");
+        assertOneErrorWithMessage(
+                "The @Rule 'arbitraryObject' must implement MethodRule or TestRule.");
     }
 
     public static class TestWithArbitraryObjectWithRuleAnnotation {
@@ -225,9 +251,11 @@ public class RuleMemberValidatorTest {
 
     @Test
     public void methodRejectProtectedClassRule() {
-        TestClass target = new TestClass(MethodTestWithProtectedClassRule.class);
+        TestClass target = new TestClass(
+                MethodTestWithProtectedClassRule.class);
         CLASS_RULE_METHOD_VALIDATOR.validate(target, errors);
-        assertOneErrorWithMessage("The @ClassRule 'getTemporaryFolder' must be public.");
+        assertOneErrorWithMessage(
+                "The @ClassRule 'getTemporaryFolder' must be public.");
     }
 
     public static class MethodTestWithProtectedClassRule {
@@ -239,9 +267,11 @@ public class RuleMemberValidatorTest {
 
     @Test
     public void methodRejectNonStaticClassRule() {
-        TestClass target = new TestClass(MethodTestWithNonStaticClassRule.class);
+        TestClass target = new TestClass(
+                MethodTestWithNonStaticClassRule.class);
         CLASS_RULE_METHOD_VALIDATOR.validate(target, errors);
-        assertOneErrorWithMessage("The @ClassRule 'getTemporaryFolder' must be static.");
+        assertOneErrorWithMessage(
+                "The @ClassRule 'getTemporaryFolder' must be static.");
     }
 
     public static class MethodTestWithNonStaticClassRule {
@@ -253,7 +283,8 @@ public class RuleMemberValidatorTest {
 
     @Test
     public void acceptMethodStaticTestRuleThatIsAlsoClassRule() {
-        TestClass target = new TestClass(MethodTestWithStaticClassAndTestRule.class);
+        TestClass target = new TestClass(
+                MethodTestWithStaticClassAndTestRule.class);
         CLASS_RULE_METHOD_VALIDATOR.validate(target, errors);
         assertNumberOfErrors(0);
     }
@@ -284,7 +315,8 @@ public class RuleMemberValidatorTest {
     public void rejectMethodStaticTestRule() {
         TestClass target = new TestClass(TestMethodWithStaticTestRule.class);
         RULE_METHOD_VALIDATOR.validate(target, errors);
-        assertOneErrorWithMessage("The @Rule 'getTemporaryFolder' must not be static or it must be annotated with @ClassRule.");
+        assertOneErrorWithMessage(
+                "The @Rule 'getTemporaryFolder' must not be static or it must be annotated with @ClassRule.");
     }
 
     public static class TestMethodWithStaticTestRule {
@@ -298,12 +330,15 @@ public class RuleMemberValidatorTest {
     public void rejectMethodStaticMethodRule() {
         TestClass target = new TestClass(TestMethodWithStaticMethodRule.class);
         RULE_METHOD_VALIDATOR.validate(target, errors);
-        assertOneErrorWithMessage("The @Rule 'getSomeMethodRule' must not be static.");
+        assertOneErrorWithMessage(
+                "The @Rule 'getSomeMethodRule' must not be static.");
     }
 
     public static class TestMethodWithStaticMethodRule {
         @Rule
-        public static MethodRule getSomeMethodRule() { return new SomeMethodRule(); }
+        public static MethodRule getSomeMethodRule() {
+            return new SomeMethodRule();
+        }
     }
 
     @Test
@@ -326,10 +361,13 @@ public class RuleMemberValidatorTest {
     }
 
     @Test
-    public void methodRejectArbitraryObjectWithRuleAnnotation() throws Exception {
-        TestClass target = new TestClass(MethodTestWithArbitraryObjectWithRuleAnnotation.class);
+    public void methodRejectArbitraryObjectWithRuleAnnotation()
+            throws Exception {
+        TestClass target = new TestClass(
+                MethodTestWithArbitraryObjectWithRuleAnnotation.class);
         RULE_METHOD_VALIDATOR.validate(target, errors);
-        assertOneErrorWithMessage("The @Rule 'getArbitraryObject' must return an implementation of MethodRule or TestRule.");
+        assertOneErrorWithMessage(
+                "The @Rule 'getArbitraryObject' must return an implementation of MethodRule or TestRule.");
     }
 
     public static class MethodTestWithArbitraryObjectWithRuleAnnotation {
@@ -341,15 +379,17 @@ public class RuleMemberValidatorTest {
 
     private void assertOneErrorWithMessage(String message) {
         assertNumberOfErrors(1);
-        assertEquals("Wrong error message:", message, errors.get(0).getMessage());
+        assertEquals("Wrong error message:", message,
+                errors.get(0).getMessage());
     }
 
     private void assertNumberOfErrors(int numberOfErrors) {
         assertEquals("Wrong number of errors:", numberOfErrors, errors.size());
     }
-    
+
     private static final class SomeMethodRule implements MethodRule {
-        public Statement apply(Statement base, FrameworkMethod method, Object target) {
+        public Statement apply(Statement base, FrameworkMethod method,
+                Object target) {
             return base;
         }
     }

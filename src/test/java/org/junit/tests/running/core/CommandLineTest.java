@@ -14,7 +14,9 @@ import org.junit.runner.MainRunner;
 
 public class CommandLineTest {
     private ByteArrayOutputStream results;
+
     private PrintStream oldOut;
+
     private static boolean testWasRun;
 
     @Before
@@ -62,7 +64,7 @@ public class CommandLineTest {
     @Test
     public void runTwoClassesAsArray() {
         fCount = 0;
-        JUnitCore.runClasses(new Class[]{Count.class, Count.class});
+        JUnitCore.runClasses(new Class[] { Count.class, Count.class });
         assertEquals(2, fCount);
     }
 

@@ -5,9 +5,6 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({
-        ParallelClassTest.class,
-        ParallelMethodTest.class
-})
+@SuiteClasses({ ParallelClassTest.class, ParallelMethodTest.class })
 public class AllParallelTests {
 }

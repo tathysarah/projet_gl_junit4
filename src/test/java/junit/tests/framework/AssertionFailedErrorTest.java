@@ -12,7 +12,8 @@ public class AssertionFailedErrorTest extends TestCase {
     }
 
     public void testCreateErrorWithMessage() throws Exception {
-        AssertionFailedError error = new AssertionFailedError(ARBITRARY_MESSAGE);
+        AssertionFailedError error = new AssertionFailedError(
+                ARBITRARY_MESSAGE);
         assertEquals(ARBITRARY_MESSAGE, error.getMessage());
     }
 

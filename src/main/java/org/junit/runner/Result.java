@@ -17,20 +17,28 @@ import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
 /**
- * A <code>Result</code> collects and summarizes information from running multiple tests.
- * All tests are counted -- additional information is collected from tests that fail.
+ * A <code>Result</code> collects and summarizes information from running
+ * multiple tests. All tests are counted -- additional information is collected
+ * from tests that fail.
  *
  * @since 4.0
  */
 public class Result implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final ObjectStreamField[] serialPersistentFields =
-            ObjectStreamClass.lookup(SerializedForm.class).getFields();
+
+    private static final ObjectStreamField[] serialPersistentFields = ObjectStreamClass
+            .lookup(SerializedForm.class).getFields();
+
     private final AtomicInteger count;
+
     private final AtomicInteger ignoreCount;
+
     private final AtomicInteger assumptionFailureCount;
+
     private final CopyOnWriteArrayList<Failure> failures;
+
     private final AtomicLong runTime;
+
     private final AtomicLong startTime;
 
     /** Only set during deserialization process. */
@@ -76,7 +84,8 @@ public class Result implements Serializable {
     }
 
     /**
-     * Returns the {@link Failure}s describing tests that failed and the problems they encountered
+     * Returns the {@link Failure}s describing tests that failed and the
+     * problems they encountered
      */
     public List<Failure> getFailures() {
         return failures;
@@ -92,7 +101,8 @@ public class Result implements Serializable {
     /**
      * Returns the number of tests skipped because of an assumption failure
      *
-     * @throws UnsupportedOperationException if the result was serialized in a version before JUnit 4.13
+     * @throws UnsupportedOperationException
+     *             if the result was serialized in a version before JUnit 4.13
      * @since 4.13
      */
     public int getAssumptionFailureCount() {
@@ -120,7 +130,7 @@ public class Result implements Serializable {
         serializedForm = SerializedForm.deserialize(s);
     }
 
-    private Object readResolve()  {
+    private Object readResolve() {
         return new Result(serializedForm);
     }
 
@@ -171,27 +181,36 @@ public class Result implements Serializable {
      */
     private static class SerializedForm implements Serializable {
         private static final long serialVersionUID = 1L;
+
         private final AtomicInteger fCount;
+
         private final AtomicInteger fIgnoreCount;
+
         private final AtomicInteger assumptionFailureCount;
+
         private final List<Failure> fFailures;
+
         private final long fRunTime;
+
         private final long fStartTime;
 
         public SerializedForm(Result result) {
             fCount = result.count;
             fIgnoreCount = result.ignoreCount;
             assumptionFailureCount = result.assumptionFailureCount;
-            fFailures = Collections.synchronizedList(new ArrayList<Failure>(result.failures));
+            fFailures = Collections
+                    .synchronizedList(new ArrayList<Failure>(result.failures));
             fRunTime = result.runTime.longValue();
             fStartTime = result.startTime.longValue();
         }
 
         @SuppressWarnings("unchecked")
-        private SerializedForm(ObjectInputStream.GetField fields) throws IOException, ClassNotFoundException {
+        private SerializedForm(ObjectInputStream.GetField fields)
+                throws IOException, ClassNotFoundException {
             fCount = (AtomicInteger) fields.get("fCount", null);
             fIgnoreCount = (AtomicInteger) fields.get("fIgnoreCount", null);
-            assumptionFailureCount = (AtomicInteger) fields.get("assumptionFailureCount", null);
+            assumptionFailureCount = (AtomicInteger) fields
+                    .get("assumptionFailureCount", null);
             fFailures = (List<Failure>) fields.get("fFailures", null);
             fRunTime = fields.get("fRunTime", 0L);
             fStartTime = fields.get("fStartTime", 0L);

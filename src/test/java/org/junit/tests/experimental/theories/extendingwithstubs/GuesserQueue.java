@@ -31,17 +31,17 @@ public class GuesserQueue extends ArrayList<ReguessableValue> {
         }
     }
 
-    static GuesserQueue forSingleValues(
-            List<PotentialAssignment> potentials) {
+    static GuesserQueue forSingleValues(List<PotentialAssignment> potentials) {
         GuesserQueue returnThis = new GuesserQueue();
         for (PotentialAssignment potentialParameterValue : potentials) {
-            returnThis
-                    .add(new GuesserQueue.ReguessableDecorator(potentialParameterValue));
+            returnThis.add(new GuesserQueue.ReguessableDecorator(
+                    potentialParameterValue));
         }
         return returnThis;
     }
 
     private static final long serialVersionUID = 1L;
+
     private ReguessableValue lastRemoved;
 
     public void update(AssumptionViolatedException e) {

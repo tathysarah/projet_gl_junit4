@@ -9,9 +9,11 @@ public interface FilterFactory {
     /**
      * Creates a {@link Filter} given a {@link FilterFactoryParams} argument.
      *
-     * @param params Parameters needed to create the {@link Filter}
+     * @param params
+     *            Parameters needed to create the {@link Filter}
      */
-    Filter createFilter(FilterFactoryParams params) throws FilterNotCreatedException;
+    Filter createFilter(FilterFactoryParams params)
+            throws FilterNotCreatedException;
 
     /**
      * Exception thrown if the {@link Filter} cannot be created.

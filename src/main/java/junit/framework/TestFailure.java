@@ -2,15 +2,15 @@ package junit.framework;
 
 import org.junit.internal.Throwables;
 
-
 /**
- * A {@code TestFailure} collects a failed test together with
- * the caught exception.
+ * A {@code TestFailure} collects a failed test together with the caught
+ * exception.
  *
  * @see TestResult
  */
 public class TestFailure {
     protected Test fFailedTest;
+
     protected Throwable fThrownException;
 
     /**
@@ -42,10 +42,10 @@ public class TestFailure {
     public String toString() {
         return fFailedTest + ": " + fThrownException.getMessage();
     }
-    
+
     /**
-     * Returns a String containing the stack trace of the error
-     * thrown by TestFailure.
+     * Returns a String containing the stack trace of the error thrown by
+     * TestFailure.
      */
     public String trace() {
         return Throwables.getStacktrace(thrownException());
@@ -59,9 +59,8 @@ public class TestFailure {
     }
 
     /**
-     * Returns {@code true} if the error is considered a failure
-     * (i.e. if it is an instance of {@code AssertionFailedError}),
-     * {@code false} otherwise.
+     * Returns {@code true} if the error is considered a failure (i.e. if it is
+     * an instance of {@code AssertionFailedError}), {@code false} otherwise.
      */
     public boolean isFailure() {
         return thrownException() instanceof AssertionFailedError;

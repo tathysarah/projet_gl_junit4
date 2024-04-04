@@ -38,28 +38,34 @@ public class DescriptionTest {
 
     @Test
     public void parseClassAndMethodNoAnnotations() throws Exception {
-        Description description = Description.createTestDescription(Description.class, "aTestMethod");
+        Description description = Description
+                .createTestDescription(Description.class, "aTestMethod");
 
-        assertThat(description.getClassName(), equalTo("org.junit.runner.Description"));
+        assertThat(description.getClassName(),
+                equalTo("org.junit.runner.Description"));
         assertThat(description.getMethodName(), equalTo("aTestMethod"));
         assertThat(description.getAnnotations().size(), equalTo(0));
     }
 
     @Test
     public void parseClassAndMethodWithAnnotations() throws Exception {
-        Annotation[] annotations =
-                DescriptionTest.class.getMethod("parseClassAndMethodWithAnnotations").getDeclaredAnnotations();
+        Annotation[] annotations = DescriptionTest.class
+                .getMethod("parseClassAndMethodWithAnnotations")
+                .getDeclaredAnnotations();
 
-        Description description = Description.createTestDescription(Description.class, "aTestMethod", annotations);
+        Description description = Description.createTestDescription(
+                Description.class, "aTestMethod", annotations);
 
-        assertThat(description.getClassName(), equalTo("org.junit.runner.Description"));
+        assertThat(description.getClassName(),
+                equalTo("org.junit.runner.Description"));
         assertThat(description.getMethodName(), equalTo("aTestMethod"));
         assertThat(description.getAnnotations().size(), equalTo(1));
     }
 
     @Test
     public void parseClassNameAndMethodUniqueId() throws Exception {
-        Description description = Description.createTestDescription("not a class name", "aTestMethod", 123);
+        Description description = Description
+                .createTestDescription("not a class name", "aTestMethod", 123);
 
         assertThat(description.getClassName(), equalTo("not a class name"));
         assertThat(description.getMethodName(), equalTo("aTestMethod"));
@@ -68,8 +74,11 @@ public class DescriptionTest {
 
     @Test
     public void sameNamesButDifferentUniqueIdAreNotEqual() throws Exception {
-        assertThat(Description.createTestDescription("not a class name", "aTestMethod", 1),
-                not(equalTo(Description.createTestDescription("not a class name", "aTestMethod", 2))));
+        assertThat(
+                Description.createTestDescription("not a class name",
+                        "aTestMethod", 1),
+                not(equalTo(Description.createTestDescription(
+                        "not a class name", "aTestMethod", 2))));
     }
 
     @Test
@@ -80,11 +89,13 @@ public class DescriptionTest {
             }
 
             @Override // just making public
-            public Class<?> findClass(String name) throws ClassNotFoundException {
+            public Class<?> findClass(String name)
+                    throws ClassNotFoundException {
                 return super.findClass(name);
             }
         }
-        URL classpath = Sweet.class.getProtectionDomain().getCodeSource().getLocation();
+        URL classpath = Sweet.class.getProtectionDomain().getCodeSource()
+                .getLocation();
         URLClassLoader2 loader = new URLClassLoader2(classpath);
         Class<?> clazz = loader.findClass(Sweet.class.getName());
         assertEquals(loader, clazz.getClassLoader());
@@ -93,24 +104,28 @@ public class DescriptionTest {
         assertEquals(clazz, d.getTestClass());
         assertNull(d.getMethodName());
         assertEquals(1, d.getAnnotations().size());
-        assertEquals(Ignore.class, d.getAnnotations().iterator().next().annotationType());
+        assertEquals(Ignore.class,
+                d.getAnnotations().iterator().next().annotationType());
 
         d = Description.createTestDescription(clazz, "tessed");
         assertEquals(clazz, d.getTestClass());
         assertEquals("tessed", d.getMethodName());
         assertEquals(0, d.getAnnotations().size());
 
-        d = Description.createTestDescription(clazz, "tessed", clazz.getMethod("tessed").getAnnotations());
+        d = Description.createTestDescription(clazz, "tessed",
+                clazz.getMethod("tessed").getAnnotations());
         assertEquals(clazz, d.getTestClass());
         assertEquals("tessed", d.getMethodName());
         assertEquals(1, d.getAnnotations().size());
-        assertEquals(Test.class, d.getAnnotations().iterator().next().annotationType());
+        assertEquals(Test.class,
+                d.getAnnotations().iterator().next().annotationType());
 
         d = d.childlessCopy();
         assertEquals(clazz, d.getTestClass());
         assertEquals("tessed", d.getMethodName());
         assertEquals(1, d.getAnnotations().size());
-        assertEquals(Test.class, d.getAnnotations().iterator().next().annotationType());
+        assertEquals(Test.class,
+                d.getAnnotations().iterator().next().annotationType());
     }
 
     @Ignore

@@ -35,7 +35,10 @@ public class BaseTestRunnerTest extends TestCase {
 
     public void testInvokeNonStaticSuite() {
         BaseTestRunner runner = new MockRunner();
-        runner.getTest("junit.tests.runner.BaseTestRunnerTest$NonStatic"); // Used to throw NullPointerException
+        runner.getTest("junit.tests.runner.BaseTestRunnerTest$NonStatic"); // Used
+                                                                           // to
+                                                                           // throw
+                                                                           // NullPointerException
     }
 
     public static class DoesntExtendTestCase {

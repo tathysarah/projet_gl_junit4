@@ -45,7 +45,8 @@ public class CategoryFilterFactoryTest {
         categoryFilterFactory.createFilter(params);
     }
 
-    private static class CategoryFilterFactoryStub extends CategoryFilterFactory {
+    private static class CategoryFilterFactoryStub
+            extends CategoryFilterFactory {
         @Override
         protected Filter createFilter(List<Class<?>> categories) {
             return new DummyFilter();

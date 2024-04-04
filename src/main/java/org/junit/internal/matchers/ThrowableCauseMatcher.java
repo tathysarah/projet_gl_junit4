@@ -6,13 +6,14 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 /**
- * A matcher that applies a delegate matcher to the cause of the current Throwable, returning the result of that
- * match.
+ * A matcher that applies a delegate matcher to the cause of the current
+ * Throwable, returning the result of that match.
  *
- * @param <T> the type of the throwable being matched
+ * @param <T>
+ *            the type of the throwable being matched
  */
-public class ThrowableCauseMatcher<T extends Throwable> extends
-        TypeSafeMatcher<T> {
+public class ThrowableCauseMatcher<T extends Throwable>
+        extends TypeSafeMatcher<T> {
 
     private final Matcher<?> causeMatcher;
 
@@ -37,14 +38,17 @@ public class ThrowableCauseMatcher<T extends Throwable> extends
     }
 
     /**
-     * Returns a matcher that verifies that the outer exception has a cause for which the supplied matcher
-     * evaluates to true.
+     * Returns a matcher that verifies that the outer exception has a cause for
+     * which the supplied matcher evaluates to true.
      *
-     * @param matcher to apply to the cause of the outer exception
-     * @param <T> type of the outer exception
+     * @param matcher
+     *            to apply to the cause of the outer exception
+     * @param <T>
+     *            type of the outer exception
      */
     @Factory
-    public static <T extends Throwable> Matcher<T> hasCause(final Matcher<?> matcher) {
+    public static <T extends Throwable> Matcher<T> hasCause(
+            final Matcher<?> matcher) {
         return new ThrowableCauseMatcher<T>(matcher);
     }
 }

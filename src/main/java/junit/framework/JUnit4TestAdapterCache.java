@@ -12,6 +12,7 @@ import org.junit.runner.notification.RunNotifier;
 
 public class JUnit4TestAdapterCache extends HashMap<Description, Test> {
     private static final long serialVersionUID = 1L;
+
     private static final JUnit4TestAdapterCache fInstance = new JUnit4TestAdapterCache();
 
     public static JUnit4TestAdapterCache getDefault() {
@@ -41,12 +42,14 @@ public class JUnit4TestAdapterCache extends HashMap<Description, Test> {
         }
     }
 
-    public RunNotifier getNotifier(final TestResult result, final JUnit4TestAdapter adapter) {
+    public RunNotifier getNotifier(final TestResult result,
+            final JUnit4TestAdapter adapter) {
         RunNotifier notifier = new RunNotifier();
         notifier.addListener(new RunListener() {
             @Override
             public void testFailure(Failure failure) throws Exception {
-                result.addError(asTest(failure.getDescription()), failure.getException());
+                result.addError(asTest(failure.getDescription()),
+                        failure.getException());
             }
 
             @Override

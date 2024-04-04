@@ -8,6 +8,7 @@ import org.junit.runner.Runner;
 
 abstract class MemoizingRequest extends Request {
     private final Lock runnerLock = new ReentrantLock();
+
     private volatile Runner runner;
 
     @Override
@@ -25,6 +26,9 @@ abstract class MemoizingRequest extends Request {
         return runner;
     }
 
-    /** Creates the {@link Runner} to return from {@link #getRunner()}. Called at most once. */
+    /**
+     * Creates the {@link Runner} to return from {@link #getRunner()}. Called at
+     * most once.
+     */
     protected abstract Runner createRunner();
 }

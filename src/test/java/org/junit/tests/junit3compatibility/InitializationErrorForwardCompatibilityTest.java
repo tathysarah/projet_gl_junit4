@@ -42,8 +42,7 @@ public class InitializationErrorForwardCompatibilityTest {
 
     @Before
     public void createAdapter() {
-        fAdapter = new JUnit4TestAdapter(
-                CantInitializeTests.class);
+        fAdapter = new JUnit4TestAdapter(CantInitializeTests.class);
     }
 
     @Test
@@ -56,8 +55,8 @@ public class InitializationErrorForwardCompatibilityTest {
         TestResult result = new TestResult();
         fAdapter.run(result);
         assertEquals(1, result.errorCount());
-        assertEquals(CantInitialize.UNIQUE_ERROR_MESSAGE, result.errors()
-                .nextElement().exceptionMessage());
+        assertEquals(CantInitialize.UNIQUE_ERROR_MESSAGE,
+                result.errors().nextElement().exceptionMessage());
     }
 
     private final class ErrorRememberingListener implements TestListener {

@@ -32,7 +32,8 @@ public class ParallelComputer extends Computer {
     private static Runner parallelize(Runner runner) {
         if (runner instanceof ParentRunner) {
             ((ParentRunner<?>) runner).setScheduler(new RunnerScheduler() {
-                private final ExecutorService fService = Executors.newCachedThreadPool();
+                private final ExecutorService fService = Executors
+                        .newCachedThreadPool();
 
                 public void schedule(Runnable childStatement) {
                     fService.submit(childStatement);
@@ -41,7 +42,8 @@ public class ParallelComputer extends Computer {
                 public void finished() {
                     try {
                         fService.shutdown();
-                        fService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+                        fService.awaitTermination(Long.MAX_VALUE,
+                                TimeUnit.NANOSECONDS);
                     } catch (InterruptedException e) {
                         e.printStackTrace(System.err);
                     }

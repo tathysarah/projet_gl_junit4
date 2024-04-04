@@ -13,12 +13,14 @@ import org.junit.runner.Description;
  *
  * @since 4.13
  */
-public final class Orderer  {
+public final class Orderer {
     private final Ordering ordering;
 
     Orderer(Ordering delegate) {
         this.ordering = delegate;
     }
+
+    //public List<Description> getInOrder()
 
     /**
      * Orders the descriptions.
@@ -27,13 +29,14 @@ public final class Orderer  {
      */
     public List<Description> order(Collection<Description> descriptions)
             throws InvalidOrderingException {
-        List<Description> inOrder = ordering.orderItems(
-                Collections.unmodifiableCollection(descriptions));
+        List<Description> inOrder = ordering
+                .orderItems(Collections.unmodifiableCollection(descriptions));
         if (!ordering.validateOrderingIsCorrect()) {
             return inOrder;
         }
 
-        Set<Description> uniqueDescriptions = new HashSet<Description>(descriptions);
+        Set<Description> uniqueDescriptions = new HashSet<Description>(
+                descriptions);
         if (!uniqueDescriptions.containsAll(inOrder)) {
             throw new InvalidOrderingException("Ordering added items");
         }
@@ -50,8 +53,9 @@ public final class Orderer  {
     /**
      * Order the tests in <code>target</code>.
      *
-     * @throws InvalidOrderingException if ordering does something invalid (like remove or add
-     * children)
+     * @throws InvalidOrderingException
+     *             if ordering does something invalid (like remove or add
+     *             children)
      */
     public void apply(Object target) throws InvalidOrderingException {
         if (target instanceof Orderable) {

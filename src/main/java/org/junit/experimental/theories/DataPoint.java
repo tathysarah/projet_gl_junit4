@@ -13,10 +13,10 @@ import java.lang.annotation.Target;
  * theories in that class, when run with the
  * {@link org.junit.experimental.theories.Theories Theories} runner.
  * <p>
- * A DataPoint is only considered as a potential value for parameters for
- * which its type is assignable. When multiple {@code DataPoint}s exist 
- * with overlapping types more control can be obtained by naming each DataPoint 
- * using the value of this annotation, e.g. with
+ * A DataPoint is only considered as a potential value for parameters for which
+ * its type is assignable. When multiple {@code DataPoint}s exist with
+ * overlapping types more control can be obtained by naming each DataPoint using
+ * the value of this annotation, e.g. with
  * <code>&#064;DataPoint({"dataset1", "dataset2"})</code>, and then specifying
  * which named set to consider as potential values for each parameter using the
  * {@link org.junit.experimental.theories.FromDataPoints &#064;FromDataPoints}
@@ -24,9 +24,9 @@ import java.lang.annotation.Target;
  * <p>
  * Parameters with no specified source (i.e. without &#064;FromDataPoints or
  * other {@link org.junit.experimental.theories.ParametersSuppliedBy
- * &#064;ParameterSuppliedBy} annotations) will use all {@code DataPoint}s that are
- * assignable to the parameter type as potential values, including named sets of
- * {@code DataPoint}s.
+ * &#064;ParameterSuppliedBy} annotations) will use all {@code DataPoint}s that
+ * are assignable to the parameter type as potential values, including named
+ * sets of {@code DataPoint}s.
  * 
  * <pre>
  * &#064;DataPoint
@@ -49,8 +49,9 @@ import java.lang.annotation.Target;
  * @see org.junit.experimental.theories.FromDataPoints
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({FIELD, METHOD})
+@Target({ FIELD, METHOD })
 public @interface DataPoint {
     String[] value() default {};
+
     Class<? extends Throwable>[] ignoredExceptions() default {};
 }

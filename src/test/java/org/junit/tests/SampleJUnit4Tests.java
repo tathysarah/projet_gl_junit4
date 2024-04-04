@@ -1,5 +1,7 @@
 package org.junit.tests;
 
+import java.lang.reflect.Method;
+
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -9,15 +11,13 @@ import org.junit.rules.TestRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-import java.lang.reflect.Method;
-
 /**
  * Container for sample JUnit4-style tests used in integration tests.
  */
 public class SampleJUnit4Tests {
 
     public static class TestWithOneThrowingTestMethod {
-        
+
         @Test
         public void alwaysThrows() {
             new FakeClassUnderTest().throwsExceptionWithoutCause();
@@ -25,7 +25,7 @@ public class SampleJUnit4Tests {
     }
 
     public static class TestWithOneThrowingTestMethodWithCause {
-        
+
         @Test
         public void alwaysThrows() {
             new FakeClassUnderTest().throwsExceptionWithCause();
@@ -46,8 +46,8 @@ public class SampleJUnit4Tests {
 
     public static class ThrowingTestRule implements TestRule {
 
-        public Statement apply(
-                Statement base, org.junit.runner.Description description) {
+        public Statement apply(Statement base,
+                org.junit.runner.Description description) {
             new FakeClassUnderTest().throwsExceptionWithoutCause();
             return base;
         }
@@ -75,8 +75,8 @@ public class SampleJUnit4Tests {
 
     public static class ThrowingMethodRule implements MethodRule {
 
-        public Statement apply(
-                Statement base, FrameworkMethod method, Object target) {
+        public Statement apply(Statement base, FrameworkMethod method,
+                Object target) {
             new FakeClassUnderTest().throwsExceptionWithoutCause();
             return base;
         }
@@ -97,7 +97,8 @@ public class SampleJUnit4Tests {
 
         static Method initAddSuppressed() {
             try {
-                return Throwable.class.getMethod("addSuppressed", Throwable.class);
+                return Throwable.class.getMethod("addSuppressed",
+                        Throwable.class);
             } catch (Throwable e) {
                 return null;
             }
@@ -112,7 +113,7 @@ public class SampleJUnit4Tests {
     }
 
     private static class FakeClassUnderTest {
-        
+
         public void throwsExceptionWithCause() {
             doThrowExceptionWithCause();
         }

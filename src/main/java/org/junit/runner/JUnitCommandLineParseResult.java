@@ -7,17 +7,20 @@ import java.util.List;
 import org.junit.internal.Classes;
 import org.junit.runner.FilterFactory.FilterNotCreatedException;
 import org.junit.runner.manipulation.Filter;
-import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.InitializationErrorException;
 
 class JUnitCommandLineParseResult {
     private final List<String> filterSpecs = new ArrayList<String>();
+
     private final List<Class<?>> classes = new ArrayList<Class<?>>();
+
     private final List<Throwable> parserErrors = new ArrayList<Throwable>();
 
     /**
      * Do not use. Testing purposes only.
      */
-    JUnitCommandLineParseResult() {}
+    JUnitCommandLineParseResult() {
+    }
 
     /**
      * Returns filter specs parsed from command line.
@@ -36,7 +39,8 @@ class JUnitCommandLineParseResult {
     /**
      * Parses the arguments.
      *
-     * @param args Arguments
+     * @param args
+     *            Arguments
      */
     public static JUnitCommandLineParseResult parse(String[] args) {
         JUnitCommandLineParseResult result = new JUnitCommandLineParseResult();
@@ -65,7 +69,8 @@ class JUnitCommandLineParseResult {
                         if (i < args.length) {
                             filterSpec = args[i];
                         } else {
-                            parserErrors.add(new CommandLineParserError(arg + " value not specified"));
+                            parserErrors.add(new CommandLineParserErrorException(
+                                    arg + " value not specified"));
                             break;
                         }
                     } else {
@@ -74,14 +79,16 @@ class JUnitCommandLineParseResult {
 
                     filterSpecs.add(filterSpec);
                 } else {
-                    parserErrors.add(new CommandLineParserError("JUnit knows nothing about the " + arg + " option"));
+                    parserErrors.add(new CommandLineParserErrorException(
+                            "JUnit knows nothing about the " + arg
+                                    + " option"));
                 }
             } else {
                 return copyArray(args, i, args.length);
             }
         }
 
-        return new String[]{};
+        return new String[] {};
     }
 
     private String[] copyArray(String[] args, int from, int to) {
@@ -97,7 +104,8 @@ class JUnitCommandLineParseResult {
             try {
                 classes.add(Classes.getClass(arg));
             } catch (ClassNotFoundException e) {
-                parserErrors.add(new IllegalArgumentException("Could not find class [" + arg + "]", e));
+                parserErrors.add(new IllegalArgumentException(
+                        "Could not find class [" + arg + "]", e));
             }
         }
     }
@@ -109,23 +117,24 @@ class JUnitCommandLineParseResult {
     /**
      * Creates a {@link Request}.
      *
-     * @param computer {@link Computer} to be used.
+     * @param computer
+     *            {@link Computer} to be used.
      */
     public Request createRequest(Computer computer) {
         if (parserErrors.isEmpty()) {
-            Request request = Request.classes(
-                    computer, classes.toArray(new Class<?>[classes.size()]));
+            Request request = Request.classes(computer,
+                    classes.toArray(new Class<?>[classes.size()]));
             return applyFilterSpecs(request);
         } else {
-            return errorReport(new InitializationError(parserErrors));
+            return errorReport(new InitializationErrorException(parserErrors));
         }
     }
 
     private Request applyFilterSpecs(Request request) {
         try {
             for (String filterSpec : filterSpecs) {
-                Filter filter = FilterFactories.createFilterFromFilterSpec(
-                        request, filterSpec);
+                Filter filter = FilterFactories
+                        .createFilterFromFilterSpec(request, filterSpec);
                 request = request.filterWith(filter);
             }
             return request;
@@ -137,10 +146,10 @@ class JUnitCommandLineParseResult {
     /**
      * Exception used if there's a problem parsing the command line.
      */
-    public static class CommandLineParserError extends Exception {
-        private static final long serialVersionUID= 1L;
+    public static class CommandLineParserErrorException extends Exception {
+        private static final long serialVersionUID = 1L;
 
-        public CommandLineParserError(String message) {
+        public CommandLineParserErrorException(String message) {
             super(message);
         }
     }

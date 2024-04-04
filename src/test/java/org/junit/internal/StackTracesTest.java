@@ -25,10 +25,18 @@ import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
-import org.junit.tests.SampleJUnit4Tests.*;
+import org.junit.tests.SampleJUnit4Tests.TestWithOneThrowingTestMethod;
+import org.junit.tests.SampleJUnit4Tests.TestWithOneThrowingTestMethodWithCause;
+import org.junit.tests.SampleJUnit4Tests.TestWithSuppressedException;
+import org.junit.tests.SampleJUnit4Tests.TestWithThrowingBeforeMethod;
+import org.junit.tests.SampleJUnit4Tests.TestWithThrowingClassRule;
+import org.junit.tests.SampleJUnit4Tests.TestWithThrowingMethodRule;
+import org.junit.tests.SampleJUnit4Tests.TestWithThrowingTestRule;
 
 public class StackTracesTest {
-    private static final String EOL = System.getProperty("line.separator", "\n");
+    private static final String EOL = System.getProperty("line.separator",
+            "\n");
+
     private static ExecutorService executorService;
 
     @BeforeClass
@@ -40,7 +48,7 @@ public class StackTracesTest {
     public static void shutDownExecutorService() {
         executorService.shutdown();
         executorService = null;
-    } 
+    }
 
     @Test
     public void getTrimmedStackForJUnit4TestFailingInTestMethod() {
@@ -95,7 +103,8 @@ public class StackTracesTest {
 
     @Test
     public void getTrimmedStackForJUnit3TestFailingInTestMethod() {
-        Result result = runTest(SampleJUnit3Tests.TestWithOneThrowingTestMethod.class);
+        Result result = runTest(
+                SampleJUnit3Tests.TestWithOneThrowingTestMethod.class);
         assertEquals("Should run the test", 1, result.getRunCount());
         assertEquals("One test should fail", 1, result.getFailureCount());
         Failure failure = result.getFailures().get(0);
@@ -107,10 +116,11 @@ public class StackTracesTest {
                 at("junit.tests.SampleJUnit3Tests$TestWithOneThrowingTestMethod.testAlwaysThrows"));
         assertNotEquals(failure.getTrace(), failure.getTrimmedTrace());
     }
-    
+
     @Test
     public void getTrimmedStackForJUnit3TestFailingInSetupMethod() {
-        Result result = runTest(SampleJUnit3Tests.TestWithThrowingSetUpMethod.class);
+        Result result = runTest(
+                SampleJUnit3Tests.TestWithThrowingSetUpMethod.class);
         assertEquals("Should run the test", 1, result.getRunCount());
         assertEquals("One test should fail", 1, result.getFailureCount());
         Failure failure = result.getFailures().get(0);
@@ -170,7 +180,8 @@ public class StackTracesTest {
 
     @Test
     public void getTrimmedStackWithSuppressedExceptions() {
-        assumeTrue("Running on 1.7+", TestWithSuppressedException.addSuppressed != null);
+        assumeTrue("Running on 1.7+",
+                TestWithSuppressedException.addSuppressed != null);
         Result result = runTest(TestWithSuppressedException.class);
         assertEquals("Should run the test", 1, result.getRunCount());
         assertEquals("One test should fail", 1, result.getFailureCount());
@@ -185,7 +196,8 @@ public class StackTracesTest {
         assertNotEquals(failure.getTrace(), failure.getTrimmedTrace());
     }
 
-    private abstract static class StringMatcher extends TypeSafeMatcher<String> {
+    private abstract static class StringMatcher
+            extends TypeSafeMatcher<String> {
     }
 
     /**
@@ -217,8 +229,8 @@ public class StackTracesTest {
      * A matcher that matches the "at ..." line in a stack trace.
      */
     private static class StackTraceLineMatcher extends StringMatcher {
-        private static final Pattern PATTERN
-                = Pattern.compile("\t*at ([a-zA-Z0-9.$]+)\\([a-zA-Z0-9]+\\.java:[0-9]+\\)");
+        private static final Pattern PATTERN = Pattern.compile(
+                "\t*at ([a-zA-Z0-9.$]+)\\([a-zA-Z0-9]+\\.java:[0-9]+\\)");
 
         private final String method;
 
@@ -252,11 +264,12 @@ public class StackTracesTest {
     }
 
     /**
-     * A matcher that matches the line printed when frames were removed from a stack trace.
+     * A matcher that matches the line printed when frames were removed from a
+     * stack trace.
      */
     private static class FramesRemovedMatcher extends StringMatcher {
-        private static final Pattern PATTERN
-                = Pattern.compile("\t*\\.\\.\\. [0-9]+ ([a-z]+)");
+        private static final Pattern PATTERN = Pattern
+                .compile("\t*\\.\\.\\. [0-9]+ ([a-z]+)");
 
         private final String suffix;
 
@@ -283,12 +296,17 @@ public class StackTracesTest {
         }
     }
 
-    /** Returns a matcher that matches the "\t...x more" line in a stack trace. */
+    /**
+     * Returns a matcher that matches the "\t...x more" line in a stack trace.
+     */
     private static StringMatcher framesInCommon() {
         return new FramesRemovedMatcher("more");
     }
 
-    /** Returns a matcher that matches the "\t...x trimmed" line in a stack trace. */
+    /**
+     * Returns a matcher that matches the "\t...x trimmed" line in a stack
+     * trace.
+     */
     private static StringMatcher framesTrimmed() {
         return new FramesRemovedMatcher("trimmed");
     }
@@ -309,8 +327,9 @@ public class StackTracesTest {
             throw new RuntimeException("Could not run test " + testClass, e);
         }
     }
-    
-    private static void assertHasTrimmedTrace(Failure failure, StringMatcher... matchers) {
+
+    private static void assertHasTrimmedTrace(Failure failure,
+            StringMatcher... matchers) {
         String trimmedTrace = failure.getTrimmedTrace();
         String[] lines = trimmedTrace.split(EOL);
 

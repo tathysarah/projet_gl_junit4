@@ -80,8 +80,8 @@ public class ParameterizedTestTest {
     public void plansNamedCorrectly() throws Exception {
         Runner runner = Request.aClass(AdditionTest.class).getRunner();
         Description description = runner.getDescription();
-        assertEquals("[2: 3 + 2 = 5]", description.getChildren().get(2)
-                .getDisplayName());
+        assertEquals("[2: 3 + 2 = 5]",
+                description.getChildren().get(2).getDisplayName());
     }
 
     @RunWith(Parameterized.class)
@@ -118,7 +118,7 @@ public class ParameterizedTestTest {
     public static class ParameterizedWithoutSpecialTestname {
         @Parameters
         public static Collection<Object[]> data() {
-            return Arrays.asList(new Object[][]{{3}, {3}});
+            return Arrays.asList(new Object[][] { { 3 }, { 3 } });
         }
 
         public ParameterizedWithoutSpecialTestname(Object something) {
@@ -162,7 +162,8 @@ public class ParameterizedTestTest {
 
     @Test
     public void providesDataByAnnotatedFields() {
-        Result result = JUnitCore.runClasses(AdditionTestWithAnnotatedFields.class);
+        Result result = JUnitCore
+                .runClasses(AdditionTestWithAnnotatedFields.class);
         assertEquals(4, result.getRunCount());
         assertEquals(0, result.getFailureCount());
     }
@@ -171,7 +172,7 @@ public class ParameterizedTestTest {
     public static class BadIndexForAnnotatedFieldTest {
         @Parameters
         public static Collection<Object[]> data() {
-            return Arrays.asList(new Object[][]{{0}});
+            return Arrays.asList(new Object[][] { { 0 } });
         }
 
         @Parameter(2)
@@ -191,19 +192,21 @@ public class ParameterizedTestTest {
 
     @Test
     public void failureOnInitialization() {
-        Result result = JUnitCore.runClasses(BadIndexForAnnotatedFieldTest.class);
+        Result result = JUnitCore
+                .runClasses(BadIndexForAnnotatedFieldTest.class);
         assertEquals(1, result.getFailureCount());
         List<Failure> failures = result.getFailures();
-        assertThat(failures.get(0).getException().getMessage(), allOf(
-                containsString("Invalid @Parameter value: 2. @Parameter fields counted: 1. Please use an index between 0 and 0."),
-                containsString("@Parameter(0) is never used.")));
+        assertThat(failures.get(0).getException().getMessage(),
+                allOf(containsString(
+                        "Invalid @Parameter value: 2. @Parameter fields counted: 1. Please use an index between 0 and 0."),
+                        containsString("@Parameter(0) is never used.")));
     }
 
     @RunWith(Parameterized.class)
     public static class BadNumberOfAnnotatedFieldTest {
         @Parameters
         public static Collection<Object[]> data() {
-            return Arrays.asList(new Object[][]{{0, 0}});
+            return Arrays.asList(new Object[][] { { 0, 0 } });
         }
 
         @Parameter(0)
@@ -223,10 +226,12 @@ public class ParameterizedTestTest {
 
     @Test
     public void numberOfFieldsAndParametersShouldMatch() {
-        Result result = JUnitCore.runClasses(BadNumberOfAnnotatedFieldTest.class);
+        Result result = JUnitCore
+                .runClasses(BadNumberOfAnnotatedFieldTest.class);
         assertEquals(1, result.getFailureCount());
         List<Failure> failures = result.getFailures();
-        assertTrue(failures.get(0).getException().getMessage().contains("Wrong number of parameters and @Parameter fields. @Parameter fields counted: 1, available parameters: 2."));
+        assertTrue(failures.get(0).getException().getMessage().contains(
+                "Wrong number of parameters and @Parameter fields. @Parameter fields counted: 1, available parameters: 2."));
     }
 
     private static String fLog;
@@ -249,7 +254,7 @@ public class ParameterizedTestTest {
 
         @Parameters
         public static Collection<Object[]> data() {
-            return Arrays.asList(new Object[][]{{3}});
+            return Arrays.asList(new Object[][] { { 3 } });
         }
 
         @Test
@@ -314,8 +319,10 @@ public class ParameterizedTestTest {
         fLog = "";
         Result result = JUnitCore.runClasses(BeforeParamAndAfterParam.class);
         assertEquals(0, result.getFailureCount());
-        assertEquals("beforeClass before(A) first(A) second(A) afterParam "
-                + "before(B) first(B) second(B) afterParam afterClass ", fLog);
+        assertEquals(
+                "beforeClass before(A) first(A) second(A) afterParam "
+                        + "before(B) first(B) second(B) afterParam afterClass ",
+                fLog);
     }
 
     @RunWith(Parameterized.class)
@@ -366,10 +373,13 @@ public class ParameterizedTestTest {
     @Test
     public void multipleBeforeParamAndAfterParamAreRun() {
         fLog = "";
-        Result result = JUnitCore.runClasses(MultipleBeforeParamAndAfterParam.class);
+        Result result = JUnitCore
+                .runClasses(MultipleBeforeParamAndAfterParam.class);
         assertEquals(0, result.getFailureCount());
-        assertEquals("before1() before2(A) first(A) second(A) after1(A) after2() "
-                + "before1() before2(B) first(B) second(B) after1(B) after2() ", fLog);
+        assertEquals(
+                "before1() before2(A) first(A) second(A) after1(A) after2() "
+                        + "before1() before2(B) first(B) second(B) after1(B) after2() ",
+                fLog);
     }
 
     @RunWith(Parameterized.class)
@@ -386,6 +396,7 @@ public class ParameterizedTestTest {
         }
 
         private final String x;
+
         private final int y;
 
         public MultipleParametersBeforeParamAndAfterParam(String x, int y) {
@@ -395,7 +406,8 @@ public class ParameterizedTestTest {
 
         @Parameters
         public static Collection<Object[]> data() {
-            return Arrays.asList(new Object[]{"A", 1}, new Object[]{"B", 2});
+            return Arrays.asList(new Object[] { "A", 1 },
+                    new Object[] { "B", 2 });
         }
 
         @Test
@@ -412,10 +424,13 @@ public class ParameterizedTestTest {
     @Test
     public void multipleParametersBeforeParamAndAfterParamAreRun() {
         fLog = "";
-        Result result = JUnitCore.runClasses(MultipleParametersBeforeParamAndAfterParam.class);
+        Result result = JUnitCore
+                .runClasses(MultipleParametersBeforeParamAndAfterParam.class);
         assertEquals(0, result.getFailureCount());
-        assertEquals("before(A,1) first(A,1) second(A,1) after(A,1) "
-                + "before(B,2) first(B,2) second(B,2) after(B,2) ", fLog);
+        assertEquals(
+                "before(A,1) first(A,1) second(A,1) after(A,1) "
+                        + "before(B,2) first(B,2) second(B,2) after(B,2) ",
+                fLog);
     }
 
     @RunWith(Parameterized.class)
@@ -444,11 +459,14 @@ public class ParameterizedTestTest {
     @Test
     public void beforeParamAndAfterParamValidation() {
         fLog = "";
-        Result result = JUnitCore.runClasses(BeforeParamAndAfterParamError.class);
+        Result result = JUnitCore
+                .runClasses(BeforeParamAndAfterParamError.class);
         assertEquals(1, result.getFailureCount());
         List<Failure> failures = result.getFailures();
-        assertThat(failures.get(0).getMessage(), containsString("beforeParam() should be static"));
-        assertThat(failures.get(0).getMessage(), containsString("afterParam() should be public"));
+        assertThat(failures.get(0).getMessage(),
+                containsString("beforeParam() should be static"));
+        assertThat(failures.get(0).getMessage(),
+                containsString("afterParam() should be public"));
     }
 
     @RunWith(Parameterized.class)
@@ -477,13 +495,14 @@ public class ParameterizedTestTest {
     @Test
     public void beforeParamAndAfterParamValidationNumberOfParameters() {
         fLog = "";
-        Result result = JUnitCore.runClasses(BeforeParamAndAfterParamErrorNumberOfParameters.class);
+        Result result = JUnitCore.runClasses(
+                BeforeParamAndAfterParamErrorNumberOfParameters.class);
         assertEquals(1, result.getFailureCount());
         List<Failure> failures = result.getFailures();
-        assertThat(failures.get(0).getMessage(),
-                containsString("Method beforeParam() should have 0 or 1 parameter(s)"));
-        assertThat(failures.get(0).getMessage(),
-                containsString("Method afterParam() should have 0 or 1 parameter(s)"));
+        assertThat(failures.get(0).getMessage(), containsString(
+                "Method beforeParam() should have 0 or 1 parameter(s)"));
+        assertThat(failures.get(0).getMessage(), containsString(
+                "Method afterParam() should have 0 or 1 parameter(s)"));
     }
 
     @RunWith(Parameterized.class)
@@ -514,7 +533,7 @@ public class ParameterizedTestTest {
 
         @Parameters
         public static Collection<Object[]> data() {
-            return Collections.singletonList(new Object[]{1});
+            return Collections.singletonList(new Object[] { 1 });
         }
     }
 
@@ -557,9 +576,9 @@ public class ParameterizedTestTest {
 
     @Test
     public void meaningfulFailureWhenParametersAreNotAnIterable() {
-        assertThat(
-                testResult(ParametersNotIterable.class).toString(),
-                containsString("ParametersNotIterable.data() must return an Iterable of arrays."));
+        assertThat(testResult(ParametersNotIterable.class).toString(),
+                containsString(
+                        "ParametersNotIterable.data() must return an Iterable of arrays."));
     }
 
     @RunWith(Parameterized.class)
@@ -570,7 +589,7 @@ public class ParameterizedTestTest {
 
         @Parameters
         public static Collection<Object[]> data() {
-            return Arrays.asList(new Object[][]{{3}});
+            return Arrays.asList(new Object[][] { { 3 } });
         }
 
         @Test
@@ -608,7 +627,7 @@ public class ParameterizedTestTest {
 
     @Test
     public void runsEveryTestOfArray() {
-        Result result= JUnitCore.runClasses(AdditionTestWithArray.class);
+        Result result = JUnitCore.runClasses(AdditionTestWithArray.class);
         assertEquals(4, result.getRunCount());
     }
 
@@ -629,20 +648,22 @@ public class ParameterizedTestTest {
 
     @Test
     public void runsForEverySingleArgumentOfArray() {
-        Result result= JUnitCore.runClasses(SingleArgumentTestWithArray.class);
+        Result result = JUnitCore.runClasses(SingleArgumentTestWithArray.class);
         assertEquals(2, result.getRunCount());
     }
 
     @RunWith(Parameterized.class)
     public static class SingleArgumentTestWithIterable {
-        private static final AtomicBoolean dataCalled = new AtomicBoolean(false);
+        private static final AtomicBoolean dataCalled = new AtomicBoolean(
+                false);
 
         @Parameters
         public static Iterable<? extends Object> data() {
             if (!dataCalled.compareAndSet(false, true)) {
                 fail("Should not call @Parameters method more than once");
             }
-            return new OneShotIterable<String>(asList("first test", "second test"));
+            return new OneShotIterable<String>(
+                    asList("first test", "second test"));
         }
 
         public SingleArgumentTestWithIterable(Object argument) {
@@ -651,10 +672,11 @@ public class ParameterizedTestTest {
         @Test
         public void aTest() {
         }
-  	}
+    }
 
     private static class OneShotIterable<T> implements Iterable<T> {
         private final Iterable<T> delegate;
+
         private final AtomicBoolean iterated = new AtomicBoolean(false);
 
         OneShotIterable(Iterable<T> delegate) {
@@ -665,13 +687,14 @@ public class ParameterizedTestTest {
             if (iterated.compareAndSet(false, true)) {
                 return delegate.iterator();
             }
-            throw new IllegalStateException("Cannot call iterator() more than once");
+            throw new IllegalStateException(
+                    "Cannot call iterator() more than once");
         }
     }
 
     @Test
     public void runsForEverySingleArgumentOfIterable() {
-        Result result= JUnitCore
+        Result result = JUnitCore
                 .runClasses(SingleArgumentTestWithIterable.class);
         assertEquals(2, result.getRunCount());
     }
@@ -680,7 +703,8 @@ public class ParameterizedTestTest {
     public static class SingleArgumentTestWithCollection {
         @Parameters
         public static Iterable<? extends Object> data() {
-            return Collections.unmodifiableCollection(asList("first test", "second test"));
+            return Collections.unmodifiableCollection(
+                    asList("first test", "second test"));
         }
 
         public SingleArgumentTestWithCollection(Object argument) {
@@ -693,14 +717,13 @@ public class ParameterizedTestTest {
 
     @Test
     public void runsForEverySingleArgumentOfCollection() {
-        Result result= JUnitCore
+        Result result = JUnitCore
                 .runClasses(SingleArgumentTestWithCollection.class);
         assertEquals(2, result.getRunCount());
     }
 
-
-    public static class ExceptionThrowingRunnerFactory implements
-            ParametersRunnerFactory {
+    public static class ExceptionThrowingRunnerFactory
+            implements ParametersRunnerFactory {
         public Runner createRunnerForTestWithParameters(TestWithParameters test)
                 throws InitializationError {
             throw new InitializationError(
@@ -731,12 +754,13 @@ public class ParameterizedTestTest {
                 "Called ExceptionThrowingRunnerFactory.");
     }
 
-    private void assertTestCreatesSingleFailureWithMessage(Class<?> test, String message) {
+    private void assertTestCreatesSingleFailureWithMessage(Class<?> test,
+            String message) {
         Result result = JUnitCore.runClasses(test);
         assertEquals(1, result.getFailures().size());
         assertEquals(message, result.getFailures().get(0).getMessage());
     }
-    
+
     @RunWith(Parameterized.class)
     @UseParametersRunnerFactory(ExceptionThrowingRunnerFactory.class)
     public abstract static class UseParameterizedFactoryAbstractTest {
@@ -745,9 +769,9 @@ public class ParameterizedTestTest {
             return asList("single test");
         }
     }
-    
-    public static class UseParameterizedFactoryTest extends
-            UseParameterizedFactoryAbstractTest {
+
+    public static class UseParameterizedFactoryTest
+            extends UseParameterizedFactoryAbstractTest {
 
         public UseParameterizedFactoryTest(String parameter) {
 
@@ -757,7 +781,7 @@ public class ParameterizedTestTest {
         public void parameterizedTest() {
         }
     }
-    
+
     @Test
     public void usesParametersRunnerFactoryThatWasSpecifiedByAnnotationInSuperClass() {
         assertTestCreatesSingleFailureWithMessage(
@@ -790,7 +814,8 @@ public class ParameterizedTestTest {
     @Test
     public void testsAreExecutedWhenAssumptionInParametersMethodDoesNotFail() {
         AssumptionInParametersMethod.assumptionFails = false;
-        Result result = JUnitCore.runClasses(AssumptionInParametersMethod.class);
+        Result result = JUnitCore
+                .runClasses(AssumptionInParametersMethod.class);
         assertTrue(result.wasSuccessful());
         assertEquals(0, result.getAssumptionFailureCount());
         assertEquals(0, result.getIgnoreCount());
@@ -800,7 +825,8 @@ public class ParameterizedTestTest {
     @Test
     public void testsAreNotExecutedWhenAssumptionInParametersMethodFails() {
         AssumptionInParametersMethod.assumptionFails = true;
-        Result result = JUnitCore.runClasses(AssumptionInParametersMethod.class);
+        Result result = JUnitCore
+                .runClasses(AssumptionInParametersMethod.class);
         assertTrue(result.wasSuccessful());
         assertEquals(1, result.getAssumptionFailureCount());
         assertEquals(0, result.getIgnoreCount());

@@ -15,7 +15,8 @@ public class AllTests {
     public static Test suite() {
         TestSuite suite = new TestSuite("Framework Tests");
         suite.addTestSuite(TestCaseTest.class);
-        suite.addTest(SuiteTest.suite()); // Tests suite building, so can't use automatic test extraction
+        suite.addTest(SuiteTest.suite()); // Tests suite building, so can't use
+                                          // automatic test extraction
         suite.addTestSuite(TestListenerTest.class);
         suite.addTestSuite(AssertionFailedErrorTest.class);
         suite.addTestSuite(AssertTest.class);

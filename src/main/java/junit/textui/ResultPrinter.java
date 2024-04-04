@@ -13,6 +13,7 @@ import junit.runner.BaseTestRunner;
 
 public class ResultPrinter implements TestListener {
     PrintStream fWriter;
+
     int fColumn = 0;
 
     public ResultPrinter(PrintStream writer) {
@@ -48,8 +49,10 @@ public class ResultPrinter implements TestListener {
         printDefects(result.failures(), result.failureCount(), "failure");
     }
 
-    protected void printDefects(Enumeration<TestFailure> booBoos, int count, String type) {
-        if (count == 0) return;
+    protected void printDefects(Enumeration<TestFailure> booBoos, int count,
+            String type) {
+        if (count == 0)
+            return;
         if (count == 1) {
             getWriter().println("There was " + count + " " + type + ":");
         } else {
@@ -60,13 +63,15 @@ public class ResultPrinter implements TestListener {
         }
     }
 
-    public void printDefect(TestFailure booBoo, int count) { // only public for testing purposes
+    public void printDefect(TestFailure booBoo, int count) { // only public for
+                                                             // testing purposes
         printDefectHeader(booBoo, count);
         printDefectTrace(booBoo);
     }
 
     protected void printDefectHeader(TestFailure booBoo, int count) {
-        // I feel like making this a println, then adding a line giving the throwable a chance to print something
+        // I feel like making this a println, then adding a line giving the
+        // throwable a chance to print something
         // before we get to the stack trace.
         getWriter().print(count + ") " + booBoo.failedTest());
     }
@@ -79,21 +84,22 @@ public class ResultPrinter implements TestListener {
         if (result.wasSuccessful()) {
             getWriter().println();
             getWriter().print("OK");
-            getWriter().println(" (" + result.runCount() + " test" + (result.runCount() == 1 ? "" : "s") + ")");
+            getWriter().println(" (" + result.runCount() + " test"
+                    + (result.runCount() == 1 ? "" : "s") + ")");
 
         } else {
             getWriter().println();
             getWriter().println("FAILURES!!!");
-            getWriter().println("Tests run: " + result.runCount() +
-                    ",  Failures: " + result.failureCount() +
-                    ",  Errors: " + result.errorCount());
+            getWriter().println("Tests run: " + result.runCount()
+                    + ",  Failures: " + result.failureCount() + ",  Errors: "
+                    + result.errorCount());
         }
         getWriter().println();
     }
 
     /**
-     * Returns the formatted string of the elapsed time.
-     * Duplicated from BaseTestRunner. Fix it.
+     * Returns the formatted string of the elapsed time. Duplicated from
+     * BaseTestRunner. Fix it.
      */
     protected String elapsedTimeAsString(long runTime) {
         return NumberFormat.getInstance().format((double) runTime / 1000);

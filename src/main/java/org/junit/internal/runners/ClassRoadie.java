@@ -13,13 +13,17 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 /**
  * @deprecated Included for backwards compatibility with JUnit 4.4. Will be
  *             removed in the next major release. Please use
- *             {@link BlockJUnit4ClassRunner} in place of {@link JUnit4ClassRunner}.
+ *             {@link BlockJUnit4ClassRunner} in place of
+ *             {@link JUnit4ClassRunner}.
  */
 @Deprecated
 public class ClassRoadie {
     private RunNotifier notifier;
+
     private TestClass testClass;
+
     private Description description;
+
     private final Runnable runnable;
 
     public ClassRoadie(RunNotifier notifier, TestClass testClass,
@@ -42,13 +46,13 @@ public class ClassRoadie {
         try {
             runBefores();
             runUnprotected();
-        } catch (FailedBefore e) {
+        } catch (FailedBeforeException e) {
         } finally {
             runAfters();
         }
     }
 
-    private void runBefores() throws FailedBefore {
+    private void runBefores() throws FailedBeforeException {
         try {
             try {
                 List<Method> befores = testClass.getBefores();
@@ -59,10 +63,10 @@ public class ClassRoadie {
                 throw e.getTargetException();
             }
         } catch (AssumptionViolatedException e) {
-            throw new FailedBefore();
+            throw new FailedBeforeException();
         } catch (Throwable e) {
             addFailure(e);
-            throw new FailedBefore();
+            throw new FailedBeforeException();
         }
     }
 

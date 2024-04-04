@@ -8,10 +8,13 @@ import org.junit.runner.Description;
 
 public class SuiteDescriptionTest {
     Description childless = Description.createSuiteDescription("a");
+
     Description anotherChildless = Description.createSuiteDescription("a");
+
     Description namedB = Description.createSuiteDescription("b");
 
     Description twoKids = descriptionWithTwoKids("foo", "bar");
+
     Description anotherTwoKids = descriptionWithTwoKids("foo", "baz");
 
     @Test

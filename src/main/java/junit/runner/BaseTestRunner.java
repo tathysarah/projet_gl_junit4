@@ -19,24 +19,26 @@ import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 import junit.framework.TestListener;
 import junit.framework.TestSuite;
-
 import org.junit.internal.Throwables;
 
 /**
- * Base class for all test runners.
- * This class was born live on stage in Sardinia during XP2000.
+ * Base class for all test runners. This class was born live on stage in
+ * Sardinia during XP2000.
  */
 public abstract class BaseTestRunner implements TestListener {
     public static final String SUITE_METHODNAME = "suite";
 
     private static Properties fPreferences;
+
     static int fgMaxMessageLength = 500;
+
     static boolean fgFilterStack = true;
+
     boolean fLoading = true;
 
     /*
-    * Implementation of TestListener
-    */
+     * Implementation of TestListener
+     */
     public synchronized void startTest(Test test) {
         testStarted(test.toString());
     }
@@ -76,7 +78,8 @@ public abstract class BaseTestRunner implements TestListener {
         testFailed(TestRunListener.STATUS_ERROR, test, e);
     }
 
-    public synchronized void addFailure(final Test test, final AssertionFailedError e) {
+    public synchronized void addFailure(final Test test,
+            final AssertionFailedError e) {
         testFailed(TestRunListener.STATUS_FAILURE, test, e);
     }
 
@@ -89,8 +92,8 @@ public abstract class BaseTestRunner implements TestListener {
     public abstract void testFailed(int status, Test test, Throwable e);
 
     /**
-     * Returns the Test corresponding to the given suite. This is
-     * a template method, subclasses override runFailed(), clearStatus().
+     * Returns the Test corresponding to the given suite. This is a template
+     * method, subclasses override runFailed(), clearStatus().
      */
     public Test getTest(String suiteClassName) {
         if (suiteClassName.length() <= 0) {
@@ -130,7 +133,8 @@ public abstract class BaseTestRunner implements TestListener {
                 return test;
             }
         } catch (InvocationTargetException e) {
-            runFailed("Failed to invoke suite():" + e.getTargetException().toString());
+            runFailed("Failed to invoke suite():"
+                    + e.getTargetException().toString());
             return null;
         } catch (IllegalAccessException e) {
             runFailed("Failed to invoke suite():" + e.toString());
@@ -149,8 +153,8 @@ public abstract class BaseTestRunner implements TestListener {
     }
 
     /**
-     * Processes the command line arguments and
-     * returns the name of the suite class to run or null
+     * Processes the command line arguments and returns the name of the suite
+     * class to run or null
      */
     protected String processArguments(String[] args) {
         String suiteName = null;
@@ -201,15 +205,15 @@ public abstract class BaseTestRunner implements TestListener {
     }
 
     /**
-     * Override to define how to handle a failed loading of
-     * a test suite.
+     * Override to define how to handle a failed loading of a test suite.
      */
     protected abstract void runFailed(String message);
 
     /**
      * Returns the loaded Class for a suite name.
      */
-    protected Class<?> loadSuiteClass(String suiteClassName) throws ClassNotFoundException {
+    protected Class<?> loadSuiteClass(String suiteClassName)
+            throws ClassNotFoundException {
         return Class.forName(suiteClassName);
     }
 
@@ -297,20 +301,16 @@ public abstract class BaseTestRunner implements TestListener {
     }
 
     protected static boolean showStackRaw() {
-        return !getPreference("filterstack").equals("true") || fgFilterStack == false;
+        return !getPreference("filterstack").equals("true")
+                || fgFilterStack == false;
     }
 
     static boolean filterLine(String line) {
-        String[] patterns = new String[]{
-                "junit.framework.TestCase",
-                "junit.framework.TestResult",
-                "junit.framework.TestSuite",
+        String[] patterns = new String[] { "junit.framework.TestCase",
+                "junit.framework.TestResult", "junit.framework.TestSuite",
                 "junit.framework.Assert.", // don't filter AssertionFailure
-                "junit.swingui.TestRunner",
-                "junit.awtui.TestRunner",
-                "junit.textui.TestRunner",
-                "java.lang.reflect.Method.invoke("
-        };
+                "junit.swingui.TestRunner", "junit.awtui.TestRunner",
+                "junit.textui.TestRunner", "java.lang.reflect.Method.invoke(" };
         for (int i = 0; i < patterns.length; i++) {
             if (line.indexOf(patterns[i]) > 0) {
                 return true;

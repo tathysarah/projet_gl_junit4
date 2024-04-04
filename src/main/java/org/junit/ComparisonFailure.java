@@ -1,8 +1,9 @@
 package org.junit;
 
 /**
- * Thrown when an {@link org.junit.Assert#assertEquals(Object, Object) assertEquals(String, String)} fails.
- * Create and throw a <code>ComparisonFailure</code> manually if you want to show users the
+ * Thrown when an {@link org.junit.Assert#assertEquals(Object, Object)
+ * assertEquals(String, String)} fails. Create and throw a
+ * <code>ComparisonFailure</code> manually if you want to show users the
  * difference between two complex strings.
  * <p/>
  * Inspired by a patch from Alex Chaffee (alex@purpletech.com)
@@ -11,27 +12,33 @@ package org.junit;
  */
 public class ComparisonFailure extends AssertionError {
     /**
-     * The maximum length for expected and actual strings. If it is exceeded, the strings should be shortened.
+     * The maximum length for expected and actual strings. If it is exceeded,
+     * the strings should be shortened.
      *
      * @see ComparisonCompactor
      */
     private static final int MAX_CONTEXT_LENGTH = 20;
+
     private static final long serialVersionUID = 1L;
 
     /*
      * We have to use the f prefix until the next major release to ensure
-     * serialization compatibility. 
-     * See https://github.com/junit-team/junit4/issues/976
+     * serialization compatibility. See
+     * https://github.com/junit-team/junit4/issues/976
      */
     private String fExpected;
+
     private String fActual;
 
     /**
      * Constructs a comparison failure.
      *
-     * @param message the identifying message or null
-     * @param expected the expected string value
-     * @param actual the actual string value
+     * @param message
+     *            the identifying message or null
+     * @param expected
+     *            the expected string value
+     * @param actual
+     *            the actual string value
      */
     public ComparisonFailure(String message, String expected, String actual) {
         super(message);
@@ -40,13 +47,15 @@ public class ComparisonFailure extends AssertionError {
     }
 
     /**
-     * Returns "..." in place of common prefix and "..." in place of common suffix between expected and actual.
+     * Returns "..." in place of common prefix and "..." in place of common
+     * suffix between expected and actual.
      *
      * @see Throwable#getMessage()
      */
     @Override
     public String getMessage() {
-        return new ComparisonCompactor(MAX_CONTEXT_LENGTH, fExpected, fActual).compact(super.getMessage());
+        return new ComparisonCompactor(MAX_CONTEXT_LENGTH, fExpected, fActual)
+                .compact(super.getMessage());
     }
 
     /**
@@ -69,24 +78,34 @@ public class ComparisonFailure extends AssertionError {
 
     private static class ComparisonCompactor {
         private static final String ELLIPSIS = "...";
+
         private static final String DIFF_END = "]";
+
         private static final String DIFF_START = "[";
 
         /**
-         * The maximum length for <code>expected</code> and <code>actual</code> strings to show. When
-         * <code>contextLength</code> is exceeded, the Strings are shortened.
+         * The maximum length for <code>expected</code> and <code>actual</code>
+         * strings to show. When <code>contextLength</code> is exceeded, the
+         * Strings are shortened.
          */
         private final int contextLength;
+
         private final String expected;
+
         private final String actual;
 
         /**
-         * @param contextLength the maximum length of context surrounding the difference between the compared strings.
-         * When context length is exceeded, the prefixes and suffixes are compacted.
-         * @param expected the expected string value
-         * @param actual the actual string value
+         * @param contextLength
+         *            the maximum length of context surrounding the difference
+         *            between the compared strings. When context length is
+         *            exceeded, the prefixes and suffixes are compacted.
+         * @param expected
+         *            the expected string value
+         * @param actual
+         *            the actual string value
          */
-        public ComparisonCompactor(int contextLength, String expected, String actual) {
+        public ComparisonCompactor(int contextLength, String expected,
+                String actual) {
             this.contextLength = contextLength;
             this.expected = expected;
             this.actual = actual;
@@ -100,8 +119,10 @@ public class ComparisonFailure extends AssertionError {
                 String compactedPrefix = extractor.compactPrefix();
                 String compactedSuffix = extractor.compactSuffix();
                 return Assert.format(message,
-                        compactedPrefix + extractor.expectedDiff() + compactedSuffix,
-                        compactedPrefix + extractor.actualDiff() + compactedSuffix);
+                        compactedPrefix + extractor.expectedDiff()
+                                + compactedSuffix,
+                        compactedPrefix + extractor.actualDiff()
+                                + compactedSuffix);
             }
         }
 
@@ -120,8 +141,9 @@ public class ComparisonFailure extends AssertionError {
             int maxSuffixLength = Math.min(expected.length() - prefix.length(),
                     actual.length() - prefix.length()) - 1;
             for (; suffixLength <= maxSuffixLength; suffixLength++) {
-                if (expected.charAt(expected.length() - 1 - suffixLength)
-                        != actual.charAt(actual.length() - 1 - suffixLength)) {
+                if (expected
+                        .charAt(expected.length() - 1 - suffixLength) != actual
+                                .charAt(actual.length() - 1 - suffixLength)) {
                     break;
                 }
             }
@@ -130,10 +152,12 @@ public class ComparisonFailure extends AssertionError {
 
         private class DiffExtractor {
             private final String sharedPrefix;
+
             private final String sharedSuffix;
 
             /**
-             * Can not be instantiated outside {@link org.junit.ComparisonFailure.ComparisonCompactor}.
+             * Can not be instantiated outside
+             * {@link org.junit.ComparisonFailure.ComparisonCompactor}.
              */
             private DiffExtractor() {
                 sharedPrefix = sharedPrefix();
@@ -152,7 +176,8 @@ public class ComparisonFailure extends AssertionError {
                 if (sharedPrefix.length() <= contextLength) {
                     return sharedPrefix;
                 }
-                return ELLIPSIS + sharedPrefix.substring(sharedPrefix.length() - contextLength);
+                return ELLIPSIS + sharedPrefix
+                        .substring(sharedPrefix.length() - contextLength);
             }
 
             public String compactSuffix() {
@@ -163,7 +188,9 @@ public class ComparisonFailure extends AssertionError {
             }
 
             private String extractDiff(String source) {
-                return DIFF_START + source.substring(sharedPrefix.length(), source.length() - sharedSuffix.length())
+                return DIFF_START
+                        + source.substring(sharedPrefix.length(),
+                                source.length() - sharedSuffix.length())
                         + DIFF_END;
             }
         }

@@ -56,7 +56,7 @@ public class SingleMethodTest {
     public static class ParameterizedOneTimeSetup {
         @Parameters
         public static List<Object[]> params() {
-            return Arrays.asList(new Object[]{1}, new Object[]{2});
+            return Arrays.asList(new Object[] { 1 }, new Object[] { 2 });
         }
 
         public ParameterizedOneTimeSetup(int x) {
@@ -70,8 +70,8 @@ public class SingleMethodTest {
     @Test
     public void parameterizedFilterToSingleMethod() throws Exception {
         count = 0;
-        Runner runner = Request.method(ParameterizedOneTimeSetup.class,
-                "one[0]").getRunner();
+        Runner runner = Request
+                .method(ParameterizedOneTimeSetup.class, "one[0]").getRunner();
         Result result = new JUnitCore().run(runner);
 
         assertEquals(1, result.getRunCount());
@@ -81,7 +81,7 @@ public class SingleMethodTest {
     public static class ParameterizedOneTimeBeforeClass {
         @Parameters
         public static List<Object[]> params() {
-            return Arrays.asList(new Object[]{1}, new Object[]{2});
+            return Arrays.asList(new Object[] { 1 }, new Object[] { 2 });
         }
 
         public ParameterizedOneTimeBeforeClass(int x) {
@@ -96,7 +96,6 @@ public class SingleMethodTest {
         public void one() {
         }
     }
-
 
     @Test
     public void parameterizedBeforeClass() throws Exception {
@@ -113,14 +112,16 @@ public class SingleMethodTest {
 
     @Test
     public void nonexistentMethodCreatesFailure() throws Exception {
-        assertEquals(1, new JUnitCore().run(
-                Request.method(OneTimeSetup.class, "thisMethodDontExist"))
+        assertEquals(1, new JUnitCore()
+                .run(Request.method(OneTimeSetup.class, "thisMethodDontExist"))
                 .getFailureCount());
     }
 
     @Test(expected = NoTestsRemainException.class)
-    public void filteringAwayEverythingThrowsException() throws NoTestsRemainException {
-        Filterable runner = (Filterable) Request.aClass(OneTimeSetup.class).getRunner();
+    public void filteringAwayEverythingThrowsException()
+            throws NoTestsRemainException {
+        Filterable runner = (Filterable) Request.aClass(OneTimeSetup.class)
+                .getRunner();
         runner.filter(new Filter() {
             @Override
             public boolean shouldRun(Description description) {
@@ -155,14 +156,15 @@ public class SingleMethodTest {
     }
 
     @RunWith(Suite.class)
-    @SuiteClasses({TestOne.class, TestTwo.class})
+    @SuiteClasses({ TestOne.class, TestTwo.class })
     public static class OneTwoSuite {
     }
 
     @Test
     public void eliminateUnnecessaryTreeBranches() throws Exception {
-        Runner runner = Request.aClass(OneTwoSuite.class).filterWith(
-                Description.createTestDescription(TestOne.class, "a"))
+        Runner runner = Request.aClass(OneTwoSuite.class)
+                .filterWith(
+                        Description.createTestDescription(TestOne.class, "a"))
                 .getRunner();
         Description description = runner.getDescription();
         assertEquals(1, description.getChildren().size());
@@ -184,7 +186,8 @@ public class SingleMethodTest {
 
     @Test
     public void classesWithSuiteMethodsAreFiltered() {
-        int testCount = Request.method(HasSuiteMethod.class, "a").getRunner().getDescription().testCount();
+        int testCount = Request.method(HasSuiteMethod.class, "a").getRunner()
+                .getDescription().testCount();
         assertThat(testCount, is(1));
     }
 }

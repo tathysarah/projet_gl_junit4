@@ -16,22 +16,28 @@ public class ArrayComparisonFailure extends AssertionError {
 
     /*
      * We have to use the f prefix until the next major release to ensure
-     * serialization compatibility.
-     * See https://github.com/junit-team/junit4/issues/976
+     * serialization compatibility. See
+     * https://github.com/junit-team/junit4/issues/976
      */
     private final List<Integer> fIndices = new ArrayList<Integer>();
+
     private final String fMessage;
+
     private final AssertionError fCause;
 
     /**
-     * Construct a new <code>ArrayComparisonFailure</code> with an error text and the array's
-     * dimension that was not equal
+     * Construct a new <code>ArrayComparisonFailure</code> with an error text
+     * and the array's dimension that was not equal
      *
-     * @param cause the exception that caused the array's content to fail the assertion test
-     * @param index the array position of the objects that are not equal.
+     * @param cause
+     *            the exception that caused the array's content to fail the
+     *            assertion test
+     * @param index
+     *            the array position of the objects that are not equal.
      * @see Assert#assertArrayEquals(String, Object[], Object[])
      */
-    public ArrayComparisonFailure(String message, AssertionError cause, int index) {
+    public ArrayComparisonFailure(String message, AssertionError cause,
+            int index) {
         this.fMessage = message;
         this.fCause = cause;
         initCause(fCause);

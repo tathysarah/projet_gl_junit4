@@ -38,7 +38,7 @@ public class FilterableTest {
     public static class FilteredTest {
         @Parameters
         public static List<Object[]> parameters() {
-            return Arrays.asList(new Object[]{3}, new Object[]{4});
+            return Arrays.asList(new Object[] { 3 }, new Object[] { 4 });
         }
 
         public FilteredTest(int x) {

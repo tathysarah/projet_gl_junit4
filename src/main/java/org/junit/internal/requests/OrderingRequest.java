@@ -9,6 +9,7 @@ import org.junit.runner.manipulation.Ordering;
 /** @since 4.13 */
 public class OrderingRequest extends MemoizingRequest {
     private final Request request;
+
     private final Ordering ordering;
 
     public OrderingRequest(Request request, Ordering ordering) {

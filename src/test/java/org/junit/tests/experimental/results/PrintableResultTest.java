@@ -20,19 +20,22 @@ public class PrintableResultTest {
     @Theory(nullsAccepted = false)
     public void backTraceHasGoodToString(String descriptionName,
             final String stackTraceClassName) {
-        Failure failure = new Failure(Description
-                .createSuiteDescription(descriptionName), new Throwable() {
-            private static final long serialVersionUID = 1L;
+        Failure failure = new Failure(
+                Description.createSuiteDescription(descriptionName),
+                new Throwable() {
+                    private static final long serialVersionUID = 1L;
 
-            @Override
-            public StackTraceElement[] getStackTrace() {
-                return new StackTraceElement[]{new StackTraceElement(
-                        stackTraceClassName, "methodName", "fileName", 1)};
-            }
-        });
+                    @Override
+                    public StackTraceElement[] getStackTrace() {
+                        return new StackTraceElement[] {
+                                new StackTraceElement(stackTraceClassName,
+                                        "methodName", "fileName", 1) };
+                    }
+                });
 
-        assertThat(new PrintableResult(asList(failure)).toString(), allOf(
-                containsString(descriptionName), containsString(stackTraceClassName)));
+        assertThat(new PrintableResult(asList(failure)).toString(),
+                allOf(containsString(descriptionName),
+                        containsString(stackTraceClassName)));
     }
 
     @DataPoint
@@ -42,9 +45,9 @@ public class PrintableResultTest {
     public void includeMultipleFailures(String secondExceptionName) {
         PrintableResult backtrace = new PrintableResult(Arrays.asList(
                 new Failure(Description.createSuiteDescription("firstName"),
-                        new RuntimeException("firstException")), new Failure(
-                Description.createSuiteDescription("secondName"),
-                new RuntimeException(secondExceptionName))));
+                        new RuntimeException("firstException")),
+                new Failure(Description.createSuiteDescription("secondName"),
+                        new RuntimeException(secondExceptionName))));
         assertThat(backtrace.toString(), containsString(secondExceptionName));
     }
 }

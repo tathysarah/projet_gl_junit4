@@ -15,23 +15,23 @@ import org.junit.runners.model.Statement;
  *
  * <pre>
  * public abstract class CompositeRules {
- *   public static TestRule extendedLogging() {
- *     return RuleChain.outerRule(new LoggingRule("outer rule"))
- *                     .around(new LoggingRule("middle rule"))
- *                     .around(new LoggingRule("inner rule"));
- *   }
+ *     public static TestRule extendedLogging() {
+ *         return RuleChain.outerRule(new LoggingRule("outer rule"))
+ *                 .around(new LoggingRule("middle rule"))
+ *                 .around(new LoggingRule("inner rule"));
+ *     }
  * }
  * </pre>
  *
  * <pre>
  * public class UseRuleChain {
- *   &#064;Rule
- *   public final TestRule extendedLogging = CompositeRules.extendedLogging();
+ *     &#064;Rule
+ *     public final TestRule extendedLogging = CompositeRules.extendedLogging();
  *
- *   &#064;Test
- *   public void example() {
- *     assertTrue(true);
- *   }
+ *     &#064;Test
+ *     public void example() {
+ *         assertTrue(true);
+ *     }
  * }
  * </pre>
  *
@@ -57,7 +57,7 @@ import org.junit.runners.model.Statement;
  */
 public class RuleChain implements TestRule {
     private static final RuleChain EMPTY_CHAIN = new RuleChain(
-            Collections.<TestRule>emptyList());
+            Collections.<TestRule> emptyList());
 
     private List<TestRule> rulesStartingWithInnerMost;
 
@@ -75,7 +75,8 @@ public class RuleChain implements TestRule {
      * Returns a {@code RuleChain} with a single {@link TestRule}. This method
      * is the usual starting point of a {@code RuleChain}.
      *
-     * @param outerRule the outer rule of the {@code RuleChain}.
+     * @param outerRule
+     *            the outer rule of the {@code RuleChain}.
      * @return a {@code RuleChain} with a single {@link TestRule}.
      */
     public static RuleChain outerRule(TestRule outerRule) {
@@ -87,16 +88,19 @@ public class RuleChain implements TestRule {
     }
 
     /**
-     * Create a new {@code RuleChain}, which encloses the given {@link TestRule} with
-     * the rules of the current {@code RuleChain}.
+     * Create a new {@code RuleChain}, which encloses the given {@link TestRule}
+     * with the rules of the current {@code RuleChain}.
      *
-     * @param enclosedRule the rule to enclose; must not be {@code null}.
+     * @param enclosedRule
+     *            the rule to enclose; must not be {@code null}.
      * @return a new {@code RuleChain}.
-     * @throws NullPointerException if the argument {@code enclosedRule} is {@code null}
+     * @throws NullPointerException
+     *             if the argument {@code enclosedRule} is {@code null}
      */
     public RuleChain around(TestRule enclosedRule) {
         if (enclosedRule == null) {
-            throw new NullPointerException("The enclosed rule must not be null");
+            throw new NullPointerException(
+                    "The enclosed rule must not be null");
         }
         List<TestRule> rulesOfNewChain = new ArrayList<TestRule>();
         rulesOfNewChain.add(enclosedRule);

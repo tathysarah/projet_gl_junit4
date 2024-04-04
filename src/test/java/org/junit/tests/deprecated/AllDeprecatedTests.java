@@ -6,8 +6,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @SuppressWarnings("deprecation")
 @RunWith(Suite.class)
-@SuiteClasses({
-        JUnit4ClassRunnerTest.class
-})
+@SuiteClasses({ JUnit4ClassRunnerTest.class })
 public class AllDeprecatedTests {
 }

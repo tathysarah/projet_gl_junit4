@@ -11,17 +11,10 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({
-        AnnotatedBuilderTest.class,
-        ChecksTest.class,
-        ErrorReportingRunnerTest.class,
-        ExpectExceptionTest.class,
-        FailOnTimeoutTest.class,
-        MethodSorterTest.class,
-        StacktracePrintingMatcherTest.class,
-        StackTracesTest.class,
-        ThrowableCauseMatcherTest.class,
-        ArrayComparisonFailureTest.class
-})
+@SuiteClasses({ AnnotatedBuilderTest.class, ChecksTest.class,
+        ErrorReportingRunnerTest.class, ExpectExceptionTest.class,
+        FailOnTimeoutTest.class, MethodSorterTest.class,
+        StacktracePrintingMatcherTest.class, StackTracesTest.class,
+        ThrowableCauseMatcherTest.class, ArrayComparisonFailureTest.class })
 public class AllInternalTests {
 }

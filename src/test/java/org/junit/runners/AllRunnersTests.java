@@ -6,11 +6,7 @@ import org.junit.runners.model.AllModelTests;
 import org.junit.runners.parameterized.AllParameterizedTests;
 
 @RunWith(Suite.class)
-@SuiteClasses({
-        AllModelTests.class,
-        AllParameterizedTests.class,
-        RuleContainerTest.class,
-        CustomBlockJUnit4ClassRunnerTest.class
-})
+@SuiteClasses({ AllModelTests.class, AllParameterizedTests.class,
+        RuleContainerTest.class, CustomBlockJUnit4ClassRunnerTest.class })
 public class AllRunnersTests {
 }

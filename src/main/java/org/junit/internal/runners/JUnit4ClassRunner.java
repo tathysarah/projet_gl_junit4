@@ -22,14 +22,16 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 /**
  * @deprecated Included for backwards compatibility with JUnit 4.4. Will be
  *             removed in the next major release. Please use
- *             {@link BlockJUnit4ClassRunner} in place of {@link JUnit4ClassRunner}.
+ *             {@link BlockJUnit4ClassRunner} in place of
+ *             {@link JUnit4ClassRunner}.
  */
 @Deprecated
 public class JUnit4ClassRunner extends Runner implements Filterable, Sortable {
     private final List<Method> testMethods;
+
     private TestClass testClass;
 
-    public JUnit4ClassRunner(Class<?> klass) throws InitializationError {
+    public JUnit4ClassRunner(Class<?> klass) throws InitializationErrorException {
         testClass = new TestClass(klass);
         testMethods = getTestMethods();
         validate();
@@ -39,7 +41,7 @@ public class JUnit4ClassRunner extends Runner implements Filterable, Sortable {
         return testClass.getTestMethods();
     }
 
-    protected void validate() throws InitializationError {
+    protected void validate() throws InitializationErrorException {
         MethodValidator methodValidator = new MethodValidator(testClass);
         methodValidator.validateMethodsForDefaultRunner();
         methodValidator.assertValid();
@@ -62,7 +64,8 @@ public class JUnit4ClassRunner extends Runner implements Filterable, Sortable {
 
     @Override
     public Description getDescription() {
-        Description spec = Description.createSuiteDescription(getName(), classAnnotations());
+        Description spec = Description.createSuiteDescription(getName(),
+                classAnnotations());
         List<Method> testMethods = this.testMethods;
         for (Method method : testMethods) {
             spec.addChild(methodDescription(method));
@@ -114,7 +117,8 @@ public class JUnit4ClassRunner extends Runner implements Filterable, Sortable {
     }
 
     protected Description methodDescription(Method method) {
-        return Description.createTestDescription(getTestClass().getJavaClass(), testName(method), testAnnotations(method));
+        return Description.createTestDescription(getTestClass().getJavaClass(),
+                testName(method), testAnnotations(method));
     }
 
     protected Annotation[] testAnnotations(Method method) {
@@ -122,7 +126,7 @@ public class JUnit4ClassRunner extends Runner implements Filterable, Sortable {
     }
 
     public void filter(Filter filter) throws NoTestsRemainException {
-        for (Iterator<Method> iter = testMethods.iterator(); iter.hasNext(); ) {
+        for (Iterator<Method> iter = testMethods.iterator(); iter.hasNext();) {
             Method method = iter.next();
             if (!filter.shouldRun(methodDescription(method))) {
                 iter.remove();
@@ -136,7 +140,8 @@ public class JUnit4ClassRunner extends Runner implements Filterable, Sortable {
     public void sort(final Sorter sorter) {
         Collections.sort(testMethods, new Comparator<Method>() {
             public int compare(Method o1, Method o2) {
-                return sorter.compare(methodDescription(o1), methodDescription(o2));
+                return sorter.compare(methodDescription(o1),
+                        methodDescription(o2));
             }
         });
     }

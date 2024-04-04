@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assume.assumeTrue;
 import static org.junit.runner.JUnitCore.runClasses;
+
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -56,8 +57,7 @@ public class TestWatchmanTest {
     @Test
     public void logFailingTest() {
         runClasses(FailingTest.class);
-        assertThat(FailingTest.log.toString(),
-                is("starting failed finished "));
+        assertThat(FailingTest.log.toString(), is("starting failed finished "));
     }
 
     private static class LoggingTestWatchman extends TestWatchman {

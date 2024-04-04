@@ -9,10 +9,12 @@ import org.junit.Test;
 /**
  * Some simple tests.
  *
- * <p>This test is expected to fail.
+ * <p>
+ * This test is expected to fail.
  */
 public class SimpleTest {
     protected int fValue1;
+
     protected int fValue2;
 
     @Before

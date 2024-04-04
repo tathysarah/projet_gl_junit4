@@ -1,8 +1,8 @@
 package org.junit.rules;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.experimental.results.PrintableResult.testResult;
 import static org.junit.experimental.results.ResultMatchers.isSuccessful;
 
@@ -72,7 +72,8 @@ public class BlockJUnit4ClassRunnerOverrideTest {
             final LinkedList<TestRule> methodRules = new LinkedList<TestRule>(
                     super.getTestRules(test));
             methodRules.add(new TestRule() {
-                public Statement apply(Statement base, Description description) {
+                public Statement apply(Statement base,
+                        Description description) {
                     return new FlipBitRule().apply(base, null, test);
                 }
             });
@@ -89,18 +90,20 @@ public class BlockJUnit4ClassRunnerOverrideTest {
         assertThat(testResult(OverrideRulesTest.class), isSuccessful());
     }
 
-
     /**
-     * Runner for testing override of {@link org.junit.runners.BlockJUnit4ClassRunner#createTest(org.junit.runners.model.FrameworkMethod)}
+     * Runner for testing override of
+     * {@link org.junit.runners.BlockJUnit4ClassRunner#createTest(org.junit.runners.model.FrameworkMethod)}
      * by setting the {@link org.junit.runners.model.FrameworkMethod} in a field
-     * of the test class so it can be compared with the test method that is being
-     * executed.
+     * of the test class so it can be compared with the test method that is
+     * being executed.
      */
-    public static class OverrideCreateTestRunner extends BlockJUnit4ClassRunner {
-        public OverrideCreateTestRunner(final Class<?> klass) throws InitializationError {
+    public static class OverrideCreateTestRunner
+            extends BlockJUnit4ClassRunner {
+        public OverrideCreateTestRunner(final Class<?> klass)
+                throws InitializationError {
             super(klass);
 
-            assert(klass.equals(OverrideCreateTest.class));
+            assert (klass.equals(OverrideCreateTest.class));
         }
 
         @Override
@@ -133,19 +136,21 @@ public class BlockJUnit4ClassRunnerOverrideTest {
         assertThat(testResult(OverrideCreateTest.class), isSuccessful());
     }
 
-
     /**
-     * Runner for testing override of {@link org.junit.runners.BlockJUnit4ClassRunner#createTest()}
-     * is still called by default if no other {@code createTest} method override
-     * is in place. This is tested by setting a boolean flag in a field of the
-     * test class so it can be checked to confirm that the createTest method was
+     * Runner for testing override of
+     * {@link org.junit.runners.BlockJUnit4ClassRunner#createTest()} is still
+     * called by default if no other {@code createTest} method override is in
+     * place. This is tested by setting a boolean flag in a field of the test
+     * class so it can be checked to confirm that the createTest method was
      * called.
      */
-    public static class CreateTestDefersToNoArgCreateTestRunner extends BlockJUnit4ClassRunner {
-        public CreateTestDefersToNoArgCreateTestRunner(final Class<?> klass) throws InitializationError {
+    public static class CreateTestDefersToNoArgCreateTestRunner
+            extends BlockJUnit4ClassRunner {
+        public CreateTestDefersToNoArgCreateTestRunner(final Class<?> klass)
+                throws InitializationError {
             super(klass);
 
-            assert(klass.equals(CreateTestDefersToNoArgCreateTestTest.class));
+            assert (klass.equals(CreateTestDefersToNoArgCreateTestTest.class));
         }
 
         @Override
@@ -170,6 +175,7 @@ public class BlockJUnit4ClassRunnerOverrideTest {
 
     @Test
     public void createTestDefersToNoArgCreateTest() {
-        assertThat(testResult(CreateTestDefersToNoArgCreateTestTest.class), isSuccessful());
+        assertThat(testResult(CreateTestDefersToNoArgCreateTestTest.class),
+                isSuccessful());
     }
 }

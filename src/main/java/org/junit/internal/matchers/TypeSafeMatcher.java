@@ -6,8 +6,9 @@ import org.hamcrest.BaseMatcher;
 import org.junit.internal.MethodSorter;
 
 /**
- * Convenient base class for Matchers that require a non-null value of a specific type.
- * This simply implements the null check, checks the type and then casts.
+ * Convenient base class for Matchers that require a non-null value of a
+ * specific type. This simply implements the null check, checks the type and
+ * then casts.
  *
  * @author Joe Walnes
  * @deprecated Please use {@link org.hamcrest.TypeSafeMatcher}.
@@ -18,8 +19,8 @@ public abstract class TypeSafeMatcher<T> extends BaseMatcher<T> {
     private Class<?> expectedType;
 
     /**
-     * Subclasses should implement this. The item will already have been checked for
-     * the specific type and will never be null.
+     * Subclasses should implement this. The item will already have been checked
+     * for the specific type and will never be null.
      */
     public abstract boolean matchesSafely(T item);
 
@@ -36,7 +37,8 @@ public abstract class TypeSafeMatcher<T> extends BaseMatcher<T> {
             }
         }
 
-        throw new Error("Cannot determine correct type for matchesSafely() method.");
+        throw new Error(
+                "Cannot determine correct type for matchesSafely() method.");
     }
 
     private static boolean isMatchesSafelyMethod(Method method) {
@@ -50,14 +52,13 @@ public abstract class TypeSafeMatcher<T> extends BaseMatcher<T> {
     }
 
     /**
-     * Method made final to prevent accidental override.
-     * If you need to override this, there's no point on extending TypeSafeMatcher.
-     * Instead, extend the {@link BaseMatcher}.
+     * Method made final to prevent accidental override. If you need to override
+     * this, there's no point on extending TypeSafeMatcher. Instead, extend the
+     * {@link BaseMatcher}.
      */
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     public final boolean matches(Object item) {
-        return item != null
-                && expectedType.isInstance(item)
+        return item != null && expectedType.isInstance(item)
                 && matchesSafely((T) item);
     }
 }

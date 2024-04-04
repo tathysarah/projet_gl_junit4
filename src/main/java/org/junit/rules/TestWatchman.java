@@ -5,41 +5,42 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
 /**
- * TestWatchman is a base class for Rules that take note of the testing
- * action, without modifying it. For example, this class will keep a log of each
- * passing and failing test:
+ * TestWatchman is a base class for Rules that take note of the testing action,
+ * without modifying it. For example, this class will keep a log of each passing
+ * and failing test:
  *
  * <pre>
  * public static class WatchmanTest {
- *  private static String watchedLog;
+ *     private static String watchedLog;
  *
- *  &#064;Rule
- *  public MethodRule watchman= new TestWatchman() {
- *      &#064;Override
- *      public void failed(Throwable e, FrameworkMethod method) {
- *          watchedLog+= method.getName() + &quot; &quot; + e.getClass().getSimpleName()
- *                  + &quot;\n&quot;;
+ *     &#064;Rule
+ *     public MethodRule watchman = new TestWatchman() {
+ *         &#064;Override
+ *         public void failed(Throwable e, FrameworkMethod method) {
+ *             watchedLog += method.getName() + &quot; &quot;
+ *                     + e.getClass().getSimpleName() + &quot;\n&quot;;
  *         }
  *
- *      &#064;Override
- *      public void succeeded(FrameworkMethod method) {
- *          watchedLog+= method.getName() + &quot; &quot; + &quot;success!\n&quot;;
+ *         &#064;Override
+ *         public void succeeded(FrameworkMethod method) {
+ *             watchedLog += method.getName() + &quot; &quot; + &quot;success!\n&quot;;
  *         }
  *     };
  *
- *  &#064;Test
- *  public void fails() {
- *      fail();
+ *     &#064;Test
+ *     public void fails() {
+ *         fail();
  *     }
  *
- *  &#064;Test
- *  public void succeeds() {
+ *     &#064;Test
+ *     public void succeeds() {
  *     }
  * }
  * </pre>
  *
  * @since 4.7
- * @deprecated Use {@link TestWatcher} (which implements {@link TestRule}) instead.
+ * @deprecated Use {@link TestWatcher} (which implements {@link TestRule})
+ *             instead.
  */
 @Deprecated
 public class TestWatchman implements MethodRule {
@@ -81,7 +82,6 @@ public class TestWatchman implements MethodRule {
      */
     public void starting(FrameworkMethod method) {
     }
-
 
     /**
      * Invoked when a test method finishes (whether passing or failing)

@@ -20,16 +20,21 @@ import org.junit.runners.model.TestTimedOutException;
 /**
  * @deprecated Included for backwards compatibility with JUnit 4.4. Will be
  *             removed in the next major release. Please use
- *             {@link BlockJUnit4ClassRunner} in place of {@link JUnit4ClassRunner}.
+ *             {@link BlockJUnit4ClassRunner} in place of
+ *             {@link JUnit4ClassRunner}.
  */
 @Deprecated
 public class MethodRoadie {
     private final Object test;
+
     private final RunNotifier notifier;
+
     private final Description description;
+
     private TestMethod testMethod;
 
-    public MethodRoadie(Object test, TestMethod method, RunNotifier notifier, Description description) {
+    public MethodRoadie(Object test, TestMethod method, RunNotifier notifier,
+            Description description) {
         this.test = test;
         this.notifier = notifier;
         this.description = description;
@@ -73,9 +78,13 @@ public class MethodRoadie {
                     if (!terminated) {
                         service.shutdownNow();
                     }
-                    result.get(0, TimeUnit.MILLISECONDS); // throws the exception if one occurred during the invocation
+                    result.get(0, TimeUnit.MILLISECONDS); // throws the
+                                                          // exception if one
+                                                          // occurred during the
+                                                          // invocation
                 } catch (TimeoutException e) {
-                    addFailure(new TestTimedOutException(timeout, TimeUnit.MILLISECONDS));
+                    addFailure(new TestTimedOutException(timeout,
+                            TimeUnit.MILLISECONDS));
                 } catch (Exception e) {
                     addFailure(e);
                 }
@@ -95,9 +104,10 @@ public class MethodRoadie {
         try {
             runBefores();
             test.run();
-        } catch (FailedBefore e) {
+        } catch (FailedBeforeException e) {
         } catch (Exception e) {
-            throw new RuntimeException("test should never throw an exception to this level");
+            throw new RuntimeException(
+                    "test should never throw an exception to this level");
         } finally {
             runAfters();
         }
@@ -107,7 +117,8 @@ public class MethodRoadie {
         try {
             testMethod.invoke(test);
             if (testMethod.expectsException()) {
-                addFailure(new AssertionError("Expected exception: " + testMethod.getExpectedException().getName()));
+                addFailure(new AssertionError("Expected exception: "
+                        + testMethod.getExpectedException().getName()));
             }
         } catch (InvocationTargetException e) {
             Throwable actual = e.getTargetException();
@@ -116,8 +127,9 @@ public class MethodRoadie {
             } else if (!testMethod.expectsException()) {
                 addFailure(actual);
             } else if (testMethod.isUnexpected(actual)) {
-                String message = "Unexpected exception, expected<" + testMethod.getExpectedException().getName() + "> but was<"
-                        + actual.getClass().getName() + ">";
+                String message = "Unexpected exception, expected<"
+                        + testMethod.getExpectedException().getName()
+                        + "> but was<" + actual.getClass().getName() + ">";
                 addFailure(new Exception(message, actual));
             }
         } catch (Throwable e) {
@@ -125,7 +137,7 @@ public class MethodRoadie {
         }
     }
 
-    private void runBefores() throws FailedBefore {
+    private void runBefores() throws FailedBeforeException {
         try {
             try {
                 List<Method> befores = testMethod.getBefores();
@@ -136,10 +148,10 @@ public class MethodRoadie {
                 throw e.getTargetException();
             }
         } catch (AssumptionViolatedException e) {
-            throw new FailedBefore();
+            throw new FailedBeforeException();
         } catch (Throwable e) {
             addFailure(e);
-            throw new FailedBefore();
+            throw new FailedBeforeException();
         }
     }
 
@@ -160,4 +172,3 @@ public class MethodRoadie {
         notifier.fireTestFailure(new Failure(description, e));
     }
 }
-

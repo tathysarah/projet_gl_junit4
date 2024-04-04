@@ -7,17 +7,17 @@ import org.junit.runner.Description;
  *
  * <pre>
  * public class TestNameTest {
- *  &#064;Rule
- *  public TestName name= new TestName();
+ *     &#064;Rule
+ *     public TestName name = new TestName();
  *
- *  &#064;Test
- *  public void testA() {
- *      assertEquals(&quot;testA&quot;, name.getMethodName());
+ *     &#064;Test
+ *     public void testA() {
+ *         assertEquals(&quot;testA&quot;, name.getMethodName());
  *     }
  *
- *  &#064;Test
- *  public void testB() {
- *      assertEquals(&quot;testB&quot;, name.getMethodName());
+ *     &#064;Test
+ *     public void testB() {
+ *         assertEquals(&quot;testB&quot;, name.getMethodName());
  *     }
  * }
  * </pre>

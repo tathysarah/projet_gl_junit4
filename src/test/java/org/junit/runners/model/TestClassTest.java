@@ -1,7 +1,11 @@
 package org.junit.runners.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -47,8 +51,8 @@ public class TestClassTest {
 
     @Test
     public void fieldsOnSubclassesShadowSuperclasses() {
-        assertThat(new TestClass(SubclassWithField.class).getAnnotatedFields(
-                Rule.class).size(), is(1));
+        assertThat(new TestClass(SubclassWithField.class)
+                .getAnnotatedFields(Rule.class).size(), is(1));
     }
 
     public static class OuterClass {
@@ -58,10 +62,8 @@ public class TestClassTest {
 
     @Test
     public void identifyNonStaticInnerClass() {
-        assertThat(
-                new TestClass(OuterClass.NonStaticInnerClass.class)
-                        .isANonStaticInnerClass(),
-                is(true));
+        assertThat(new TestClass(OuterClass.NonStaticInnerClass.class)
+                .isANonStaticInnerClass(), is(true));
     }
 
     public static class OuterClass2 {
@@ -71,10 +73,8 @@ public class TestClassTest {
 
     @Test
     public void dontMarkStaticInnerClassAsNonStatic() {
-        assertThat(
-                new TestClass(OuterClass2.StaticInnerClass.class)
-                        .isANonStaticInnerClass(),
-                is(false));
+        assertThat(new TestClass(OuterClass2.StaticInnerClass.class)
+                .isANonStaticInnerClass(), is(false));
     }
 
     public static class SimpleClass {
@@ -88,7 +88,7 @@ public class TestClassTest {
 
     public static class FieldAnnotated {
         @Rule
-        public String fieldC= "andromeda";
+        public String fieldC = "andromeda";
 
         @Rule
         public boolean fieldA;
@@ -99,17 +99,19 @@ public class TestClassTest {
 
     @Test
     public void providesAnnotatedFieldsSortedByName() {
-        TestClass tc= new TestClass(FieldAnnotated.class);
-        List<FrameworkField> annotatedFields= tc.getAnnotatedFields();
-        assertThat("Wrong number of annotated fields.", annotatedFields.size(), is(3));
-        assertThat("First annotated field is wrong.", annotatedFields
-            .iterator().next().getName(), is("fieldA"));
+        TestClass tc = new TestClass(FieldAnnotated.class);
+        List<FrameworkField> annotatedFields = tc.getAnnotatedFields();
+        assertThat("Wrong number of annotated fields.", annotatedFields.size(),
+                is(3));
+        assertThat("First annotated field is wrong.",
+                annotatedFields.iterator().next().getName(), is("fieldA"));
     }
 
     @Test
     public void annotatedFieldValues() {
         TestClass tc = new TestClass(FieldAnnotated.class);
-        List<String> values = tc.getAnnotatedFieldValues(new FieldAnnotated(), Rule.class, String.class);
+        List<String> values = tc.getAnnotatedFieldValues(new FieldAnnotated(),
+                Rule.class, String.class);
         assertThat(values, hasItem("andromeda"));
         assertThat(values.size(), is(1));
     }
@@ -144,7 +146,7 @@ public class TestClassTest {
         List<FrameworkMethod> annotatedMethods = tc.getAnnotatedMethods();
         List<String> methodNames = extractNames(annotatedMethods);
         assertThat(methodNames.indexOf("methodA"),
-            lessThan(methodNames.indexOf("methodB")));
+                lessThan(methodNames.indexOf("methodB")));
     }
 
     @Test
@@ -157,7 +159,7 @@ public class TestClassTest {
 
     private List<String> extractNames(List<FrameworkMethod> methods) {
         List<String> names = new ArrayList<String>();
-        for (FrameworkMethod method: methods) {
+        for (FrameworkMethod method : methods) {
             names.add(method.getName());
         }
         return names;
@@ -167,7 +169,7 @@ public class TestClassTest {
     public void annotatedMethodValues() {
         TestClass tc = new TestClass(MethodsAnnotated.class);
         List<String> values = tc.getAnnotatedMethodValues(
-            new MethodsAnnotated(), Ignore.class, String.class);
+                new MethodsAnnotated(), Ignore.class, String.class);
         assertThat(values, hasItem("jupiter"));
         assertThat(values.size(), is(1));
     }
@@ -236,7 +238,7 @@ public class TestClassTest {
     static class NonPublicClass {
 
     }
-    
+
     @Test
     public void identifiesNonPublicModifier() {
         TestClass tc = new TestClass(NonPublicClass.class);

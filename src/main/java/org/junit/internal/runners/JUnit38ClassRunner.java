@@ -15,18 +15,19 @@ import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.manipulation.Filter;
 import org.junit.runner.manipulation.Filterable;
-import org.junit.runner.manipulation.Orderer;
 import org.junit.runner.manipulation.InvalidOrderingException;
 import org.junit.runner.manipulation.NoTestsRemainException;
 import org.junit.runner.manipulation.Orderable;
+import org.junit.runner.manipulation.Orderer;
 import org.junit.runner.manipulation.Sortable;
 import org.junit.runner.manipulation.Sorter;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 
-public class JUnit38ClassRunner extends Runner implements Filterable, Orderable {
-    private static final class OldTestClassAdaptingListener implements
-            TestListener {
+public class JUnit38ClassRunner extends Runner
+        implements Filterable, Orderable {
+    private static final class OldTestClassAdaptingListener
+            implements TestListener {
         private final RunNotifier notifier;
 
         private OldTestClassAdaptingListener(RunNotifier notifier) {
@@ -52,7 +53,8 @@ public class JUnit38ClassRunner extends Runner implements Filterable, Orderable 
                 Describable facade = (Describable) test;
                 return facade.getDescription();
             }
-            return Description.createTestDescription(getEffectiveClass(test), getName(test));
+            return Description.createTestDescription(getEffectiveClass(test),
+                    getName(test));
         }
 
         private Class<? extends Test> getEffectiveClass(Test test) {
@@ -102,11 +104,12 @@ public class JUnit38ClassRunner extends Runner implements Filterable, Orderable 
     private static Description makeDescription(Test test) {
         if (test instanceof TestCase) {
             TestCase tc = (TestCase) test;
-            return Description.createTestDescription(tc.getClass(), tc.getName(),
-                    getAnnotations(tc));
+            return Description.createTestDescription(tc.getClass(),
+                    tc.getName(), getAnnotations(tc));
         } else if (test instanceof TestSuite) {
             TestSuite ts = (TestSuite) test;
-            String name = ts.getName() == null ? createSuiteDescription(ts) : ts.getName();
+            String name = ts.getName() == null ? createSuiteDescription(ts)
+                    : ts.getName();
             Description description = Description.createSuiteDescription(name);
             int n = ts.testCount();
             for (int i = 0; i < n; i++) {
@@ -128,7 +131,9 @@ public class JUnit38ClassRunner extends Runner implements Filterable, Orderable 
 
     /**
      * Get the annotations associated with given TestCase.
-     * @param test the TestCase.
+     * 
+     * @param test
+     *            the TestCase.
      */
     private static Annotation[] getAnnotations(TestCase test) {
         try {
@@ -142,7 +147,8 @@ public class JUnit38ClassRunner extends Runner implements Filterable, Orderable 
 
     private static String createSuiteDescription(TestSuite ts) {
         int count = ts.countTestCases();
-        String example = count == 0 ? "" : String.format(" [example: %s]", ts.testAt(0));
+        String example = count == 0 ? ""
+                : String.format(" [example: %s]", ts.testAt(0));
         return String.format("TestSuite with %s tests%s", count, example);
     }
 

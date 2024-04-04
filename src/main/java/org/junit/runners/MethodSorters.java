@@ -6,21 +6,21 @@ import java.util.Comparator;
 import org.junit.internal.MethodSorter;
 
 /**
- * Sort the methods into a specified execution order.
- * Defines common {@link MethodSorter} implementations.
+ * Sort the methods into a specified execution order. Defines common
+ * {@link MethodSorter} implementations.
  *
  * @since 4.11
  */
 public enum MethodSorters {
     /**
-     * Sorts the test methods by the method name, in lexicographic order,
-     * with {@link Method#toString()} used as a tiebreaker
+     * Sorts the test methods by the method name, in lexicographic order, with
+     * {@link Method#toString()} used as a tiebreaker
      */
     NAME_ASCENDING(MethodSorter.NAME_ASCENDING),
 
     /**
-     * Leaves the test methods in the order returned by the JVM.
-     * Note that the order from the JVM may vary from run to run
+     * Leaves the test methods in the order returned by the JVM. Note that the
+     * order from the JVM may vary from run to run
      */
     JVM(null),
 

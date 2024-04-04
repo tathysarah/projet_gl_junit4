@@ -6,10 +6,9 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
 /**
- * A TestSuite for active Tests. It runs each
- * test in a separate thread and waits until all
- * threads have terminated.
- * -- Aarhus Radisson Scandinavian Center 11th floor
+ * A TestSuite for active Tests. It runs each test in a separate thread and
+ * waits until all threads have terminated. -- Aarhus Radisson Scandinavian
+ * Center 11th floor
  */
 public class ActiveTestSuite extends TestSuite {
     private volatile int fActiveTestDeathCount;
@@ -43,7 +42,7 @@ public class ActiveTestSuite extends TestSuite {
             public void run() {
                 try {
                     // inlined due to limitation in VA/Java
-                    //ActiveTestSuite.super.runTest(test, result);
+                    // ActiveTestSuite.super.runTest(test, result);
                     test.run(result);
                 } finally {
                     ActiveTestSuite.this.runFinished();

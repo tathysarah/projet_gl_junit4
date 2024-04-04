@@ -1,21 +1,21 @@
 package org.junit.runner.notification;
 
-import org.junit.Test;
-import org.junit.runner.Description;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.junit.runner.Description;
 
 /**
  * Testing RunNotifier in concurrent access.
@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
  */
 public final class ConcurrentRunNotifierTest {
     private static final long TIMEOUT = 3;
+
     private final RunNotifier fNotifier = new RunNotifier();
 
     private static class ConcurrentRunListener extends RunListener {
@@ -65,6 +66,7 @@ public final class ConcurrentRunNotifierTest {
 
     private static class ExaminedListener extends RunListener {
         final boolean throwFromTestStarted;
+
         volatile boolean hasTestFailure = false;
 
         ExaminedListener(boolean throwFromTestStarted) {
@@ -125,16 +127,19 @@ public final class ConcurrentRunNotifierTest {
             latch.await(TIMEOUT, TimeUnit.SECONDS);
 
             for (ExaminedListener examinedListener : examinedListeners) {
-              addListener(examinedListener);
+                addListener(examinedListener);
             }
 
             notificationsPool.shutdown();
             condition.set(false);
-            assertTrue(notificationsPool.awaitTermination(TIMEOUT, TimeUnit.SECONDS));
+            assertTrue(notificationsPool.awaitTermination(TIMEOUT,
+                    TimeUnit.SECONDS));
 
             if (totalListenersFailures != 0) {
-                // If no listener failures, then all the listeners do not report any failure.
-                int countTestFailures = examinedListeners.length - countReportedTestFailures(examinedListeners);
+                // If no listener failures, then all the listeners do not report
+                // any failure.
+                int countTestFailures = examinedListeners.length
+                        - countReportedTestFailures(examinedListeners);
                 assertThat(totalListenersFailures, is(countTestFailures));
             }
         }
@@ -155,11 +160,12 @@ public final class ConcurrentRunNotifierTest {
     }
 
     /**
-     * Verifies that listeners added with addFirstListener() while tests are run concurrently are
-     * notified about test failures.
+     * Verifies that listeners added with addFirstListener() while tests are run
+     * concurrently are notified about test failures.
      */
     @Test
-    public void reportConcurrentFailuresAfterAddFirstListener() throws Exception {
+    public void reportConcurrentFailuresAfterAddFirstListener()
+            throws Exception {
         new AbstractConcurrentFailuresTest() {
             @Override
             protected void addListener(ExaminedListener listener) {

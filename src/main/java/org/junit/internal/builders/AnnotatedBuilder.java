@@ -1,19 +1,21 @@
 package org.junit.internal.builders;
 
+import java.lang.reflect.Modifier;
+
 import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerBuilder;
 
-import java.lang.reflect.Modifier;
-
-
 /**
- * The {@code AnnotatedBuilder} is a strategy for constructing runners for test class that have been annotated with the
- * {@code @RunWith} annotation. All tests within this class will be executed using the runner that was specified within
- * the annotation.
+ * The {@code AnnotatedBuilder} is a strategy for constructing runners for test
+ * class that have been annotated with the {@code @RunWith} annotation. All
+ * tests within this class will be executed using the runner that was specified
+ * within the annotation.
  * <p>
- * If a runner supports inner member classes, the member classes will inherit the runner from the enclosing class, e.g.:
+ * If a runner supports inner member classes, the member classes will inherit
+ * the runner from the enclosing class, e.g.:
+ * 
  * <pre>
  * &#064;RunWith(MyRunner.class)
  * public class MyTest {
@@ -53,15 +55,19 @@ import java.lang.reflect.Modifier;
  *     // some tests might go here
  * }
  * </pre>
+ * 
  * The key points to note here are:
  * <ul>
- *     <li>If there is no RunWith annotation, no runner will be created.</li>
- *     <li>The resolve step is inside-out, e.g. the closest RunWith annotation wins</li>
- *     <li>RunWith annotations are inherited and work as if the class was annotated itself.</li>
- *     <li>The default JUnit runner does not support inner member classes,
- *         so this is only valid for custom runners that support inner member classes.</li>
- *     <li>Custom runners with support for inner classes may or may not support RunWith annotations for member
- *         classes. Please refer to the custom runner documentation.</li>
+ * <li>If there is no RunWith annotation, no runner will be created.</li>
+ * <li>The resolve step is inside-out, e.g. the closest RunWith annotation
+ * wins</li>
+ * <li>RunWith annotations are inherited and work as if the class was annotated
+ * itself.</li>
+ * <li>The default JUnit runner does not support inner member classes, so this
+ * is only valid for custom runners that support inner member classes.</li>
+ * <li>Custom runners with support for inner classes may or may not support
+ * RunWith annotations for member classes. Please refer to the custom runner
+ * documentation.</li>
  * </ul>
  *
  * @see org.junit.runners.model.RunnerBuilder
@@ -79,8 +85,8 @@ public class AnnotatedBuilder extends RunnerBuilder {
 
     @Override
     public Runner runnerForClass(Class<?> testClass) throws Exception {
-        for (Class<?> currentTestClass = testClass; currentTestClass != null;
-             currentTestClass = getEnclosingClassForNonStaticMemberClass(currentTestClass)) {
+        for (Class<?> currentTestClass = testClass; currentTestClass != null; currentTestClass = getEnclosingClassForNonStaticMemberClass(
+                currentTestClass)) {
             RunWith annotation = currentTestClass.getAnnotation(RunWith.class);
             if (annotation != null) {
                 return buildRunner(annotation.value(), testClass);
@@ -90,8 +96,10 @@ public class AnnotatedBuilder extends RunnerBuilder {
         return null;
     }
 
-    private Class<?> getEnclosingClassForNonStaticMemberClass(Class<?> currentTestClass) {
-        if (currentTestClass.isMemberClass() && !Modifier.isStatic(currentTestClass.getModifiers())) {
+    private Class<?> getEnclosingClassForNonStaticMemberClass(
+            Class<?> currentTestClass) {
+        if (currentTestClass.isMemberClass()
+                && !Modifier.isStatic(currentTestClass.getModifiers())) {
             return currentTestClass.getEnclosingClass();
         } else {
             return null;
@@ -101,11 +109,13 @@ public class AnnotatedBuilder extends RunnerBuilder {
     public Runner buildRunner(Class<? extends Runner> runnerClass,
             Class<?> testClass) throws Exception {
         try {
-            return runnerClass.getConstructor(Class.class).newInstance(testClass);
+            return runnerClass.getConstructor(Class.class)
+                    .newInstance(testClass);
         } catch (NoSuchMethodException e) {
             try {
-                return runnerClass.getConstructor(Class.class,
-                        RunnerBuilder.class).newInstance(testClass, suiteBuilder);
+                return runnerClass
+                        .getConstructor(Class.class, RunnerBuilder.class)
+                        .newInstance(testClass, suiteBuilder);
             } catch (NoSuchMethodException e2) {
                 String simpleName = runnerClass.getSimpleName();
                 throw new InitializationError(String.format(

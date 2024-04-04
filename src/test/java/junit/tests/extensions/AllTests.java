@@ -12,7 +12,8 @@ public class AllTests {
         junit.textui.TestRunner.run(suite());
     }
 
-    public static Test suite() { // Collect tests manually because we have to test class collection code
+    public static Test suite() { // Collect tests manually because we have to
+                                 // test class collection code
         TestSuite suite = new TestSuite("Framework Tests");
         suite.addTestSuite(ExtensionTest.class);
         suite.addTestSuite(ActiveTestTest.class);

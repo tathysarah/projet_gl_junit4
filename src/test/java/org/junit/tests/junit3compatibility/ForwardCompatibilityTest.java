@@ -47,7 +47,8 @@ public class ForwardCompatibilityTest extends TestCase {
     public void testToString() {
         JUnit4TestAdapter adapter = new JUnit4TestAdapter(NewTest.class);
         junit.framework.Test test = adapter.getTests().get(0);
-        assertEquals(String.format("test(%s)", NewTest.class.getName()), test.toString());
+        assertEquals(String.format("test(%s)", NewTest.class.getName()),
+                test.toString());
     }
 
     public void testUseGlobalCache() {
@@ -69,7 +70,8 @@ public class ForwardCompatibilityTest extends TestCase {
         TestResult result = new TestResult();
         junit.framework.Test adapter = new JUnit4TestAdapter(ErrorTest.class);
         adapter.run(result);
-        assertEquals(exception, result.errors().nextElement().thrownException());
+        assertEquals(exception,
+                result.errors().nextElement().thrownException());
     }
 
     public void testNotifyResult() {
@@ -86,7 +88,8 @@ public class ForwardCompatibilityTest extends TestCase {
                 log.append(" end ").append(test);
             }
 
-            public void addFailure(junit.framework.Test test, AssertionFailedError t) {
+            public void addFailure(junit.framework.Test test,
+                    AssertionFailedError t) {
                 log.append(" failure ").append(test);
             }
 
@@ -96,9 +99,9 @@ public class ForwardCompatibilityTest extends TestCase {
         });
         adapter.run(result);
         String testName = String.format("error(%s)", ErrorTest.class.getName());
-        assertEquals(String.format(" start %s error %s end %s", testName, testName, testName), log.toString());
+        assertEquals(String.format(" start %s error %s end %s", testName,
+                testName, testName), log.toString());
     }
-
 
     public static class NoExceptionTest {
         @Test(expected = Exception.class)
@@ -108,7 +111,8 @@ public class ForwardCompatibilityTest extends TestCase {
 
     public void testNoException() {
         TestResult result = new TestResult();
-        junit.framework.Test adapter = new JUnit4TestAdapter(NoExceptionTest.class);
+        junit.framework.Test adapter = new JUnit4TestAdapter(
+                NoExceptionTest.class);
         adapter.run(result);
         assertFalse(result.wasSuccessful());
     }
@@ -122,7 +126,8 @@ public class ForwardCompatibilityTest extends TestCase {
 
     public void testExpected() {
         TestResult result = new TestResult();
-        junit.framework.Test adapter = new JUnit4TestAdapter(ExpectedTest.class);
+        junit.framework.Test adapter = new JUnit4TestAdapter(
+                ExpectedTest.class);
         adapter.run(result);
         assertTrue(result.wasSuccessful());
     }
@@ -171,9 +176,12 @@ public class ForwardCompatibilityTest extends TestCase {
     public void testBeforeAndAfterClass() {
         log = "";
         TestResult result = new TestResult();
-        junit.framework.Test adapter = new JUnit4TestAdapter(BeforeClassTest.class);
+        junit.framework.Test adapter = new JUnit4TestAdapter(
+                BeforeClassTest.class);
         adapter.run(result);
-        assertEquals("before class before test after before test after after class ", log);
+        assertEquals(
+                "before class before test after before test after after class ",
+                log);
     }
 
     public static class ExceptionInBeforeTest {
@@ -189,7 +197,8 @@ public class ForwardCompatibilityTest extends TestCase {
 
     public void testExceptionInBefore() {
         TestResult result = new TestResult();
-        junit.framework.Test adapter = new JUnit4TestAdapter(ExceptionInBeforeTest.class);
+        junit.framework.Test adapter = new JUnit4TestAdapter(
+                ExceptionInBeforeTest.class);
         adapter.run(result);
         assertEquals(1, result.errorCount());
     }
@@ -206,11 +215,13 @@ public class ForwardCompatibilityTest extends TestCase {
 
     public void testInvalidMethod() {
         TestResult result = new TestResult();
-        junit.framework.Test adapter = new JUnit4TestAdapter(InvalidMethodTest.class);
+        junit.framework.Test adapter = new JUnit4TestAdapter(
+                InvalidMethodTest.class);
         adapter.run(result);
         assertEquals(1, result.errorCount());
         TestFailure failure = result.errors().nextElement();
-        assertTrue(failure.exceptionMessage().contains("Method shouldBeStatic() should be static"));
+        assertTrue(failure.exceptionMessage()
+                .contains("Method shouldBeStatic() should be static"));
     }
 
     private static boolean wasRun = false;

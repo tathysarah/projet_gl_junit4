@@ -1,8 +1,8 @@
 package org.junit.tests.experimental.parallel;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -18,7 +18,9 @@ import org.junit.runner.Result;
 
 public class ParallelMethodTest {
     private static final long TIMEOUT = 15;
+
     private static volatile Thread fOne = null;
+
     private static volatile Thread fTwo = null;
 
     public static class Example {
@@ -52,7 +54,8 @@ public class ParallelMethodTest {
 
     @Test
     public void testsRunInParallel() {
-        Result result = JUnitCore.runClasses(ParallelComputer.methods(), Example.class);
+        Result result = JUnitCore.runClasses(ParallelComputer.methods(),
+                Example.class);
         assertTrue(result.wasSuccessful());
         assertNotNull(fOne);
         assertNotNull(fTwo);

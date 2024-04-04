@@ -36,4 +36,4 @@ public class InheritedTestTest {
     public void subclassWithInheritedTestAndOwnBeforeRunsBefore() {
         assertFalse(JUnitCore.runClasses(SubWithBefore.class).wasSuccessful());
     }
-} 
+}

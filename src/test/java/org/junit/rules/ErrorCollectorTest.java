@@ -1,5 +1,20 @@
 package org.junit.rules;
 
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeTrue;
+import static org.junit.rules.EventCollector.everyTestRunSuccessful;
+import static org.junit.rules.EventCollector.hasNoAssumptionFailure;
+import static org.junit.rules.EventCollector.hasNumberOfFailures;
+import static org.junit.rules.EventCollector.hasSingleFailure;
+import static org.junit.rules.EventCollector.hasSingleFailureWithMessage;
+
+import java.util.concurrent.Callable;
+
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Rule;
@@ -12,83 +27,53 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
-import java.util.concurrent.Callable;
-
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeTrue;
-import static org.junit.rules.EventCollector.*;
-
 @RunWith(Parameterized.class)
 public class ErrorCollectorTest {
 
-    @Parameters(name= "{0}")
+    @Parameters(name = "{0}")
     public static Object[][] testsWithEventMatcher() {
-        return new Object[][]{
-                {
-                    AddSingleError.class,
-                        hasSingleFailureWithMessage("message")},
-                {
-                    AddTwoErrors.class,
-                        hasNumberOfFailures(2)},
-                {
-                    AddInternalAssumptionViolatedException.class,
-                        allOf(hasSingleFailure(), hasNoAssumptionFailure())},
-                {
-                    CheckMatcherThatDoesNotFailWithoutProvidedReason.class,
-                        everyTestRunSuccessful()},
-                {
-                    CheckMatcherThatDoesNotFailWithProvidedReason.class,
-                        everyTestRunSuccessful()},
-                {
-                    CheckMatcherThatFailsWithoutProvidedReason.class,
-                        hasSingleFailureWithMessage(Matchers.<String>allOf(
-                            containsString("Expected: is <4>"),
-                            containsString("but: was <3>")))},
-                {
-                    CheckMatcherThatFailsWithProvidedReason.class,
-                        hasSingleFailureWithMessage(Matchers.<String>allOf(
-                            containsString("reason"),
-                            containsString("Expected: is <4>"),
-                            containsString("but: was <3>")))},
-                {
-                    CheckTwoMatchersThatFail.class,
-                        hasNumberOfFailures(2)},
-                {
-                    CheckCallableThatThrowsAnException.class,
-                        hasSingleFailureWithMessage("first!")},
-                {
-                    CheckTwoCallablesThatThrowExceptions.class,
-                        hasNumberOfFailures(2)},
-                {
-                    CheckCallableThatThrowsInternalAssumptionViolatedException.class,
-                        allOf(hasSingleFailure(), hasNoAssumptionFailure())},
-                {
-                    CheckCallableWithFailingAssumption.class,
-                        allOf(hasSingleFailure(), hasNoAssumptionFailure())},
-                {
-                    CheckCallableThatDoesNotThrowAnException.class,
-                        everyTestRunSuccessful()},
-                {
-                    CheckRunnableThatThrowsExpectedTypeOfException.class,
-                        everyTestRunSuccessful()},
-                {
-                    CheckRunnableThatThrowsUnexpectedTypeOfException.class,
-                        hasSingleFailureWithMessage("unexpected exception type thrown; expected:<java.lang.IllegalArgumentException> but was:<java.lang.NullPointerException>")},
-                {
-                    CheckRunnableThatThrowsNoExceptionAlthoughOneIsExpected.class,
-                        hasSingleFailureWithMessage("expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown")},
-                {
-                    ErrorCollectorNotCalledBySuccessfulTest.class,
-                        everyTestRunSuccessful()},
-                {
-                    ErrorCollectorNotCalledByFailingTest.class,
-                        hasSingleFailure()},
-        };
+        return new Object[][] {
+                { AddSingleError.class,
+                        hasSingleFailureWithMessage("message") },
+                { AddTwoErrors.class, hasNumberOfFailures(2) },
+                { AddInternalAssumptionViolatedException.class,
+                        allOf(hasSingleFailure(), hasNoAssumptionFailure()) },
+                { CheckMatcherThatDoesNotFailWithoutProvidedReason.class,
+                        everyTestRunSuccessful() },
+                { CheckMatcherThatDoesNotFailWithProvidedReason.class,
+                        everyTestRunSuccessful() },
+                { CheckMatcherThatFailsWithoutProvidedReason.class,
+                        hasSingleFailureWithMessage(Matchers.<String> allOf(
+                                containsString("Expected: is <4>"),
+                                containsString("but: was <3>"))) },
+                { CheckMatcherThatFailsWithProvidedReason.class,
+                        hasSingleFailureWithMessage(Matchers.<String> allOf(
+                                containsString("reason"),
+                                containsString("Expected: is <4>"),
+                                containsString("but: was <3>"))) },
+                { CheckTwoMatchersThatFail.class, hasNumberOfFailures(2) },
+                { CheckCallableThatThrowsAnException.class,
+                        hasSingleFailureWithMessage("first!") },
+                { CheckTwoCallablesThatThrowExceptions.class,
+                        hasNumberOfFailures(2) },
+                { CheckCallableThatThrowsInternalAssumptionViolatedException.class,
+                        allOf(hasSingleFailure(), hasNoAssumptionFailure()) },
+                { CheckCallableWithFailingAssumption.class,
+                        allOf(hasSingleFailure(), hasNoAssumptionFailure()) },
+                { CheckCallableThatDoesNotThrowAnException.class,
+                        everyTestRunSuccessful() },
+                { CheckRunnableThatThrowsExpectedTypeOfException.class,
+                        everyTestRunSuccessful() },
+                { CheckRunnableThatThrowsUnexpectedTypeOfException.class,
+                        hasSingleFailureWithMessage(
+                                "unexpected exception type thrown; expected:<java.lang.IllegalArgumentException> but was:<java.lang.NullPointerException>") },
+                { CheckRunnableThatThrowsNoExceptionAlthoughOneIsExpected.class,
+                        hasSingleFailureWithMessage(
+                                "expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown") },
+                { ErrorCollectorNotCalledBySuccessfulTest.class,
+                        everyTestRunSuccessful() },
+                { ErrorCollectorNotCalledByFailingTest.class,
+                        hasSingleFailure() }, };
     }
 
     @Parameter(0)
@@ -271,11 +256,12 @@ public class ErrorCollectorTest {
 
         @Test
         public void example() {
-            collector.checkThrows(IllegalArgumentException.class, new ThrowingRunnable() {
-                public void run() throws Throwable {
-                    throw new IllegalArgumentException();
-                }
-            });
+            collector.checkThrows(IllegalArgumentException.class,
+                    new ThrowingRunnable() {
+                        public void run() throws Throwable {
+                            throw new IllegalArgumentException();
+                        }
+                    });
         }
     }
 
@@ -285,11 +271,12 @@ public class ErrorCollectorTest {
 
         @Test
         public void example() {
-            collector.checkThrows(IllegalArgumentException.class, new ThrowingRunnable() {
-                public void run() throws Throwable {
-                    throw new NullPointerException();
-                }
-            });
+            collector.checkThrows(IllegalArgumentException.class,
+                    new ThrowingRunnable() {
+                        public void run() throws Throwable {
+                            throw new NullPointerException();
+                        }
+                    });
         }
     }
 
@@ -299,10 +286,11 @@ public class ErrorCollectorTest {
 
         @Test
         public void example() {
-            collector.checkThrows(IllegalArgumentException.class, new ThrowingRunnable() {
-                public void run() throws Throwable {
-                }
-            });
+            collector.checkThrows(IllegalArgumentException.class,
+                    new ThrowingRunnable() {
+                        public void run() throws Throwable {
+                        }
+                    });
         }
     }
 

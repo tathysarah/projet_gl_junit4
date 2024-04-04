@@ -55,7 +55,8 @@ public class AnnotationTest extends TestCase {
         }
     }
 
-    public void testAnnotatedMethodWithFutureProofExplicitRunner() throws Exception {
+    public void testAnnotatedMethodWithFutureProofExplicitRunner()
+            throws Exception {
         JUnitCore runner = new JUnitCore();
         runner.run(SimpleTestWithFutureProofExplicitRunner.class);
         assertTrue(run);
@@ -107,7 +108,8 @@ public class AnnotationTest extends TestCase {
         Result result = runner.run(FailureTest.class);
         assertEquals(1, result.getRunCount());
         assertEquals(1, result.getFailureCount());
-        assertEquals(AssertionError.class, result.getFailures().get(0).getException().getClass());
+        assertEquals(AssertionError.class,
+                result.getFailures().get(0).getException().getClass());
     }
 
     public static class SetupFailureTest {
@@ -127,7 +129,8 @@ public class AnnotationTest extends TestCase {
         Result runner = core.run(SetupFailureTest.class);
         assertEquals(1, runner.getRunCount());
         assertEquals(1, runner.getFailureCount());
-        assertEquals(Error.class, runner.getFailures().get(0).getException().getClass());
+        assertEquals(Error.class,
+                runner.getFailures().get(0).getException().getClass());
         assertFalse(run);
     }
 
@@ -147,7 +150,8 @@ public class AnnotationTest extends TestCase {
         Result runner = core.run(TeardownFailureTest.class);
         assertEquals(1, runner.getRunCount());
         assertEquals(1, runner.getFailureCount());
-        assertEquals(Error.class, runner.getFailures().get(0).getException().getClass());
+        assertEquals(Error.class,
+                runner.getFailures().get(0).getException().getClass());
     }
 
     public static class TestAndTeardownFailureTest {
@@ -167,7 +171,8 @@ public class AnnotationTest extends TestCase {
         Result runner = core.run(TestAndTeardownFailureTest.class);
         assertEquals(1, runner.getRunCount());
         assertEquals(2, runner.getFailureCount());
-        assertThat(runner.getFailures().toString(), allOf(containsString("hereAfter"), containsString("inTest")));
+        assertThat(runner.getFailures().toString(),
+                allOf(containsString("hereAfter"), containsString("inTest")));
     }
 
     public static class TeardownAfterFailureTest {
@@ -189,6 +194,7 @@ public class AnnotationTest extends TestCase {
     }
 
     static int count;
+
     static Collection<Object> tests;
 
     public static class TwoTests {
@@ -262,7 +268,8 @@ public class AnnotationTest extends TestCase {
         JUnitCore core = new JUnitCore();
         Result result = core.run(NoExceptionTest.class);
         assertEquals(1, result.getFailureCount());
-        assertEquals("Expected exception: java.lang.Error", result.getFailures().get(0).getMessage());
+        assertEquals("Expected exception: java.lang.Error",
+                result.getFailures().get(0).getMessage());
     }
 
     public static class OneTimeSetup {
@@ -380,7 +387,8 @@ public class AnnotationTest extends TestCase {
         assertFalse(run);
         assertEquals(1, result.getFailureCount());
         Description description = result.getFailures().get(0).getDescription();
-        assertEquals(ErrorInBeforeClass.class.getName(), description.getDisplayName());
+        assertEquals(ErrorInBeforeClass.class.getName(),
+                description.getDisplayName());
     }
 
     public static class ErrorInAfterClass {
@@ -456,7 +464,9 @@ public class AnnotationTest extends TestCase {
         log = "";
         JUnitCore core = new JUnitCore();
         core.run(SubInheritance.class);
-        assertEquals("Before class super Before class sub Before super Before sub Test After sub After super After class sub After class super ", log);
+        assertEquals(
+                "Before class super Before class sub Before super Before sub Test After sub After super After class sub After class super ",
+                log);
     }
 
     public abstract static class SuperShadowing {
@@ -540,8 +550,8 @@ public class AnnotationTest extends TestCase {
         assertThat(testResult(SubShadowing.class), isSuccessful());
         assertEquals(
                 "sub.rule().before() sub.anotherBefore() super.before() sub.before() "
-                + "Test "
-                + "sub.anotherAfter() sub.after() super.after() sub.rule().after() ",
+                        + "Test "
+                        + "sub.anotherAfter() sub.after() super.after() sub.rule().after() ",
                 log);
     }
 
@@ -563,7 +573,8 @@ public class AnnotationTest extends TestCase {
         }
     }
 
-    public static class SubStaticMethodShadowing extends SuperStaticMethodShadowing {
+    public static class SubStaticMethodShadowing
+            extends SuperStaticMethodShadowing {
 
         @ClassRule
         public static TestRule rule() {
@@ -589,10 +600,7 @@ public class AnnotationTest extends TestCase {
     public void testStaticMethodsCanBeTreatedAsShadowed() throws Exception {
         log = "";
         assertThat(testResult(SubStaticMethodShadowing.class), isSuccessful());
-        assertEquals(
-                "sub.rule().before() "
-                + "Test "
-                + "sub.rule().after() ",
+        assertEquals("sub.rule().before() " + "Test " + "sub.rule().after() ",
                 log);
     }
 
@@ -636,11 +644,7 @@ public class AnnotationTest extends TestCase {
     public void testFieldsShadowFieldsFromParent() throws Exception {
         log = "";
         assertThat(testResult(SubFieldShadowing.class), isSuccessful());
-        assertEquals(
-                "sub.rule.before() "
-                + "Test "
-                + "sub.rule.after() ",
-                log);
+        assertEquals("sub.rule.before() " + "Test " + "sub.rule.after() ", log);
     }
 
     public abstract static class SuperStaticFieldShadowing {
@@ -659,7 +663,8 @@ public class AnnotationTest extends TestCase {
         };
     }
 
-    public static class SubStaticFieldShadowing extends SuperStaticFieldShadowing {
+    public static class SubStaticFieldShadowing
+            extends SuperStaticFieldShadowing {
 
         @ClassRule
         public static TestRule rule = new ExternalResource() {
@@ -683,11 +688,7 @@ public class AnnotationTest extends TestCase {
     public void testStaticFieldsCanBeTreatedAsShadowed() throws Exception {
         log = "";
         assertThat(testResult(SubStaticFieldShadowing.class), isSuccessful());
-        assertEquals(
-                "sub.rule.before() "
-                + "Test "
-                + "sub.rule.after() ",
-                log);
+        assertEquals("sub.rule.before() " + "Test " + "sub.rule.after() ", log);
     }
 
     public static class SuperTest {

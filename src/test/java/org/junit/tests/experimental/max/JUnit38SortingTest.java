@@ -15,6 +15,7 @@ import org.junit.runner.Request;
 
 public class JUnit38SortingTest {
     private MaxCore fMax;
+
     private File fMaxFile;
 
     @Before
@@ -54,8 +55,8 @@ public class JUnit38SortingTest {
         Request request = Request.classes(JUnit4Test.class, JUnit38Test.class);
         fMax.run(request);
         List<Description> tests = fMax.sortedLeavesForTest(request);
-        Description dontSucceed = Description.createTestDescription(
-                JUnit38Test.class, "testFails");
+        Description dontSucceed = Description
+                .createTestDescription(JUnit38Test.class, "testFails");
         assertEquals(dontSucceed, tests.get(0));
     }
 

@@ -14,15 +14,15 @@ import org.junit.runner.OrderWith;
  * Reorders tests. An {@code Ordering} can reverse the order of tests, sort the
  * order or even shuffle the order.
  *
- * <p>In general you will not need to use a <code>Ordering</code> directly.
+ * <p>
+ * In general you will not need to use a <code>Ordering</code> directly.
  * Instead, use {@link org.junit.runner.Request#orderWith(Ordering)}.
  *
  * @since 4.13
  */
 public abstract class Ordering {
-    private static final String CONSTRUCTOR_ERROR_FORMAT
-            = "Ordering class %s should have a public constructor with signature "
-                    + "%s(Ordering.Context context)";
+    private static final String CONSTRUCTOR_ERROR_FORMAT = "Ordering class %s should have a public constructor with signature "
+            + "%s(Ordering.Context context)";
 
     /**
      * Creates an {@link Ordering} that shuffles the items using the given
@@ -36,8 +36,10 @@ public abstract class Ordering {
             }
 
             @Override
-            protected List<Description> orderItems(Collection<Description> descriptions) {
-                List<Description> shuffled = new ArrayList<Description>(descriptions);
+            protected List<Description> orderItems(
+                    Collection<Description> descriptions) {
+                List<Description> shuffled = new ArrayList<Description>(
+                        descriptions);
                 Collections.shuffle(shuffled, random);
                 return shuffled;
             }
@@ -45,16 +47,19 @@ public abstract class Ordering {
     }
 
     /**
-     * Creates an {@link Ordering} from the given factory class. The class must have a public no-arg
-     * constructor.
+     * Creates an {@link Ordering} from the given factory class. The class must
+     * have a public no-arg constructor.
      *
-     * @param factoryClass class to use to create the ordering
-     * @param annotatedTestClass test class that is annotated with {@link OrderWith}.
-     * @throws InvalidOrderingException if the instance could not be created
+     * @param factoryClass
+     *            class to use to create the ordering
+     * @param annotatedTestClass
+     *            test class that is annotated with {@link OrderWith}.
+     * @throws InvalidOrderingException
+     *             if the instance could not be created
      */
     public static Ordering definedBy(
-            Class<? extends Ordering.Factory> factoryClass, Description annotatedTestClass)
-            throws InvalidOrderingException {
+            Class<? extends Ordering.Factory> factoryClass,
+            Description annotatedTestClass) throws InvalidOrderingException {
         if (factoryClass == null) {
             throw new NullPointerException("factoryClass cannot be null");
         }
@@ -64,12 +69,12 @@ public abstract class Ordering {
 
         Ordering.Factory factory;
         try {
-            Constructor<? extends Ordering.Factory> constructor = factoryClass.getConstructor();
+            Constructor<? extends Ordering.Factory> constructor = factoryClass
+                    .getConstructor();
             factory = constructor.newInstance();
         } catch (NoSuchMethodException e) {
             throw new InvalidOrderingException(String.format(
-                    CONSTRUCTOR_ERROR_FORMAT,
-                    getClassName(factoryClass),
+                    CONSTRUCTOR_ERROR_FORMAT, getClassName(factoryClass),
                     factoryClass.getSimpleName()));
         } catch (Exception e) {
             throw new InvalidOrderingException(
@@ -81,13 +86,15 @@ public abstract class Ordering {
     /**
      * Creates an {@link Ordering} from the given factory.
      *
-     * @param factory factory to use to create the ordering
-     * @param annotatedTestClass test class that is annotated with {@link OrderWith}.
-     * @throws InvalidOrderingException if the instance could not be created
+     * @param factory
+     *            factory to use to create the ordering
+     * @param annotatedTestClass
+     *            test class that is annotated with {@link OrderWith}.
+     * @throws InvalidOrderingException
+     *             if the instance could not be created
      */
-    public static Ordering definedBy(
-            Ordering.Factory factory, Description annotatedTestClass)
-            throws InvalidOrderingException {
+    public static Ordering definedBy(Ordering.Factory factory,
+            Description annotatedTestClass) throws InvalidOrderingException {
         if (factory == null) {
             throw new NullPointerException("factory cannot be null");
         }
@@ -109,8 +116,9 @@ public abstract class Ordering {
     /**
      * Order the tests in <code>target</code> using this ordering.
      *
-     * @throws InvalidOrderingException if ordering does something invalid (like remove or add
-     * children)
+     * @throws InvalidOrderingException
+     *             if ordering does something invalid (like remove or add
+     *             children)
      */
     public void apply(Object target) throws InvalidOrderingException {
         /*
@@ -137,7 +145,8 @@ public abstract class Ordering {
      *
      * @return descriptions in order
      */
-    protected abstract List<Description> orderItems(Collection<Description> descriptions);
+    protected abstract List<Description> orderItems(
+            Collection<Description> descriptions);
 
     /** Context about the ordering being applied. */
     public static class Context {
@@ -158,8 +167,9 @@ public abstract class Ordering {
     /**
      * Factory for creating {@link Ordering} instances.
      *
-     * <p>For a factory to be used with {@code @OrderWith} it needs to have a public no-arg
-     * constructor.
+     * <p>
+     * For a factory to be used with {@code @OrderWith} it needs to have a
+     * public no-arg constructor.
      */
     public interface Factory {
         /**

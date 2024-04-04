@@ -22,8 +22,8 @@ import org.junit.runner.RunWith;
 @RunWith(Theories.class)
 public class ParameterSignatureTest {
     @DataPoint
-    public static Method getType() throws SecurityException,
-            NoSuchMethodException {
+    public static Method getType()
+            throws SecurityException, NoSuchMethodException {
         return ParameterSignatureTest.class.getMethod("getType", Method.class,
                 int.class);
     }
@@ -37,52 +37,56 @@ public class ParameterSignatureTest {
     @Theory
     public void getType(Method method, int index) {
         assumeTrue(index < method.getParameterTypes().length);
-        assertEquals(method.getParameterTypes()[index], ParameterSignature
-                .signatures(method).get(index).getType());
+        assertEquals(method.getParameterTypes()[index],
+                ParameterSignature.signatures(method).get(index).getType());
     }
 
-    public void foo(@TestedOn(ints = {1, 2, 3}) int x) {
+    public void foo(@TestedOn(ints = { 1, 2, 3 })
+    int x) {
     }
 
     @Test
-    public void getAnnotations() throws SecurityException,
-            NoSuchMethodException {
+    public void getAnnotations()
+            throws SecurityException, NoSuchMethodException {
         Method method = getClass().getMethod("foo", int.class);
         List<Annotation> annotations = ParameterSignature.signatures(method)
                 .get(0).getAnnotations();
         assertThat(annotations,
-                CoreMatchers.<TestedOn>hasItem(isA(TestedOn.class)));
+                CoreMatchers.<TestedOn> hasItem(isA(TestedOn.class)));
     }
-    
+
     public void intMethod(int param) {
     }
-    
+
     public void integerMethod(Integer param) {
     }
-    
+
     public void numberMethod(Number param) {
     }
 
     @Test
-    public void primitiveTypesShouldBeAcceptedAsWrapperTypes() throws Exception {
-        List<ParameterSignature> signatures = ParameterSignature
-                .signatures(getClass().getMethod("integerMethod", Integer.class));
+    public void primitiveTypesShouldBeAcceptedAsWrapperTypes()
+            throws Exception {
+        List<ParameterSignature> signatures = ParameterSignature.signatures(
+                getClass().getMethod("integerMethod", Integer.class));
         ParameterSignature integerSignature = signatures.get(0);
 
         assertTrue(integerSignature.canAcceptType(int.class));
     }
-    
+
     @Test
-    public void primitiveTypesShouldBeAcceptedAsWrapperTypeAssignables() throws Exception {
+    public void primitiveTypesShouldBeAcceptedAsWrapperTypeAssignables()
+            throws Exception {
         List<ParameterSignature> signatures = ParameterSignature
                 .signatures(getClass().getMethod("numberMethod", Number.class));
         ParameterSignature numberSignature = signatures.get(0);
 
         assertTrue(numberSignature.canAcceptType(int.class));
     }
-    
+
     @Test
-    public void wrapperTypesShouldBeAcceptedAsPrimitiveTypes() throws Exception {
+    public void wrapperTypesShouldBeAcceptedAsPrimitiveTypes()
+            throws Exception {
         List<ParameterSignature> signatures = ParameterSignature
                 .signatures(getClass().getMethod("intMethod", int.class));
         ParameterSignature intSignature = signatures.get(0);

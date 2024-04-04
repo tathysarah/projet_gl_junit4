@@ -14,6 +14,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.internal.AssumptionViolatedException;
+import org.junit.rules.RuleMemberValidatorTest.TestWithNonStaticClassRule;
+import org.junit.rules.RuleMemberValidatorTest.TestWithProtectedClassRule;
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Request;
@@ -26,8 +28,6 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerScheduler;
-import org.junit.rules.RuleMemberValidatorTest.TestWithNonStaticClassRule;
-import org.junit.rules.RuleMemberValidatorTest.TestWithProtectedClassRule;
 
 public class ParentRunnerTest {
     public static String log = "";
@@ -39,7 +39,7 @@ public class ParentRunnerTest {
         }
 
         @Test
-        public void /* must hash-sort after "apple" */Banana() {
+        public void /* must hash-sort after "apple" */ Banana() {
             log += "banana ";
         }
     }
@@ -138,13 +138,13 @@ public class ParentRunnerTest {
         }
 
         @Test
-        public void alwaysPasses() {}
+        public void alwaysPasses() {
+        }
     }
 
     @Test
     public void cannotBeCreatedWithNonPublicTestClass() {
-        assertClassHasFailureMessage(
-                NonPublicTestClass.class,
+        assertClassHasFailureMessage(NonPublicTestClass.class,
                 "The class org.junit.tests.running.classes.ParentRunnerTest$NonPublicTestClass is not public.");
     }
 
@@ -164,12 +164,14 @@ public class ParentRunnerTest {
         }
 
         @Test
-        public void test() {}
+        public void test() {
+        }
     }
 
     @Test
     public void assertionErrorAtParentLevelTest() throws InitializationError {
-        CountingRunListener countingRunListener = runTestWithParentRunner(AssertionErrorAtParentLevelTest.class);
+        CountingRunListener countingRunListener = runTestWithParentRunner(
+                AssertionErrorAtParentLevelTest.class);
         Assert.assertEquals(1, countingRunListener.testSuiteStarted);
         Assert.assertEquals(1, countingRunListener.testSuiteFinished);
         Assert.assertEquals(1, countingRunListener.testSuiteFailure);
@@ -190,12 +192,14 @@ public class ParentRunnerTest {
         }
 
         @Test
-        public void test() {}
+        public void test() {
+        }
     }
 
     @Test
     public void assumptionViolatedAtParentLevel() throws InitializationError {
-        CountingRunListener countingRunListener = runTestWithParentRunner(AssumptionViolatedAtParentLevelTest.class);
+        CountingRunListener countingRunListener = runTestWithParentRunner(
+                AssumptionViolatedAtParentLevelTest.class);
         Assert.assertEquals(1, countingRunListener.testSuiteStarted);
         Assert.assertEquals(1, countingRunListener.testSuiteFinished);
         Assert.assertEquals(0, countingRunListener.testSuiteFailure);
@@ -210,7 +214,8 @@ public class ParentRunnerTest {
 
     public static class TestTest {
         @Test
-        public void pass() {}
+        public void pass() {
+        }
 
         @Test
         public void fail() {
@@ -219,7 +224,8 @@ public class ParentRunnerTest {
 
         @Ignore
         @Test
-        public void ignore() {}
+        public void ignore() {
+        }
 
         @SuppressWarnings("deprecation")
         @Test
@@ -230,7 +236,8 @@ public class ParentRunnerTest {
 
     @Test
     public void parentRunnerTestMethods() throws InitializationError {
-        CountingRunListener countingRunListener = runTestWithParentRunner(TestTest.class);
+        CountingRunListener countingRunListener = runTestWithParentRunner(
+                TestTest.class);
         Assert.assertEquals(1, countingRunListener.testSuiteStarted);
         Assert.assertEquals(1, countingRunListener.testSuiteFinished);
         Assert.assertEquals(0, countingRunListener.testSuiteFailure);
@@ -243,7 +250,8 @@ public class ParentRunnerTest {
         Assert.assertEquals(1, countingRunListener.testIgnored);
     }
 
-    private CountingRunListener runTestWithParentRunner(Class<?> testClass) throws InitializationError {
+    private CountingRunListener runTestWithParentRunner(Class<?> testClass)
+            throws InitializationError {
         CountingRunListener listener = new CountingRunListener();
         RunNotifier runNotifier = new RunNotifier();
         runNotifier.addListener(listener);
@@ -254,14 +262,21 @@ public class ParentRunnerTest {
 
     private static class CountingRunListener extends RunListener {
         private int testSuiteStarted = 0;
+
         private int testSuiteFinished = 0;
+
         private int testSuiteFailure = 0;
+
         private int testSuiteAssumptionFailure = 0;
 
         private int testStarted = 0;
+
         private int testFinished = 0;
+
         private int testFailure = 0;
+
         private int testAssumptionFailure = 0;
+
         private int testIgnored = 0;
 
         @Override
@@ -270,7 +285,8 @@ public class ParentRunnerTest {
         }
 
         @Override
-        public void testSuiteFinished(Description description) throws Exception {
+        public void testSuiteFinished(Description description)
+                throws Exception {
             testSuiteFinished++;
         }
 

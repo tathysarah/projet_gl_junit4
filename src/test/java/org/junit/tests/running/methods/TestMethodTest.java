@@ -135,7 +135,8 @@ public class TestMethodTest {
     @Test
     public void testFailures() throws Exception {
         List<Throwable> problems = validateAllMethods(EverythingWrong.class);
-        int errorCount = 1 + 4 * 5; // missing constructor plus four invalid methods for each annotation */
+        int errorCount = 1 + 4 * 5; // missing constructor plus four invalid
+                                    // methods for each annotation */
         assertEquals(errorCount, problems.size());
     }
 

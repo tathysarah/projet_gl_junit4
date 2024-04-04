@@ -8,6 +8,7 @@ import junit.runner.BaseTestRunner;
 
 public class StackFilterTest extends TestCase {
     String fFiltered;
+
     String fUnfiltered;
 
     @Override
@@ -21,15 +22,23 @@ public class StackFilterTest extends TestCase {
         pwin.println("\tat MyTest.f(MyTest.java:13)");
         pwin.println("\tat MyTest.testStackTrace(MyTest.java:8)");
         pwin.println("\tat java.lang.reflect.Method.invoke(Native Method)");
-        pwin.println("\tat junit.framework.TestCase.runTest(TestCase.java:156)");
-        pwin.println("\tat junit.framework.TestCase.runBare(TestCase.java:130)");
-        pwin.println("\tat junit.framework.TestResult$1.protect(TestResult.java:100)");
-        pwin.println("\tat junit.framework.TestResult.runProtected(TestResult.java:118)");
-        pwin.println("\tat junit.framework.TestResult.run(TestResult.java:103)");
+        pwin.println(
+                "\tat junit.framework.TestCase.runTest(TestCase.java:156)");
+        pwin.println(
+                "\tat junit.framework.TestCase.runBare(TestCase.java:130)");
+        pwin.println(
+                "\tat junit.framework.TestResult$1.protect(TestResult.java:100)");
+        pwin.println(
+                "\tat junit.framework.TestResult.runProtected(TestResult.java:118)");
+        pwin.println(
+                "\tat junit.framework.TestResult.run(TestResult.java:103)");
         pwin.println("\tat junit.framework.TestCase.run(TestCase.java:121)");
-        pwin.println("\tat junit.framework.TestSuite.runTest(TestSuite.java:157)");
-        pwin.println("\tat junit.framework.TestSuite.run(TestSuite.java, Compiled Code)");
-        pwin.println("\tat junit.swingui.TestRunner$17.run(TestRunner.java:669)");
+        pwin.println(
+                "\tat junit.framework.TestSuite.runTest(TestSuite.java:157)");
+        pwin.println(
+                "\tat junit.framework.TestSuite.run(TestSuite.java, Compiled Code)");
+        pwin.println(
+                "\tat junit.swingui.TestRunner$17.run(TestRunner.java:669)");
         fUnfiltered = swin.toString();
 
         StringWriter swout = new StringWriter();

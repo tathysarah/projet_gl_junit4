@@ -6,7 +6,6 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Random;
 
 import org.hamcrest.BaseDescription;
@@ -14,8 +13,8 @@ import org.hamcrest.Description;
 import org.junit.internal.AssumptionViolatedException;
 
 public class Guesser<T> extends ReguessableValue {
-    static class GuessMap extends HashMap<MethodCall, Object> implements
-            InvocationHandler {
+    static class GuessMap extends HashMap<MethodCall, Object>
+            implements InvocationHandler {
         private static final long serialVersionUID = 1L;
 
         public GuessMap(GuessMap guesses) {
@@ -75,7 +74,7 @@ public class Guesser<T> extends ReguessableValue {
     @SuppressWarnings("unchecked")
     public T getProxy() {
         return (T) Proxy.newProxyInstance(getClass().getClassLoader(),
-                new Class[]{getType()}, guesses);
+                new Class[] { getType() }, guesses);
     }
 
     @Override
@@ -87,6 +86,7 @@ public class Guesser<T> extends ReguessableValue {
             }
 
             boolean expectedSeen = false;
+
             Object expected = null;
 
             @Override

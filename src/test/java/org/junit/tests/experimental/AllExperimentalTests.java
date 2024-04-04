@@ -11,15 +11,8 @@ import org.junit.tests.experimental.theories.AllTheoriesTests;
 import org.junit.tests.experimental.theories.extendingwithstubs.StubbedTheoriesTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({
-        AllCategoriesTests.class,
-        AllMaxTests.class,
-        AllParallelTests.class,
-        AllResultsTests.class,
-        AllTheoriesTests.class,
-        AssumptionTest.class,
-        MatcherTest.class,
-        StubbedTheoriesTest.class
-})
+@SuiteClasses({ AllCategoriesTests.class, AllMaxTests.class,
+        AllParallelTests.class, AllResultsTests.class, AllTheoriesTests.class,
+        AssumptionTest.class, MatcherTest.class, StubbedTheoriesTest.class })
 public class AllExperimentalTests {
 }

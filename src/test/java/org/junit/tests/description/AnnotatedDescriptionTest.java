@@ -27,14 +27,14 @@ public class AnnotatedDescriptionTest {
 
     @Test
     public void annotationsExistOnDescriptionsOfClasses() {
-        assertTrue((describe(AnnotatedClass.class).getAnnotation(
-                MyOwnAnnotation.class) != null));
+        assertTrue((describe(AnnotatedClass.class)
+                .getAnnotation(MyOwnAnnotation.class) != null));
     }
 
     @Test
     public void getAnnotationsReturnsAllAnnotations() {
-        assertEquals(1, describe(ValueAnnotatedClass.class).getAnnotations()
-                .size());
+        assertEquals(1,
+                describe(ValueAnnotatedClass.class).getAnnotations().size());
     }
 
     @Ignore
@@ -46,7 +46,8 @@ public class AnnotatedDescriptionTest {
 
     @Test
     public void annotationsExistOnDescriptionsOfIgnoredClass() {
-        assertTrue((describe(IgnoredClass.class).getAnnotation(Ignore.class) != null));
+        assertTrue((describe(IgnoredClass.class)
+                .getAnnotation(Ignore.class) != null));
     }
 
     @Retention(RetentionPolicy.RUNTIME)
@@ -64,15 +65,15 @@ public class AnnotatedDescriptionTest {
     @Test
     public void descriptionOfTestClassHasValuedAnnotation() {
         Description description = describe(ValueAnnotatedClass.class);
-        assertEquals("hello", description.getAnnotation(ValuedAnnotation.class)
-                .value());
+        assertEquals("hello",
+                description.getAnnotation(ValuedAnnotation.class).value());
     }
 
     @Test
     public void childlessCopyOfDescriptionStillHasAnnotations() {
         Description description = describe(ValueAnnotatedClass.class);
-        assertEquals("hello", description.childlessCopy().getAnnotation(ValuedAnnotation.class)
-                .value());
+        assertEquals("hello", description.childlessCopy()
+                .getAnnotation(ValuedAnnotation.class).value());
     }
 
     @Test

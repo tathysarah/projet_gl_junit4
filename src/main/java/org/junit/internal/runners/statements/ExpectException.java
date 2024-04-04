@@ -5,9 +5,11 @@ import org.junit.runners.model.Statement;
 
 public class ExpectException extends Statement {
     private final Statement next;
+
     private final Class<? extends Throwable> expected;
 
-    public ExpectException(Statement next, Class<? extends Throwable> expected) {
+    public ExpectException(Statement next,
+            Class<? extends Throwable> expected) {
         this.next = next;
         this.expected = expected;
     }
@@ -31,8 +33,8 @@ public class ExpectException extends Statement {
             }
         }
         if (complete) {
-            throw new AssertionError("Expected exception: "
-                    + expected.getName());
+            throw new AssertionError(
+                    "Expected exception: " + expected.getName());
         }
     }
 }

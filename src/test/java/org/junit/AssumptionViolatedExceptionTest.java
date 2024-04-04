@@ -42,12 +42,17 @@ public class AssumptionViolatedExceptionTest {
     public TestName name = new TestName();
 
     private static final String MESSAGE = "Assumption message";
+
     private static Matcher<Integer> SERIALIZABLE_IS_THREE = new SerializableIsThreeMatcher<Integer>();
+
     private static final UnserializableClass UNSERIALIZABLE_VALUE = new UnserializableClass();
-    private static final Matcher<UnserializableClass> UNSERIALIZABLE_MATCHER = not(is(UNSERIALIZABLE_VALUE));
+
+    private static final Matcher<UnserializableClass> UNSERIALIZABLE_MATCHER = not(
+            is(UNSERIALIZABLE_VALUE));
 
     @Theory
-    public void toStringReportsMatcher(Integer actual, Matcher<Integer> matcher) {
+    public void toStringReportsMatcher(Integer actual,
+            Matcher<Integer> matcher) {
         assumeThat(matcher, notNullValue());
         assertThat(new AssumptionViolatedException(actual, matcher).toString(),
                 containsString(matcher.toString()));
@@ -61,59 +66,63 @@ public class AssumptionViolatedExceptionTest {
 
     @Test
     public void assumptionViolatedExceptionWithMatcherDescribesItself() {
-        AssumptionViolatedException e = new AssumptionViolatedException(3, is(2));
-        assertThat(StringDescription.asString(e), is("got: <3>, expected: is <2>"));
+        AssumptionViolatedException e = new AssumptionViolatedException(3,
+                is(2));
+        assertThat(StringDescription.asString(e),
+                is("got: <3>, expected: is <2>"));
     }
 
     @Test
     public void simpleAssumptionViolatedExceptionDescribesItself() {
-        AssumptionViolatedException e = new AssumptionViolatedException("not enough money");
+        AssumptionViolatedException e = new AssumptionViolatedException(
+                "not enough money");
         assertThat(StringDescription.asString(e), is("not enough money"));
     }
 
     @Test
     public void canInitCauseWithInstanceCreatedWithString() {
-      AssumptionViolatedException e = new AssumptionViolatedException("invalid number");
-      Throwable cause = new RuntimeException("cause");
-      e.initCause(cause);
-      assertThat(e.getCause(), is(cause));
+        AssumptionViolatedException e = new AssumptionViolatedException(
+                "invalid number");
+        Throwable cause = new RuntimeException("cause");
+        e.initCause(cause);
+        assertThat(e.getCause(), is(cause));
     }
 
     @Test
     @SuppressWarnings("deprecation")
     public void canSetCauseWithInstanceCreatedWithObjectAndMatcher() {
-      Throwable testObject = new Exception();
-      org.junit.internal.AssumptionViolatedException e
-              = new org.junit.internal.AssumptionViolatedException(
-                      testObject, containsString("test matcher"));
-      assertThat(e.getCause(), is(testObject));
+        Throwable testObject = new Exception();
+        org.junit.internal.AssumptionViolatedException e = new org.junit.internal.AssumptionViolatedException(
+                testObject, containsString("test matcher"));
+        assertThat(e.getCause(), is(testObject));
     }
 
     @Test
     @SuppressWarnings("deprecation")
     public void canSetCauseWithInstanceCreatedWithAssumptionObjectAndMatcher() {
-      Throwable testObject = new Exception();
-      org.junit.internal.AssumptionViolatedException e
-              = new org.junit.internal.AssumptionViolatedException(
-                      "sample assumption", testObject, containsString("test matcher"));
-      assertThat(e.getCause(), is(testObject));
+        Throwable testObject = new Exception();
+        org.junit.internal.AssumptionViolatedException e = new org.junit.internal.AssumptionViolatedException(
+                "sample assumption", testObject,
+                containsString("test matcher"));
+        assertThat(e.getCause(), is(testObject));
     }
 
     @Test
     @SuppressWarnings("deprecation")
     public void canSetCauseWithInstanceCreatedWithMainConstructor() {
-      Throwable testObject = new Exception();
-      org.junit.internal.AssumptionViolatedException e
-              = new org.junit.internal.AssumptionViolatedException(
-                      "sample assumption", false, testObject, containsString("test matcher"));
-      assertThat(e.getCause(), is(testObject));
+        Throwable testObject = new Exception();
+        org.junit.internal.AssumptionViolatedException e = new org.junit.internal.AssumptionViolatedException(
+                "sample assumption", false, testObject,
+                containsString("test matcher"));
+        assertThat(e.getCause(), is(testObject));
     }
 
     @Test
     public void canSetCauseWithInstanceCreatedWithExplicitThrowableConstructor() {
-      Throwable cause = new Exception();
-      AssumptionViolatedException e = new AssumptionViolatedException("invalid number", cause);
-      assertThat(e.getCause(), is(cause));
+        Throwable cause = new Exception();
+        AssumptionViolatedException e = new AssumptionViolatedException(
+                "invalid number", cause);
+        assertThat(e.getCause(), is(cause));
     }
 
     @Test
@@ -125,28 +134,33 @@ public class AssumptionViolatedExceptionTest {
     @Test
     public void assumptionViolatedExceptionWithValueAndMatcherCanBeReserialized_v4_13()
             throws IOException, ClassNotFoundException {
-        assertReserializable(new AssumptionViolatedException(MESSAGE, TWO, SERIALIZABLE_IS_THREE));
+        assertReserializable(new AssumptionViolatedException(MESSAGE, TWO,
+                SERIALIZABLE_IS_THREE));
     }
 
     @Test
-    public void unserializableValueAndMatcherCanBeSerialized() throws IOException, ClassNotFoundException {
-        AssumptionViolatedException exception = new AssumptionViolatedException(MESSAGE,
-                UNSERIALIZABLE_VALUE, UNSERIALIZABLE_MATCHER);
+    public void unserializableValueAndMatcherCanBeSerialized()
+            throws IOException, ClassNotFoundException {
+        AssumptionViolatedException exception = new AssumptionViolatedException(
+                MESSAGE, UNSERIALIZABLE_VALUE, UNSERIALIZABLE_MATCHER);
 
         assertCanBeSerialized(exception);
     }
 
     @Test
-    public void nullValueAndMatcherCanBeSerialized() throws IOException, ClassNotFoundException {
-        AssumptionViolatedException exception = new AssumptionViolatedException(MESSAGE);
+    public void nullValueAndMatcherCanBeSerialized()
+            throws IOException, ClassNotFoundException {
+        AssumptionViolatedException exception = new AssumptionViolatedException(
+                MESSAGE);
 
         assertCanBeSerialized(exception);
     }
 
     @Test
-    public void serializableValueAndMatcherCanBeSerialized() throws IOException, ClassNotFoundException {
-        AssumptionViolatedException exception = new AssumptionViolatedException(MESSAGE,
-                TWO, SERIALIZABLE_IS_THREE);
+    public void serializableValueAndMatcherCanBeSerialized()
+            throws IOException, ClassNotFoundException {
+        AssumptionViolatedException exception = new AssumptionViolatedException(
+                MESSAGE, TWO, SERIALIZABLE_IS_THREE);
 
         assertCanBeSerialized(exception);
     }
@@ -157,9 +171,11 @@ public class AssumptionViolatedExceptionTest {
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(exception);
 
-        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+        ByteArrayInputStream bais = new ByteArrayInputStream(
+                baos.toByteArray());
         ObjectInputStream ois = new ObjectInputStream(bais);
-        AssumptionViolatedException fromStream = (AssumptionViolatedException) ois.readObject();
+        AssumptionViolatedException fromStream = (AssumptionViolatedException) ois
+                .readObject();
 
         assertSerializedCorrectly(exception, fromStream);
     }
@@ -170,24 +186,30 @@ public class AssumptionViolatedExceptionTest {
         InputStream resource = getClass().getResourceAsStream(resourceName);
         assertNotNull("Could not read resource " + resourceName, resource);
         ObjectInputStream objectInputStream = new ObjectInputStream(resource);
-        AssumptionViolatedException fromStream = (AssumptionViolatedException) objectInputStream.readObject();
+        AssumptionViolatedException fromStream = (AssumptionViolatedException) objectInputStream
+                .readObject();
 
         assertSerializedCorrectly(expected, fromStream);
     }
 
-    private void assertSerializedCorrectly(
-            AssumptionViolatedException expected, AssumptionViolatedException fromStream) {
+    private void assertSerializedCorrectly(AssumptionViolatedException expected,
+            AssumptionViolatedException fromStream) {
         assertNotNull(fromStream);
 
-        // Exceptions don't implement equals() so we need to compare field by field
+        // Exceptions don't implement equals() so we need to compare field by
+        // field
         assertEquals("message", expected.getMessage(), fromStream.getMessage());
-        assertEquals("description", StringDescription.asString(expected), StringDescription.asString(fromStream));
-        // We don't check the stackTrace as that will be influenced by how the test was started
+        assertEquals("description", StringDescription.asString(expected),
+                StringDescription.asString(fromStream));
+        // We don't check the stackTrace as that will be influenced by how the
+        // test was started
         // (e.g. by maven or directly from IDE)
-        // We also don't check the cause as that should already be serialized correctly by the superclass
+        // We also don't check the cause as that should already be serialized
+        // correctly by the superclass
     }
 
-    private static class SerializableIsThreeMatcher<T> extends BaseMatcher<T> implements Serializable {
+    private static class SerializableIsThreeMatcher<T> extends BaseMatcher<T>
+            implements Serializable {
 
         public boolean matches(Object item) {
             return IS_THREE.matches(item);

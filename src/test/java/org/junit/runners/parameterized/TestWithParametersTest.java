@@ -67,11 +67,11 @@ public class TestWithParametersTest {
     @Test
     public void isEqualToTestWithSameNameAndTestClassAndParameters() {
         TestWithParameters firstTest = new TestWithParameters(DUMMY_NAME,
-                new TestClass(DummyClass.class), Arrays.<Object> asList("a",
-                        "b"));
+                new TestClass(DummyClass.class),
+                Arrays.<Object> asList("a", "b"));
         TestWithParameters secondTest = new TestWithParameters(DUMMY_NAME,
-                new TestClass(DummyClass.class), Arrays.<Object> asList("a",
-                        "b"));
+                new TestClass(DummyClass.class),
+                Arrays.<Object> asList("a", "b"));
         assertEquals(firstTest, secondTest);
     }
 
@@ -120,11 +120,10 @@ public class TestWithParametersTest {
 
     @Test
     public void hasMeaningfulToString() {
-        TestWithParameters test = new TestWithParameters("name", new TestClass(
-                DummyClass.class), Arrays.<Object> asList("first parameter",
-                "second parameter"));
-        assertEquals(
-                "Wrong toString().",
+        TestWithParameters test = new TestWithParameters("name",
+                new TestClass(DummyClass.class),
+                Arrays.<Object> asList("first parameter", "second parameter"));
+        assertEquals("Wrong toString().",
                 "org.junit.runners.parameterized.TestWithParametersTest$DummyClass 'name' with parameters [first parameter, second parameter]",
                 test.toString());
     }

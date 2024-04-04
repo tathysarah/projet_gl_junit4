@@ -20,12 +20,17 @@ public class SystemExitTest {
 
     @Test
     public void failureCausesExitCodeOf1() throws Exception {
-        String java = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
-        String classPath = getClass().getClassLoader().getResource(".").getFile() + File.pathSeparator + System.getProperty("java.class.path");
-        String[] cmd = {java, "-cp", classPath, getClass().getName() + "$Exit"};
+        String java = System.getProperty("java.home") + File.separator + "bin"
+                + File.separator + "java";
+        String classPath = getClass().getClassLoader().getResource(".")
+                .getFile() + File.pathSeparator
+                + System.getProperty("java.class.path");
+        String[] cmd = { java, "-cp", classPath,
+                getClass().getName() + "$Exit" };
         Process process = Runtime.getRuntime().exec(cmd);
         InputStream input = process.getInputStream();
-        while ((input.read()) != -1) ;
+        while ((input.read()) != -1)
+            ;
         assertEquals(EXIT_CODE, process.waitFor());
     }
 }

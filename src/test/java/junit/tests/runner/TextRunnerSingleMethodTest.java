@@ -27,10 +27,10 @@ public class TextRunnerSingleMethodTest extends TestCase {
 
     public void testSingle() throws Exception {
         TestRunner t = new TestRunner();
-        t.setPrinter(new ResultPrinter(new PrintStream(new ByteArrayOutputStream())));
-        String[] args = {
-                "-m", "junit.tests.runner.TextRunnerSingleMethodTest$InvocationTest.testWasInvoked"
-        };
+        t.setPrinter(new ResultPrinter(
+                new PrintStream(new ByteArrayOutputStream())));
+        String[] args = { "-m",
+                "junit.tests.runner.TextRunnerSingleMethodTest$InvocationTest.testWasInvoked" };
         fgWasInvoked = false;
         t.start(args);
         assertTrue(fgWasInvoked);

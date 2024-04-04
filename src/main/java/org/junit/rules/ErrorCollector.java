@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.junit.function.ThrowingRunnable;
-import org.junit.internal.AssumptionViolatedException;
 import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
+import org.junit.function.ThrowingRunnable;
+import org.junit.internal.AssumptionViolatedException;
 import org.junit.runners.model.MultipleFailureException;
 
 /**
@@ -19,15 +19,15 @@ import org.junit.runners.model.MultipleFailureException;
  *
  * <pre>
  * public static class UsesErrorCollectorTwice {
- * 	&#064;Rule
- * 	public ErrorCollector collector= new ErrorCollector();
+ *     &#064;Rule
+ *     public ErrorCollector collector = new ErrorCollector();
  *
- * &#064;Test
- * public void example() {
- *      collector.addError(new Throwable(&quot;first thing went wrong&quot;));
- *      collector.addError(new Throwable(&quot;second thing went wrong&quot;));
- *      collector.checkThat(getResult(), not(containsString(&quot;ERROR!&quot;)));
- *      // all lines will run, and then a combined failure logged at the end.
+ *     &#064;Test
+ *     public void example() {
+ *         collector.addError(new Throwable(&quot;first thing went wrong&quot;));
+ *         collector.addError(new Throwable(&quot;second thing went wrong&quot;));
+ *         collector.checkThat(getResult(), not(containsString(&quot;ERROR!&quot;)));
+ *         // all lines will run, and then a combined failure logged at the end.
  *     }
  * }
  * </pre>
@@ -43,7 +43,8 @@ public class ErrorCollector extends Verifier {
     }
 
     /**
-     * Adds a Throwable to the table.  Execution continues, but the test will fail at the end.
+     * Adds a Throwable to the table. Execution continues, but the test will
+     * fail at the end.
      */
     public void addError(Throwable error) {
         if (error == null) {
@@ -59,19 +60,21 @@ public class ErrorCollector extends Verifier {
     }
 
     /**
-     * Adds a failure to the table if {@code matcher} does not match {@code value}.
-     * Execution continues, but the test will fail at the end if the match fails.
+     * Adds a failure to the table if {@code matcher} does not match
+     * {@code value}. Execution continues, but the test will fail at the end if
+     * the match fails.
      */
     public <T> void checkThat(final T value, final Matcher<T> matcher) {
         checkThat("", value, matcher);
     }
 
     /**
-     * Adds a failure with the given {@code reason}
-     * to the table if {@code matcher} does not match {@code value}.
-     * Execution continues, but the test will fail at the end if the match fails.
+     * Adds a failure with the given {@code reason} to the table if
+     * {@code matcher} does not match {@code value}. Execution continues, but
+     * the test will fail at the end if the match fails.
      */
-    public <T> void checkThat(final String reason, final T value, final Matcher<T> matcher) {
+    public <T> void checkThat(final String reason, final T value,
+            final Matcher<T> matcher) {
         checkSucceeds(new Callable<Object>() {
             public Object call() throws Exception {
                 MatcherAssert.assertThat(reason, value, matcher);
@@ -89,7 +92,8 @@ public class ErrorCollector extends Verifier {
         try {
             return callable.call();
         } catch (AssumptionViolatedException e) {
-            AssertionError error = new AssertionError("Callable threw AssumptionViolatedException");
+            AssertionError error = new AssertionError(
+                    "Callable threw AssumptionViolatedException");
             error.initCause(e);
             addError(error);
             return null;
@@ -101,15 +105,19 @@ public class ErrorCollector extends Verifier {
 
     /**
      * Adds a failure to the table if {@code runnable} does not throw an
-     * exception of type {@code expectedThrowable} when executed.
-     * Execution continues, but the test will fail at the end if the runnable
-     * does not throw an exception, or if it throws a different exception.
+     * exception of type {@code expectedThrowable} when executed. Execution
+     * continues, but the test will fail at the end if the runnable does not
+     * throw an exception, or if it throws a different exception.
      *
-     * @param expectedThrowable the expected type of the exception
-     * @param runnable       a function that is expected to throw an exception when executed
+     * @param expectedThrowable
+     *            the expected type of the exception
+     * @param runnable
+     *            a function that is expected to throw an exception when
+     *            executed
      * @since 4.13
      */
-    public void checkThrows(Class<? extends Throwable> expectedThrowable, ThrowingRunnable runnable) {
+    public void checkThrows(Class<? extends Throwable> expectedThrowable,
+            ThrowingRunnable runnable) {
         try {
             assertThrows(expectedThrowable, runnable);
         } catch (AssertionError e) {

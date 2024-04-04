@@ -22,9 +22,9 @@ public class BadlyFormedClassesTest {
         @Test
         public void someTest() {
             /*
-                * Empty test just to fool JUnit and IDEs into running this class as
-                * a JUnit test
-                */
+             * Empty test just to fool JUnit and IDEs into running this class as
+             * a JUnit test
+             */
         }
     }
 
@@ -52,7 +52,8 @@ public class BadlyFormedClassesTest {
 
     @Test
     public void noRunnableMethods() {
-        assertThat(exceptionMessageFrom(NoTests.class), containsString("No runnable methods"));
+        assertThat(exceptionMessageFrom(NoTests.class),
+                containsString("No runnable methods"));
     }
 
     @Test

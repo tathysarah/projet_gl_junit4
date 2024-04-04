@@ -22,7 +22,8 @@ public class FailedConstructionTest {
     public void failedConstructionIsTestFailure() {
         Result result = JUnitCore.runClasses(CantConstruct.class);
         Failure failure = result.getFailures().get(0);
-        Description expected = Description.createTestDescription(CantConstruct.class, "foo");
+        Description expected = Description
+                .createTestDescription(CantConstruct.class, "foo");
         Assert.assertEquals(expected, failure.getDescription());
     }
 }

@@ -22,13 +22,15 @@ public class ListenerTest {
         log = "";
         core.addListener(new RunListener() {
             @Override
-            public void testRunStarted(Description description) throws Exception {
+            public void testRunStarted(Description description)
+                    throws Exception {
                 log += "first ";
             }
         });
         core.addListener(new RunListener() {
             @Override
-            public void testRunStarted(Description description) throws Exception {
+            public void testRunStarted(Description description)
+                    throws Exception {
                 log += "second ";
             }
         });

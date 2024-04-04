@@ -21,12 +21,14 @@ class LoggingTestWatcher extends TestWatcher {
     }
 
     @Override
-    protected void skipped(AssumptionViolatedException e, Description description) {
+    protected void skipped(AssumptionViolatedException e,
+            Description description) {
         log.append("skipped ");
     }
 
     @Override
-    protected void skipped(org.junit.internal.AssumptionViolatedException e, Description description) {
+    protected void skipped(org.junit.internal.AssumptionViolatedException e,
+            Description description) {
         log.append("deprecated skipped ");
     }
 

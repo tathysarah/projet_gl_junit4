@@ -3,15 +3,14 @@ package org.junit.internal.matchers;
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
-
 import org.junit.internal.Throwables;
 
 /**
  * A matcher that delegates to throwableMatcher and in addition appends the
  * stacktrace of the actual Throwable in case of a mismatch.
  */
-public class StacktracePrintingMatcher<T extends Throwable> extends
-        org.hamcrest.TypeSafeMatcher<T> {
+public class StacktracePrintingMatcher<T extends Throwable>
+        extends org.hamcrest.TypeSafeMatcher<T> {
 
     private final Matcher<T> throwableMatcher;
 

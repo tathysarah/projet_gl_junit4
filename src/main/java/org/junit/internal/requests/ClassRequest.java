@@ -12,6 +12,7 @@ public class ClassRequest extends MemoizingRequest {
      * https://github.com/junit-team/junit4/issues/960
      */
     private final Class<?> fTestClass;
+
     private final boolean canUseSuiteMethod;
 
     public ClassRequest(Class<?> testClass, boolean canUseSuiteMethod) {
@@ -25,10 +26,12 @@ public class ClassRequest extends MemoizingRequest {
 
     @Override
     protected Runner createRunner() {
-        return new CustomAllDefaultPossibilitiesBuilder().safeRunnerForClass(fTestClass);
+        return new CustomAllDefaultPossibilitiesBuilder()
+                .safeRunnerForClass(fTestClass);
     }
 
-    private class CustomAllDefaultPossibilitiesBuilder extends AllDefaultPossibilitiesBuilder {
+    private class CustomAllDefaultPossibilitiesBuilder
+            extends AllDefaultPossibilitiesBuilder {
 
         @Override
         protected RunnerBuilder suiteMethodBuilder() {

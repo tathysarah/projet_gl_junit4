@@ -36,7 +36,8 @@ public class ComparisonCompactorTest extends TestCase {
     }
 
     public void testStartAndEndContextWithEllipses() {
-        String failure = new ComparisonCompactor(1, "abcde", "abfde").compact(null);
+        String failure = new ComparisonCompactor(1, "abcde", "abfde")
+                .compact(null);
         assertEquals("expected:<...b[c]d...> but was:<...b[f]d...>", failure);
     }
 
@@ -56,22 +57,26 @@ public class ComparisonCompactorTest extends TestCase {
     }
 
     public void testComparisonErrorOverlappingMatches() {
-        String failure = new ComparisonCompactor(0, "abc", "abbc").compact(null);
+        String failure = new ComparisonCompactor(0, "abc", "abbc")
+                .compact(null);
         assertEquals("expected:<...[]...> but was:<...[b]...>", failure);
     }
 
     public void testComparisonErrorOverlappingMatchesContext() {
-        String failure = new ComparisonCompactor(2, "abc", "abbc").compact(null);
+        String failure = new ComparisonCompactor(2, "abc", "abbc")
+                .compact(null);
         assertEquals("expected:<ab[]c> but was:<ab[b]c>", failure);
     }
 
     public void testComparisonErrorOverlappingMatches2() {
-        String failure = new ComparisonCompactor(0, "abcdde", "abcde").compact(null);
+        String failure = new ComparisonCompactor(0, "abcdde", "abcde")
+                .compact(null);
         assertEquals("expected:<...[d]...> but was:<...[]...>", failure);
     }
 
     public void testComparisonErrorOverlappingMatches2Context() {
-        String failure = new ComparisonCompactor(2, "abcdde", "abcde").compact(null);
+        String failure = new ComparisonCompactor(2, "abcdde", "abcde")
+                .compact(null);
         assertEquals("expected:<...cd[d]e> but was:<...cd[]e>", failure);
     }
 
@@ -96,7 +101,8 @@ public class ComparisonCompactorTest extends TestCase {
     }
 
     public void testBug609972() {
-        String failure = new ComparisonCompactor(10, "S&P500", "0").compact(null);
+        String failure = new ComparisonCompactor(10, "S&P500", "0")
+                .compact(null);
         assertEquals("expected:<[S&P50]0> but was:<[]0>", failure);
     }
 }

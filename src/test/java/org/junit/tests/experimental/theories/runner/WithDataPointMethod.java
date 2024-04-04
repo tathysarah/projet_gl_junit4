@@ -63,7 +63,8 @@ public class WithDataPointMethod {
 
     @Test
     public void mutableObjectsAreCreatedAfresh() {
-        assertThat(failures(DataPointMethodReturnsMutableObject.class), empty());
+        assertThat(failures(DataPointMethodReturnsMutableObject.class),
+                empty());
     }
 
     @RunWith(Theories.class)
@@ -92,16 +93,18 @@ public class WithDataPointMethod {
 
     @Test
     public void ignoreDataPointMethodsWithWrongTypes() throws Throwable {
-        assertThat(potentialAssignments(
-                HasDateMethod.class.getMethod("onlyStringsOk", String.class))
-                .toString(), not(containsString("100")));
+        assertThat(
+                potentialAssignments(HasDateMethod.class
+                        .getMethod("onlyStringsOk", String.class)).toString(),
+                not(containsString("100")));
     }
 
     @Test
     public void ignoreDataPointMethodsWithoutAnnotation() throws Throwable {
         assertThat(potentialAssignments(
                 HasDateMethod.class.getMethod("onlyDatesOk", Date.class))
-                .size(), is(0));
+                        .size(),
+                is(0));
     }
 
     private List<Failure> failures(Class<?> type) {

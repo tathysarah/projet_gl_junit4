@@ -44,8 +44,8 @@ public class TextListener extends RunListener {
     }
 
     /*
-      * Internal methods
-      */
+     * Internal methods
+     */
 
     private PrintStream getWriter() {
         return writer;
@@ -81,12 +81,14 @@ public class TextListener extends RunListener {
         if (result.wasSuccessful()) {
             getWriter().println();
             getWriter().print("OK");
-            getWriter().println(" (" + result.getRunCount() + " test" + (result.getRunCount() == 1 ? "" : "s") + ")");
+            getWriter().println(" (" + result.getRunCount() + " test"
+                    + (result.getRunCount() == 1 ? "" : "s") + ")");
 
         } else {
             getWriter().println();
             getWriter().println("FAILURES!!!");
-            getWriter().println("Tests run: " + result.getRunCount() + ",  Failures: " + result.getFailureCount());
+            getWriter().println("Tests run: " + result.getRunCount()
+                    + ",  Failures: " + result.getFailureCount());
         }
         getWriter().println();
     }

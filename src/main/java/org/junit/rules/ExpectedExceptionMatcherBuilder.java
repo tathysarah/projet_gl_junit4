@@ -34,7 +34,7 @@ class ExpectedExceptionMatcherBuilder {
         return allOf(castedMatchers());
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private List<Matcher<? super Throwable>> castedMatchers() {
         return new ArrayList<Matcher<? super Throwable>>((List) matchers);
     }

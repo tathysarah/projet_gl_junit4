@@ -92,13 +92,13 @@ public class CategoryTest {
 
     @RunWith(Categories.class)
     @IncludeCategory(SlowTests.class)
-    @SuiteClasses({A.class, B.class, C.class})
+    @SuiteClasses({ A.class, B.class, C.class })
     public static class SlowTestSuite {
     }
 
     @RunWith(Categories.class)
     @IncludeCategory(SlowTests.class)
-    @SuiteClasses({A.class})
+    @SuiteClasses({ A.class })
     public static class JustA {
     }
 
@@ -133,12 +133,12 @@ public class CategoryTest {
         public void justCategory2() {
         }
 
-        @Category({Category1.class, Category2.class})
+        @Category({ Category1.class, Category2.class })
         @Test
         public void both() {
         }
 
-        @Category({Category2.class, Category1.class})
+        @Category({ Category2.class, Category1.class })
         @Test
         public void bothReversed() {
         }
@@ -146,7 +146,7 @@ public class CategoryTest {
 
     @RunWith(Categories.class)
     @ExcludeCategory(Category1.class)
-    @SuiteClasses({SomeAreSlow.class})
+    @SuiteClasses({ SomeAreSlow.class })
     public static class SomeAreSlowSuite {
     }
 
@@ -161,7 +161,7 @@ public class CategoryTest {
     @RunWith(Categories.class)
     @ExcludeCategory(Category1.class)
     @IncludeCategory(Category2.class)
-    @SuiteClasses({SomeAreSlow.class})
+    @SuiteClasses({ SomeAreSlow.class })
     public static class IncludeAndExcludeSuite {
     }
 
@@ -173,7 +173,7 @@ public class CategoryTest {
     }
 
     @RunWith(Suite.class)
-    @SuiteClasses({A.class, B.class, C.class})
+    @SuiteClasses({ A.class, B.class, C.class })
     public static class TestSuiteWithNoCategories {
     }
 
@@ -196,7 +196,8 @@ public class CategoryTest {
     }
 
     @Test
-    public void testCountWithExplicitExcludeFilter_usingConstructor() throws Throwable {
+    public void testCountWithExplicitExcludeFilter_usingConstructor()
+            throws Throwable {
         CategoryFilter include = new CategoryFilter(null, SlowTests.class);
         Request baseRequest = Request.aClass(TestSuiteWithNoCategories.class);
         Result result = new JUnitCore().run(baseRequest.filterWith(include));
@@ -256,7 +257,7 @@ public class CategoryTest {
 
     @RunWith(Categories.class)
     @IncludeCategory(SlowTests.class)
-    @SuiteClasses({OneFast.class})
+    @SuiteClasses({ OneFast.class })
     public static class OneFastSuite {
     }
 
@@ -276,15 +277,17 @@ public class CategoryTest {
 
     @Test
     public void describeMultipleCategoryFilter() {
-        CategoryFilter filter= CategoryFilter.include(FastTests.class, SlowTests.class);
-        String d1= format("categories [%s, %s]", FastTests.class, SlowTests.class);
-        String d2= format("categories [%s, %s]", SlowTests.class, FastTests.class);
+        CategoryFilter filter = CategoryFilter.include(FastTests.class,
+                SlowTests.class);
+        String d1 = format("categories [%s, %s]", FastTests.class,
+                SlowTests.class);
+        String d2 = format("categories [%s, %s]", SlowTests.class,
+                FastTests.class);
         assertThat(filter.describe(), is(anyOf(equalTo(d1), equalTo(d2))));
     }
 
-
     public static class OneThatIsBothFastAndSlow {
-        @Category({FastTests.class, SlowTests.class})
+        @Category({ FastTests.class, SlowTests.class })
         @Test
         public void a() {
 
@@ -293,7 +296,7 @@ public class CategoryTest {
 
     @RunWith(Categories.class)
     @IncludeCategory(SlowTests.class)
-    @SuiteClasses({OneThatIsBothFastAndSlow.class})
+    @SuiteClasses({ OneThatIsBothFastAndSlow.class })
     public static class ChooseSlowFromBoth {
     }
 
@@ -316,7 +319,7 @@ public class CategoryTest {
 
     @RunWith(Categories.class)
     @IncludeCategory(SlowTests.class)
-    @SuiteClasses({OneVerySlowTest.class})
+    @SuiteClasses({ OneVerySlowTest.class })
     public static class RunSlowFromVerySlow {
     }
 
@@ -335,34 +338,35 @@ public class CategoryTest {
     }
 
     @RunWith(Categories.class)
-    @IncludeCategory(value= {MultiA.class, MultiB.class}, matchAny= false)
+    @IncludeCategory(value = { MultiA.class, MultiB.class }, matchAny = false)
     @SuiteClasses(AllIncludedMustMatched.class)
     public static class AllIncludedMustBeMatchedSuite {
     }
 
     public static class AllIncludedMustMatched {
         @Test
-        @Category({MultiA.class, MultiB.class})
+        @Category({ MultiA.class, MultiB.class })
         public void a() {
         }
 
         @Test
         @Category(MultiB.class)
         public void b() {
-            fail("When multiple categories are included in a Suite, " +
-                    "@Test method must match all include categories");
+            fail("When multiple categories are included in a Suite, "
+                    + "@Test method must match all include categories");
         }
     }
 
     @Test
     public void allIncludedSuiteCategoriesMustBeMatched() {
-        Result result= JUnitCore.runClasses(AllIncludedMustBeMatchedSuite.class);
+        Result result = JUnitCore
+                .runClasses(AllIncludedMustBeMatchedSuite.class);
         assertEquals(1, result.getRunCount());
         assertEquals(0, result.getFailureCount());
     }
 
     @RunWith(Categories.class)
-    @IncludeCategory({MultiA.class, MultiB.class})
+    @IncludeCategory({ MultiA.class, MultiB.class })
     @ExcludeCategory(MultiC.class)
     @SuiteClasses(MultipleIncludesAndExcludeOnMethod.class)
     public static class MultiIncludeWithExcludeCategorySuite {
@@ -370,21 +374,22 @@ public class CategoryTest {
 
     public static class MultipleIncludesAndExcludeOnMethod {
         @Test
-        @Category({MultiA.class, MultiB.class})
+        @Category({ MultiA.class, MultiB.class })
         public void a() {
         }
 
         @Test
         @Category({ MultiA.class, MultiB.class, MultiC.class })
         public void b() {
-            fail("When multiple categories are included and excluded in a Suite, " +
-                    "@Test method must match all include categories and contain non of the excluded");
+            fail("When multiple categories are included and excluded in a Suite, "
+                    + "@Test method must match all include categories and contain non of the excluded");
         }
     }
 
     @Test
     public void anyMethodWithExcludedCategoryWillBeExcluded() {
-        Result result= JUnitCore.runClasses(MultiIncludeWithExcludeCategorySuite.class);
+        Result result = JUnitCore
+                .runClasses(MultiIncludeWithExcludeCategorySuite.class);
         assertEquals(1, result.getRunCount());
         assertEquals(0, result.getFailureCount());
     }
@@ -401,7 +406,7 @@ public class CategoryTest {
 
     @RunWith(Categories.class)
     @IncludeCategory(ClassAsCategory.class)
-    @SuiteClasses({OneMoreTest.class})
+    @SuiteClasses({ OneMoreTest.class })
     public static class RunClassAsCategory {
     }
 
@@ -411,18 +416,20 @@ public class CategoryTest {
     }
 
     @Category(SlowTests.class)
-    public abstract static class Ancestor{}
+    public abstract static class Ancestor {
+    }
 
     public static class Inherited extends Ancestor {
         @Test
-        public void a(){
+        public void a() {
         }
     }
 
     @RunWith(Categories.class)
     @IncludeCategory(SlowTests.class)
     @SuiteClasses(Inherited.class)
-    public interface InheritanceSuite {}
+    public interface InheritanceSuite {
+    }
 
     @Test
     public void testInheritance() {
@@ -438,7 +445,8 @@ public class CategoryTest {
     public static class EmptyCategoriesSuite {
     }
 
-    @Test public void emptyCategoriesSuite() {
+    @Test
+    public void emptyCategoriesSuite() {
         assertThat(testResult(EmptyCategoriesSuite.class), failureCountIs(1));
     }
 
@@ -458,13 +466,13 @@ public class CategoryTest {
 
     @RunWith(Categories.class)
     @IncludeCategory(Runnable.class)
-    @SuiteClasses({NoTest.class, IgnoredTest.class})
+    @SuiteClasses({ NoTest.class, IgnoredTest.class })
     public static class IgnoredTestCategoriesSuite {
     }
 
     @Test
     public void ignoredTest() {// behaves same as Suite
-        Result result= JUnitCore.runClasses(IgnoredTestCategoriesSuite.class);
+        Result result = JUnitCore.runClasses(IgnoredTestCategoriesSuite.class);
         assertFalse(result.wasSuccessful());
         assertThat(result.getRunCount(), is(1));
         assertThat(result.getFailureCount(), is(1));
@@ -499,15 +507,16 @@ public class CategoryTest {
     }
 
     @RunWith(Categories.class)
-    @IncludeCategory({Runnable.class, Object.class})
+    @IncludeCategory({ Runnable.class, Object.class })
     @ExcludeCategory(Runnable.class)
-    @SuiteClasses({ExcludedTest1.class, ExcludedTest2.class, IncludedTest.class})
+    @SuiteClasses({ ExcludedTest1.class, ExcludedTest2.class,
+            IncludedTest.class })
     public static class IncludedExcludedSameSuite {
     }
 
     @Test
     public void oneRunnableOthersAvoided() {
-        Result result= JUnitCore.runClasses(IncludedExcludedSameSuite.class);
+        Result result = JUnitCore.runClasses(IncludedExcludedSameSuite.class);
         assertEquals(1, result.getRunCount());
         assertTrue(result.wasSuccessful());
     }
@@ -515,20 +524,22 @@ public class CategoryTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testCountWithMultipleExcludeFilter() throws Throwable {
-        Set<Class<?>> exclusions= new HashSet<Class<?>>(2);
+        Set<Class<?>> exclusions = new HashSet<Class<?>>(2);
         Collections.addAll(exclusions, SlowTests.class, FastTests.class);
-        CategoryFilter exclude = CategoryFilter.categoryFilter(true, null, true, exclusions);
-        Request baseRequest= Request.aClass(OneOfEach.class);
-        Result result= new JUnitCore().run(baseRequest.filterWith(exclude));
+        CategoryFilter exclude = CategoryFilter.categoryFilter(true, null, true,
+                exclusions);
+        Request baseRequest = Request.aClass(OneOfEach.class);
+        Result result = new JUnitCore().run(baseRequest.filterWith(exclude));
         assertTrue(result.wasSuccessful());
         assertEquals(1, result.getRunCount());
     }
 
     @Test
     public void testCountWithMultipleIncludeFilter() throws Throwable {
-        CategoryFilter exclude = CategoryFilter.include(true, SlowTests.class, FastTests.class);
-        Request baseRequest= Request.aClass(OneOfEach.class);
-        Result result= new JUnitCore().run(baseRequest.filterWith(exclude));
+        CategoryFilter exclude = CategoryFilter.include(true, SlowTests.class,
+                FastTests.class);
+        Request baseRequest = Request.aClass(OneOfEach.class);
+        Result result = new JUnitCore().run(baseRequest.filterWith(exclude));
         assertTrue(result.wasSuccessful());
         assertEquals(2, result.getRunCount());
     }
@@ -547,13 +558,15 @@ public class CategoryTest {
         }
 
         @Test
-        @Category(String.class) public void test1() {
+        @Category(String.class)
+        public void test1() {
         }
     }
 
     @Test
     public void noIncludeCategoryAnnotation() {
-        Result testResult= JUnitCore.runClasses(NoIncludeCategoryAnnotationSuite.class);
+        Result testResult = JUnitCore
+                .runClasses(NoIncludeCategoryAnnotationSuite.class);
         assertTrue(testResult.wasSuccessful());
         assertEquals(1, testResult.getRunCount());
     }
@@ -567,7 +580,8 @@ public class CategoryTest {
 
     @Test
     public void sameAsNoIncludeCategoryAnnotation() {
-        Result testResult= JUnitCore.runClasses(SameAsNoIncludeCategoryAnnotationSuite.class);
+        Result testResult = JUnitCore
+                .runClasses(SameAsNoIncludeCategoryAnnotationSuite.class);
         assertTrue(testResult.wasSuccessful());
         assertEquals(1, testResult.getRunCount());
     }

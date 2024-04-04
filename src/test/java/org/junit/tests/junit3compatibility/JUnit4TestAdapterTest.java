@@ -28,13 +28,14 @@ public class JUnit4TestAdapterTest {
         new JUnit4TestAdapter(clazz).run(testResult);
         assertEquals(1, testResult.runCount());
         assertEquals(0, testResult.failureCount());
-        assertEquals(Collections.emptyList(), Collections.list(testResult.errors()));
+        assertEquals(Collections.emptyList(),
+                Collections.list(testResult.errors()));
     }
 
     public static class Test4 {
         @Test
         public void pass() throws Exception {
-            //pass
+            // pass
         }
     }
 
@@ -50,7 +51,7 @@ public class JUnit4TestAdapterTest {
 
     public static class Test3 extends TestCase {
         public void testPass() throws Exception {
-            //pass
+            // pass
         }
     }
 

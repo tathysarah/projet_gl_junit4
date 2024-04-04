@@ -85,7 +85,8 @@ public class SortableTest {
 
         @Test
         public void sortingBackwardWorksOnTestClassRunner() {
-            Request backward = Request.aClass(SortMe.class).sortWith(backward());
+            Request backward = Request.aClass(SortMe.class)
+                    .sortWith(backward());
 
             new JUnitCore().run(backward);
             assertEquals("cba", log);
@@ -93,7 +94,8 @@ public class SortableTest {
 
         @Test
         public void sortingBackwardDoesNothingOnTestClassRunnerWithFixMethodOrder() {
-            Request backward = Request.aClass(DoNotSortMe.class).sortWith(backward());
+            Request backward = Request.aClass(DoNotSortMe.class)
+                    .sortWith(backward());
 
             new JUnitCore().run(backward);
             assertEquals("abc", log);
@@ -138,7 +140,8 @@ public class SortableTest {
 
         @Test
         public void sortingForwardWorksOnSuite() {
-            Request forward = Request.aClass(Enclosing.class).sortWith(forward());
+            Request forward = Request.aClass(Enclosing.class)
+                    .sortWith(forward());
 
             new JUnitCore().run(forward);
             assertEquals("AaAbAcBaBbBc", log);
@@ -146,7 +149,8 @@ public class SortableTest {
 
         @Test
         public void sortingBackwardWorksOnSuite() {
-            Request backward = Request.aClass(Enclosing.class).sortWith(backward());
+            Request backward = Request.aClass(Enclosing.class)
+                    .sortWith(backward());
 
             new JUnitCore().run(backward);
             assertEquals("BcBbBaAcAbAa", log);
@@ -192,7 +196,8 @@ public class SortableTest {
 
         @Test
         public void sortingBackwardWorksOnTestClassRunner() {
-            Request backward = Request.aClass(SortMe.class).sortWith(backward());
+            Request backward = Request.aClass(SortMe.class)
+                    .sortWith(backward());
 
             new JUnitCore().run(backward);
             assertEquals("cba", log);
@@ -223,7 +228,8 @@ public class SortableTest {
 
         @Test
         public void unsortablesAreHandledWithoutCrashing() {
-            Request unsorted = Request.aClass(Unsortable.class).sortWith(forward());
+            Request unsorted = Request.aClass(Unsortable.class)
+                    .sortWith(forward());
             new JUnitCore().run(unsorted);
         }
     }
@@ -293,7 +299,8 @@ public class SortableTest {
 
         @Test
         public void sortingBackwardWorksOnTestClassRunner() {
-            Request backward = Request.aClass(SortMe.class).sortWith(backward());
+            Request backward = Request.aClass(SortMe.class)
+                    .sortWith(backward());
 
             new JUnitCore().run(backward);
             assertEquals("cba", log);

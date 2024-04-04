@@ -17,7 +17,8 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 /**
  * @deprecated Included for backwards compatibility with JUnit 4.4. Will be
  *             removed in the next major release. Please use
- *             {@link BlockJUnit4ClassRunner} in place of {@link JUnit4ClassRunner}.
+ *             {@link BlockJUnit4ClassRunner} in place of
+ *             {@link JUnit4ClassRunner}.
  */
 @Deprecated
 public class TestClass {
@@ -39,12 +40,14 @@ public class TestClass {
         return getAnnotatedMethods(AfterClass.class);
     }
 
-    public List<Method> getAnnotatedMethods(Class<? extends Annotation> annotationClass) {
+    public List<Method> getAnnotatedMethods(
+            Class<? extends Annotation> annotationClass) {
         List<Method> results = new ArrayList<Method>();
         for (Class<?> eachClass : getSuperClasses(klass)) {
             Method[] methods = MethodSorter.getDeclaredMethods(eachClass);
             for (Method eachMethod : methods) {
-                Annotation annotation = eachMethod.getAnnotation(annotationClass);
+                Annotation annotation = eachMethod
+                        .getAnnotation(annotationClass);
                 if (annotation != null && !isShadowed(eachMethod, results)) {
                     results.add(eachMethod);
                 }
@@ -57,7 +60,8 @@ public class TestClass {
     }
 
     private boolean runsTopToBottom(Class<? extends Annotation> annotation) {
-        return annotation.equals(Before.class) || annotation.equals(BeforeClass.class);
+        return annotation.equals(Before.class)
+                || annotation.equals(BeforeClass.class);
     }
 
     private boolean isShadowed(Method method, List<Method> results) {
@@ -73,11 +77,13 @@ public class TestClass {
         if (!previous.getName().equals(current.getName())) {
             return false;
         }
-        if (previous.getParameterTypes().length != current.getParameterTypes().length) {
+        if (previous.getParameterTypes().length != current
+                .getParameterTypes().length) {
             return false;
         }
         for (int i = 0; i < previous.getParameterTypes().length; i++) {
-            if (!previous.getParameterTypes()[i].equals(current.getParameterTypes()[i])) {
+            if (!previous.getParameterTypes()[i]
+                    .equals(current.getParameterTypes()[i])) {
                 return false;
             }
         }
@@ -94,7 +100,8 @@ public class TestClass {
         return results;
     }
 
-    public Constructor<?> getConstructor() throws SecurityException, NoSuchMethodException {
+    public Constructor<?> getConstructor()
+            throws SecurityException, NoSuchMethodException {
         return klass.getConstructor();
     }
 

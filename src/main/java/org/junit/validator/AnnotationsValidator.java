@@ -19,8 +19,9 @@ import org.junit.runners.model.TestClass;
  * @since 4.12
  */
 public final class AnnotationsValidator implements TestClassValidator {
-    private static final List<AnnotatableValidator<?>> VALIDATORS = Arrays.<AnnotatableValidator<?>>asList(
-            new ClassValidator(), new MethodValidator(), new FieldValidator());
+    private static final List<AnnotatableValidator<?>> VALIDATORS = Arrays
+            .<AnnotatableValidator<?>> asList(new ClassValidator(),
+                    new MethodValidator(), new FieldValidator());
 
     /**
      * Validate all annotations of the specified test class that are be
@@ -31,9 +32,9 @@ public final class AnnotationsValidator implements TestClassValidator {
      * @return the errors found by the validator.
      */
     public List<Exception> validateTestClass(TestClass testClass) {
-        List<Exception> validationErrors= new ArrayList<Exception>();
+        List<Exception> validationErrors = new ArrayList<Exception>();
         for (AnnotatableValidator<?> validator : VALIDATORS) {
-            List<Exception> additionalErrors= validator
+            List<Exception> additionalErrors = validator
                     .validateTestClass(testClass);
             validationErrors.addAll(additionalErrors);
         }
@@ -49,16 +50,17 @@ public final class AnnotationsValidator implements TestClassValidator {
                 AnnotationValidator validator, T annotatable);
 
         public List<Exception> validateTestClass(TestClass testClass) {
-            List<Exception> validationErrors= new ArrayList<Exception>();
+            List<Exception> validationErrors = new ArrayList<Exception>();
             for (T annotatable : getAnnotatablesForTestClass(testClass)) {
-                List<Exception> additionalErrors= validateAnnotatable(annotatable);
+                List<Exception> additionalErrors = validateAnnotatable(
+                        annotatable);
                 validationErrors.addAll(additionalErrors);
             }
             return validationErrors;
         }
 
         private List<Exception> validateAnnotatable(T annotatable) {
-            List<Exception> validationErrors= new ArrayList<Exception>();
+            List<Exception> validationErrors = new ArrayList<Exception>();
             for (Annotation annotation : annotatable.getAnnotations()) {
                 Class<? extends Annotation> annotationType = annotation
                         .annotationType();
@@ -67,7 +69,7 @@ public final class AnnotationsValidator implements TestClassValidator {
                 if (validateWith != null) {
                     AnnotationValidator annotationValidator = ANNOTATION_VALIDATOR_FACTORY
                             .createAnnotationValidator(validateWith);
-                    List<Exception> errors= validateAnnotatable(
+                    List<Exception> errors = validateAnnotatable(
                             annotationValidator, annotatable);
                     validationErrors.addAll(errors);
                 }
@@ -76,21 +78,22 @@ public final class AnnotationsValidator implements TestClassValidator {
         }
     }
 
-    private static class ClassValidator extends AnnotatableValidator<TestClass> {
+    private static class ClassValidator
+            extends AnnotatableValidator<TestClass> {
         @Override
         Iterable<TestClass> getAnnotatablesForTestClass(TestClass testClass) {
             return singletonList(testClass);
         }
 
         @Override
-        List<Exception> validateAnnotatable(
-                AnnotationValidator validator, TestClass testClass) {
+        List<Exception> validateAnnotatable(AnnotationValidator validator,
+                TestClass testClass) {
             return validator.validateAnnotatedClass(testClass);
         }
     }
 
-    private static class MethodValidator extends
-            AnnotatableValidator<FrameworkMethod> {
+    private static class MethodValidator
+            extends AnnotatableValidator<FrameworkMethod> {
         @Override
         Iterable<FrameworkMethod> getAnnotatablesForTestClass(
                 TestClass testClass) {
@@ -98,22 +101,23 @@ public final class AnnotationsValidator implements TestClassValidator {
         }
 
         @Override
-        List<Exception> validateAnnotatable(
-                AnnotationValidator validator, FrameworkMethod method) {
+        List<Exception> validateAnnotatable(AnnotationValidator validator,
+                FrameworkMethod method) {
             return validator.validateAnnotatedMethod(method);
         }
     }
 
-    private static class FieldValidator extends
-            AnnotatableValidator<FrameworkField> {
+    private static class FieldValidator
+            extends AnnotatableValidator<FrameworkField> {
         @Override
-        Iterable<FrameworkField> getAnnotatablesForTestClass(TestClass testClass) {
+        Iterable<FrameworkField> getAnnotatablesForTestClass(
+                TestClass testClass) {
             return testClass.getAnnotatedFields();
         }
 
         @Override
-        List<Exception> validateAnnotatable(
-                AnnotationValidator validator, FrameworkField field) {
+        List<Exception> validateAnnotatable(AnnotationValidator validator,
+                FrameworkField field) {
             return validator.validateAnnotatedField(field);
         }
     }

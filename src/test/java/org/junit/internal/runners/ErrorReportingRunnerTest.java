@@ -1,5 +1,16 @@
 package org.junit.internal.runners;
 
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,34 +20,23 @@ import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.InvalidTestClassError;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 public class ErrorReportingRunnerTest {
-    
+
     @Test(expected = NullPointerException.class)
     public void cannotCreateWithNullClass() {
         new ErrorReportingRunner(null, new RuntimeException());
     }
-    
+
     @Test(expected = NullPointerException.class)
     public void cannotCreateWithNullClass2() {
         new ErrorReportingRunner(new RuntimeException(), (Class<?>) null);
     }
-    
+
     @Test(expected = NullPointerException.class)
     public void cannotCreateWithNullClasses() {
         new ErrorReportingRunner(new RuntimeException(), (Class<?>[]) null);
     }
-    
+
     @Test(expected = NullPointerException.class)
     public void cannotCreateWithoutClass() {
         new ErrorReportingRunner(new RuntimeException());
@@ -45,9 +45,12 @@ public class ErrorReportingRunnerTest {
     @Test
     public void givenInvalidTestClassErrorAsCause() {
         final List<Failure> firedFailures = new ArrayList<Failure>();
-        InvalidTestClassError testClassError = new InvalidTestClassError(TestClassWithErrors.class,
-                Arrays.asList(new Throwable("validation error 1"), new Throwable("validation error 2")));
-        ErrorReportingRunner sut = new ErrorReportingRunner(TestClassWithErrors.class, testClassError);
+        InvalidTestClassError testClassError = new InvalidTestClassError(
+                TestClassWithErrors.class,
+                Arrays.asList(new Throwable("validation error 1"),
+                        new Throwable("validation error 2")));
+        ErrorReportingRunner sut = new ErrorReportingRunner(
+                TestClassWithErrors.class, testClassError);
 
         sut.run(new RunNotifier() {
             @Override
@@ -70,18 +73,23 @@ public class ErrorReportingRunnerTest {
         assertThat(result.getFailureCount(), is(1));
         Throwable failure = result.getFailures().get(0).getException();
         assertThat(failure, instanceOf(InvalidTestClassError.class));
-        assertThat(failure.getMessage(), allOf(
-                startsWith("Invalid test class '" + TestClassWithErrors.class.getName() + "'"),
-                containsString("\n  1. "),
-                containsString("\n  2. ")
-        ));
+        assertThat(failure.getMessage(),
+                allOf(startsWith("Invalid test class '"
+                        + TestClassWithErrors.class.getName() + "'"),
+                        containsString("\n  1. "), containsString("\n  2. ")));
     }
 
     private static class TestClassWithErrors {
-        @Before public static void staticBeforeMethod() {}
-        @After public static void staticAfterMethod() {}
+        @Before
+        public static void staticBeforeMethod() {
+        }
 
-        @Test public String testMethodReturningString() {
+        @After
+        public static void staticAfterMethod() {
+        }
+
+        @Test
+        public String testMethodReturningString() {
             return "this should not be allowed";
         }
     }

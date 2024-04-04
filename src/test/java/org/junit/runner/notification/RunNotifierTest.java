@@ -1,8 +1,8 @@
 package org.junit.runner.notification;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.core.Is.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
@@ -44,7 +44,7 @@ public class RunNotifierTest {
             throw new RuntimeException();
         }
     }
-    
+
     @Test
     public void addAndRemoveWithNonThreadSafeListener() {
         CountingListener listener = new CountingListener();
@@ -68,7 +68,7 @@ public class RunNotifierTest {
         fNotifier.fireTestStarted(null);
         assertThat(listener.fTestStarted.get(), is(1));
     }
-    
+
     @Test
     public void addAndRemoveWithThreadSafeListener() {
         ThreadSafeListener listener = new ThreadSafeListener();
@@ -102,7 +102,8 @@ public class RunNotifierTest {
     @Test
     public void wrapIfNotThreadSafeShouldWrapNonThreadSafeListeners() {
         CountingListener listener = new CountingListener();
-        RunListener wrappedListener = new RunNotifier().wrapIfNotThreadSafe(listener);
+        RunListener wrappedListener = new RunNotifier()
+                .wrapIfNotThreadSafe(listener);
         assertThat(wrappedListener, instanceOf(SynchronizedRunListener.class));
     }
 
@@ -114,7 +115,7 @@ public class RunNotifierTest {
             this.failure = failure;
         }
     }
-    
+
     private static class CountingListener extends RunListener {
         final AtomicInteger fTestStarted = new AtomicInteger(0);
 
@@ -123,7 +124,7 @@ public class RunNotifierTest {
             fTestStarted.incrementAndGet();
         }
     }
-    
+
     @RunListener.ThreadSafe
     private static class ThreadSafeListener extends CountingListener {
     }

@@ -23,25 +23,14 @@ import org.junit.tests.validation.AllValidationTests;
 import org.junit.validator.AllValidatorTests;
 
 @RunWith(Suite.class)
-@SuiteClasses({
-        AllAssertionTests.class,
-        AllDeprecatedTests.class,
-        AllDescriptionTests.class,
-        AllExperimentalTests.class,
-        AllInternalTests.class,
-        AllJUnit3CompatibilityTests.class,
-        AllListeningTests.class,
-        AllManipulationTests.class,
-        AllRulesTests.class,
-        AllRunnersTests.class,
-        AllRunnerTests.class,
-        AllRunningTests.class,
-        AllSamplesTests.class,
-        AllValidationTests.class,
-        AllValidatorTests.class,
-        AssumptionViolatedExceptionTest.class,
-        ObjectContractTest.class
-})
+@SuiteClasses({ AllAssertionTests.class, AllDeprecatedTests.class,
+        AllDescriptionTests.class, AllExperimentalTests.class,
+        AllInternalTests.class, AllJUnit3CompatibilityTests.class,
+        AllListeningTests.class, AllManipulationTests.class,
+        AllRulesTests.class, AllRunnersTests.class, AllRunnerTests.class,
+        AllRunningTests.class, AllSamplesTests.class, AllValidationTests.class,
+        AllValidatorTests.class, AssumptionViolatedExceptionTest.class,
+        ObjectContractTest.class })
 public class AllTests {
     public static Test suite() {
         return new JUnit4TestAdapter(AllTests.class);

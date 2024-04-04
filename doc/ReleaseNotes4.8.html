@@ -2,18 +2,30 @@
 
 <h3>Categories</h3>
 
-<p>From a given set of test classes, the <code>Categories</code> runner
-runs only the classes and methods
-that are annotated with either the category given with the <code>@IncludeCategory</code>
-annotation, or a subtype of that category. Either classes or interfaces can be
-used as categories. Subtyping works, so if you say <code>@IncludeCategory(SuperClass.class)</code>,
-a test marked <code>@Category({SubClass.class})</code> will be run.</p>
+<p>
+	From a given set of test classes, the
+	<code>Categories</code>
+	runner runs only the classes and methods that are annotated with either
+	the category given with the
+	<code>@IncludeCategory</code>
+	annotation, or a subtype of that category. Either classes or interfaces
+	can be used as categories. Subtyping works, so if you say
+	<code>@IncludeCategory(SuperClass.class)</code>
+	, a test marked
+	<code>@Category({SubClass.class})</code>
+	will be run.
+</p>
 
-<p>You can also exclude categories by using the <code>@ExcludeCategory</code> annotation</p>
+<p>
+	You can also exclude categories by using the
+	<code>@ExcludeCategory</code>
+	annotation
+</p>
 
 <p>Example:</p>
 
-<pre><code>public interface FastTests { /* category marker */ }
+<pre>
+	<code>public interface FastTests { /* category marker */ }
 public interface SlowTests { /* category marker */ }
 
 public class A {
@@ -50,10 +62,11 @@ public class SlowTestSuite {
 public class SlowTestSuite {
   // Will run A.b, but not A.a or B.c
 }
-</code></pre>
+</code>
+</pre>
 
 <h3>Bug fixes</h3>
 
 <ul>
-<li>github#16: thread safety of Result counting</li>
+	<li>github#16: thread safety of Result counting</li>
 </ul>

@@ -5,6 +5,7 @@ import org.junit.runners.model.Statement;
 
 class LoggingTestRule implements TestRule {
     private final StringBuilder log;
+
     private final String name;
 
     LoggingTestRule(StringBuilder log, String name) {

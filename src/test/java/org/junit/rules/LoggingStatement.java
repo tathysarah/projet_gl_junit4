@@ -4,7 +4,9 @@ import org.junit.runners.model.Statement;
 
 class LoggingStatement extends Statement {
     private final Statement base;
+
     private final StringBuilder log;
+
     private final String name;
 
     LoggingStatement(Statement base, StringBuilder log, String name) {
