@@ -154,9 +154,9 @@ public class Categories extends Suite {
             return exclude(true, category);
         }
 
-        public static CategoryFilter exclude(Class<?>... categories) {
+        /*public static CategoryFilter exclude(Class<?>... categories) {
             return exclude(true, categories);
-        }
+        }*/
 
         public static CategoryFilter categoryFilter(boolean matchAnyInclusions,
                 Set<Class<?>> inclusions, boolean matchAnyExclusions,

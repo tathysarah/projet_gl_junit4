@@ -63,9 +63,9 @@ public class ComparisonFailure extends AssertionError {
      *
      * @return the actual string value
      */
-    public String getActual() {
+    /*public String getActual() {
         return fActual;
-    }
+    }/*
 
     /**
      * Returns the expected string value

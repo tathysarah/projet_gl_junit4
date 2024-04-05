@@ -136,9 +136,9 @@ public class Timeout implements TestRule {
      *
      * @since 4.12
      */
-    protected final boolean getLookingForStuckThread() {
+    /*protected final boolean getLookingForStuckThread() {
         return lookForStuckThread;
-    }
+    }*/
 
     /**
      * Creates a {@link Statement} that will run the given {@code statement},

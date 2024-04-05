@@ -273,7 +273,7 @@ public class Theories extends BlockJUnit4ClassRunner {
                                 handleAssumptionViolation(e);
                             } catch (Throwable e) {
                                 reportParameterizedError(e,
-                                        complete.getArgumentStrings(nullsOk()));
+                                        complete.getArgumentStrings(/*nullsOk()*/));
                             }
                         }
 

@@ -28,7 +28,7 @@ import org.junit.runner.Description;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.FrameworkMember;
 import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.InitializationErrorException;
+import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.MemberValueConsumer;
 import org.junit.runners.model.MultipleFailureException;
 import org.junit.runners.model.Statement;
@@ -68,7 +68,7 @@ public class BlockJUnit4ClassRunner extends ParentRunner<FrameworkMethod> {
     /**
      * Creates a BlockJUnit4ClassRunner to run {@code testClass}
      *
-     * @throws InitializationErrorException
+     * @throws InitializationError
      *             if the test class is malformed.
      */
     public BlockJUnit4ClassRunner(Class<?> testClass)
@@ -79,12 +79,12 @@ public class BlockJUnit4ClassRunner extends ParentRunner<FrameworkMethod> {
     /**
      * Creates a BlockJUnit4ClassRunner to run {@code testClass}.
      *
-     * @throws InitializationErrorException
+     * @throws InitializationError
      *             if the test class is malformed.
      * @since 4.13
      */
     protected BlockJUnit4ClassRunner(TestClass testClass)
-            throws InitializationErrorException {
+            throws InitializationError {
         super(testClass);
     }
 
@@ -413,13 +413,21 @@ public class BlockJUnit4ClassRunner extends ParentRunner<FrameworkMethod> {
         CURRENT_RULE_CONTAINER.set(ruleContainer);
         try {
             List<TestRule> testRules = getTestRules(target);
-            for (MethodRule each : rules(target)) {
+            /*for (MethodRule each : rules(target)) {
                 if (!(each instanceof TestRule && testRules.contains(each))) {
                     ruleContainer.add(each);
                 }
             }
             for (TestRule rule : testRules) {
                 ruleContainer.add(rule);
+            }*/
+            for(MethodRule each: rules(target)){
+                for(TestRule rule: testRules){
+                    ruleContainer.add(rule);
+                    if(!(each instanceof TestRule && testRules.contains(each))){
+                        ruleContainer.add(each);
+                    }
+                }
             }
         } finally {
             CURRENT_RULE_CONTAINER.remove();

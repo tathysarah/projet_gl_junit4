@@ -135,9 +135,9 @@ public class Assignments {
         return getActualValues(getConstructorParameterCount(), assigned.size());
     }
 
-    public Object[] getAllArguments() throws CouldNotGenerateValueException {
+    /*public Object[] getAllArguments() throws CouldNotGenerateValueException {
         return getActualValues(0, assigned.size());
-    }
+    }*/
 
     private int getConstructorParameterCount() {
         List<ParameterSignature> signatures = ParameterSignature
@@ -146,7 +146,7 @@ public class Assignments {
         return constructorParameterCount;
     }
 
-    public Object[] getArgumentStrings(boolean nullsOk)
+    public Object[] getArgumentStrings(/*boolean nullsOk*/)
             throws CouldNotGenerateValueException {
         Object[] values = new Object[assigned.size()];
         for (int i = 0; i < values.length; i++) {

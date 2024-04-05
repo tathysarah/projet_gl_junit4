@@ -97,9 +97,9 @@ public class JUnitCore {
     /**
      * @return the version number of this release
      */
-    public String getVersion() {
+    /*public String getVersion() {
         return Version.id();
-    }
+    }*/
 
     /**
      * Run all the tests in <code>classes</code>.

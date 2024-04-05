@@ -58,9 +58,9 @@ public class PrintableResult {
      *
      * @since 4.13
      */
-    public List<Failure> failures() {
+    /*public List<Failure> failures() {
         return result.getFailures();
-    }
+    }*/
 
     @Override
     public String toString() {

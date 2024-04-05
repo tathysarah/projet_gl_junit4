@@ -70,7 +70,7 @@ public class ResultMatchers {
      *
      * @since 4.13
      */
-    public static Matcher<PrintableResult> hasSingleFailureMatching(
+    /*public static Matcher<PrintableResult> hasSingleFailureMatching(
             final Matcher<Throwable> matcher) {
         return new TypeSafeMatcher<PrintableResult>() {
             @Override
@@ -84,7 +84,7 @@ public class ResultMatchers {
                 matcher.describeTo(description);
             }
         };
-    }
+    }*/
 
     /**
      * Matches if the result has one or more failures, and at least one of them

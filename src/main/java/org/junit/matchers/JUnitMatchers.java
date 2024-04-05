@@ -126,8 +126,8 @@ public class JUnitMatchers {
      *         appends the stacktrace of the actual Exception in case of a
      *         mismatch.
      */
-    public static <T extends Exception> Matcher<T> isException(
+    /*public static <T extends Exception> Matcher<T> isException(
             Matcher<T> exceptionMatcher) {
         return StacktracePrintingMatcher.isException(exceptionMatcher);
-    }
+    }*/
 }

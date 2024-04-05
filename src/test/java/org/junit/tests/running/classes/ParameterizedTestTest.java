@@ -34,6 +34,7 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.InitializationErrorException;
 import org.junit.runners.parameterized.ParametersRunnerFactory;
 import org.junit.runners.parameterized.TestWithParameters;
 
@@ -725,8 +726,8 @@ public class ParameterizedTestTest {
     public static class ExceptionThrowingRunnerFactory
             implements ParametersRunnerFactory {
         public Runner createRunnerForTestWithParameters(TestWithParameters test)
-                throws InitializationError {
-            throw new InitializationError(
+                throws InitializationErrorException {
+            throw new InitializationErrorException(
                     "Called ExceptionThrowingRunnerFactory.");
         }
     }

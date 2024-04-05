@@ -1,6 +1,7 @@
 package org.junit.runners.parameterized;
 
 import org.junit.runner.Runner;
+import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.InitializationErrorException;
 
 /**
@@ -17,5 +18,5 @@ public interface ParametersRunnerFactory {
      *             if the runner could not be created.
      */
     Runner createRunnerForTestWithParameters(TestWithParameters test)
-            throws InitializationErrorException;
+            throws InitializationErrorException, InitializationError;
 }

@@ -198,7 +198,7 @@ public class RuleMemberValidator {
                 } else {
                     message = "must not be static or it must be annotated with @ClassRule.";
                 }
-                errors.add(new ValidationError(member, annotation, message));
+                errors.add(new ValidationErrorException(member, annotation, message));
             }
         }
     }
@@ -211,7 +211,7 @@ public class RuleMemberValidator {
                 Class<? extends Annotation> annotation,
                 List<Throwable> errors) {
             if (!member.isStatic()) {
-                errors.add(new ValidationError(member, annotation,
+                errors.add(new ValidationErrorException(member, annotation,
                         "must be static."));
             }
         }
@@ -226,7 +226,7 @@ public class RuleMemberValidator {
                 Class<? extends Annotation> annotation,
                 List<Throwable> errors) {
             if (!isDeclaringClassPublic(member)) {
-                errors.add(new ValidationError(member, annotation,
+                errors.add(new ValidationErrorException(member, annotation,
                         "must be declared in a public class."));
             }
         }
@@ -244,7 +244,7 @@ public class RuleMemberValidator {
                 Class<? extends Annotation> annotation,
                 List<Throwable> errors) {
             if (!member.isPublic()) {
-                errors.add(new ValidationError(member, annotation,
+                errors.add(new ValidationErrorException(member, annotation,
                         "must be public."));
             }
         }
@@ -259,7 +259,7 @@ public class RuleMemberValidator {
                 Class<? extends Annotation> annotation,
                 List<Throwable> errors) {
             if (!isRuleType(member)) {
-                errors.add(new ValidationError(member, annotation,
+                errors.add(new ValidationErrorException(member, annotation,
                         "must implement MethodRule or TestRule."));
             }
         }
@@ -274,7 +274,7 @@ public class RuleMemberValidator {
                 Class<? extends Annotation> annotation,
                 List<Throwable> errors) {
             if (!isRuleType(member)) {
-                errors.add(new ValidationError(member, annotation,
+                errors.add(new ValidationErrorException(member, annotation,
                         "must return an implementation of MethodRule or TestRule."));
             }
         }
@@ -289,7 +289,7 @@ public class RuleMemberValidator {
                 Class<? extends Annotation> annotation,
                 List<Throwable> errors) {
             if (!isTestRule(member)) {
-                errors.add(new ValidationError(member, annotation,
+                errors.add(new ValidationErrorException(member, annotation,
                         "must return an implementation of TestRule."));
             }
         }
@@ -305,7 +305,7 @@ public class RuleMemberValidator {
                 Class<? extends Annotation> annotation,
                 List<Throwable> errors) {
             if (!isTestRule(member)) {
-                errors.add(new ValidationError(member, annotation,
+                errors.add(new ValidationErrorException(member, annotation,
                         "must implement TestRule."));
             }
         }

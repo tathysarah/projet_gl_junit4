@@ -31,7 +31,7 @@ public class JUnit4ClassRunner extends Runner implements Filterable, Sortable {
 
     private TestClass testClass;
 
-    public JUnit4ClassRunner(Class<?> klass) throws InitializationErrorException {
+    public JUnit4ClassRunner(Class<?> klass) throws InitializationError {
         testClass = new TestClass(klass);
         testMethods = getTestMethods();
         validate();
@@ -41,7 +41,7 @@ public class JUnit4ClassRunner extends Runner implements Filterable, Sortable {
         return testClass.getTestMethods();
     }
 
-    protected void validate() throws InitializationErrorException {
+    protected void validate() throws InitializationError{
         MethodValidator methodValidator = new MethodValidator(testClass);
         methodValidator.validateMethodsForDefaultRunner();
         methodValidator.assertValid();

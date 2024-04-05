@@ -117,10 +117,10 @@ public class TemporaryFolder extends ExternalResource {
          *
          * @return this
          */
-        public Builder parentFolder(File parentFolder) {
+        /*public Builder parentFolder(File parentFolder) {
             this.parentFolder = parentFolder;
             return this;
-        }
+        }*/
 
         /**
          * Setting this flag assures that no resources are left undeleted.

@@ -43,9 +43,9 @@ public class EachTestNotifier {
         notifier.fireTestStarted(description);
     }
 
-    public void fireTestIgnored() {
+    /*public void fireTestIgnored() {
         notifier.fireTestIgnored(description);
-    }
+    }*/
 
     /**
      * Calls {@link RunNotifier#fireTestSuiteStarted(Description)}, passing the

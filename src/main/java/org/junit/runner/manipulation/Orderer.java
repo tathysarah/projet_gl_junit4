@@ -20,7 +20,36 @@ public final class Orderer {
         this.ordering = delegate;
     }
 
-    //public List<Description> getInOrder()
+
+    public List<Description> getInOrder(List<Description> inOrder){
+        if (!ordering.validateOrderingIsCorrect()) {
+            return inOrder;
+        }
+        return inOrder;
+    }
+
+    public void containsInOrder(List<Description> inOrder, Collection<Description> descriptions) throws InvalidOrderingException {
+        Set<Description> uniqueDescriptions = new HashSet<Description>(descriptions);
+        if (!uniqueDescriptions.containsAll(inOrder)) {
+            throw new InvalidOrderingException("Ordering added items");
+        }
+    }
+
+    public void sizeOfResultAsSetIsDifferent(List<Description> inOrder) throws InvalidOrderingException {
+        Set<Description> resultAsSet = new HashSet<Description>(inOrder);
+        if (resultAsSet.size() != inOrder.size()) {
+            throw new InvalidOrderingException("Ordering duplicated items");
+        }
+    }
+
+    public void containsAllUniqueDescriptions(Collection<Description> descriptions,List<Description> inOrder) throws InvalidOrderingException {
+        Set<Description> uniqueDescriptions = new HashSet<Description>(
+                descriptions);
+        Set<Description> resultAsSet = new HashSet<Description>(inOrder);
+        if (!resultAsSet.containsAll(uniqueDescriptions)) {
+            throw new InvalidOrderingException("Ordering removed items");
+        }
+    }
 
     /**
      * Orders the descriptions.
@@ -31,7 +60,12 @@ public final class Orderer {
             throws InvalidOrderingException {
         List<Description> inOrder = ordering
                 .orderItems(Collections.unmodifiableCollection(descriptions));
-        if (!ordering.validateOrderingIsCorrect()) {
+        getInOrder(inOrder);
+        containsInOrder(inOrder,descriptions);
+        sizeOfResultAsSetIsDifferent(inOrder);
+        containsAllUniqueDescriptions(descriptions,inOrder);
+
+        /*if (!ordering.validateOrderingIsCorrect()) {
             return inOrder;
         }
 
@@ -43,9 +77,10 @@ public final class Orderer {
         Set<Description> resultAsSet = new HashSet<Description>(inOrder);
         if (resultAsSet.size() != inOrder.size()) {
             throw new InvalidOrderingException("Ordering duplicated items");
-        } else if (!resultAsSet.containsAll(uniqueDescriptions)) {
-            throw new InvalidOrderingException("Ordering removed items");
         }
+        else if (!resultAsSet.containsAll(uniqueDescriptions)) {
+            throw new InvalidOrderingException("Ordering removed items");
+        }*/
 
         return inOrder;
     }
