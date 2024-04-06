@@ -31,9 +31,15 @@ public class SimpleTest {
 
     @Test
     public void divideByZero() {
-        int zero = 0;
-        int result = 8 / zero;
-        unused = result; // avoid warning for not using result
+        try {
+            int zero = 0;
+            int result = 8 / zero;
+            unused = result;
+        }
+        catch (ArithmeticException e){
+            throw new ArithmeticException();
+        }
+        // avoid warning for not using result
     }
 
     @Test

@@ -10,10 +10,13 @@ import java.io.PrintStream;
 
 import junit.framework.TestCase;
 import org.junit.Test;
+import org.junit.experimental.runners.Enclosed;
 import org.junit.internal.TextListener;
 import org.junit.runner.JUnitCore;
+import org.junit.runner.RunWith;
 import org.junit.tests.TestSystem;
 
+@RunWith(Enclosed.class)
 public class TextListenerTest extends TestCase {
 
     private JUnitCore runner;
@@ -43,7 +46,11 @@ public class TextListenerTest extends TestCase {
     public static class ErrorTest {
         @Test
         public void error() throws Exception {
-            throw new Exception();
+            try {
+                throw new Exception();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 

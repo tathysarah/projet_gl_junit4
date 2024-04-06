@@ -51,7 +51,7 @@ public class JUnit4TestAdapter
         return fRunner.testCount();
     }
 
-    public void run(TestResult result) {
+    public void run(TestResult result) throws ArithmeticException{
         fRunner.run(fCache.getNotifier(result, this));
     }
 
