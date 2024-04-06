@@ -197,9 +197,7 @@ public class FrameworkMethod extends FrameworkMember<FrameworkMethod> {
                 && ((Class<?>) type).isAssignableFrom(method.getReturnType());
     }
 
-    private Class<?>[] getParameterTypes() {
-        return method.getParameterTypes();
-    }
+
 
     /**
      * Returns the annotations on this method
@@ -219,5 +217,9 @@ public class FrameworkMethod extends FrameworkMember<FrameworkMethod> {
     @Override
     public String toString() {
         return method.toString();
+    }
+
+    private Class<?>[] getParameterTypes() {
+        return method.getParameterTypes();
     }
 }

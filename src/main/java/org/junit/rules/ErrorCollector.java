@@ -8,7 +8,7 @@ import java.util.concurrent.Callable;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
-import org.junit.function.ThrowingRunnable;
+import org.junit.ThrowingRunnable;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.runners.model.MultipleFailureException;
 

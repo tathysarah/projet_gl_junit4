@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.junit.function.ThrowingRunnable;
+import org.junit.ThrowingRunnable;
 
 /**
  * The <code>Test</code> annotation tells JUnit that the

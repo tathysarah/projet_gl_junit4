@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import junit.framework.JUnit4TestAdapter;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.experimental.runners.Enclosed;
+import org.junit.experimental.Enclosed;
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.OrderWith;

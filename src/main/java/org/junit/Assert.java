@@ -2,7 +2,7 @@ package org.junit;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
-import org.junit.function.ThrowingRunnable;
+import org.junit.ThrowingRunnable;
 import org.junit.internal.ArrayComparisonFailure;
 import org.junit.internal.ExactComparisonCriteria;
 import org.junit.internal.InexactComparisonCriteria;
@@ -765,21 +765,21 @@ public class Assert {
      *             <code>assertEquals(double expected, double actual, double delta)</code>
      *             instead
      */
-    @Deprecated
-    public static void assertEquals(double expected, double actual) {
-        assertEquals(null, expected, actual);
-    }
+    //@Deprecated
+   // public static void assertEquals(double expected, double actual) {
+       // assertEquals(null, expected, actual);
+    //}
 
     /**
      * @deprecated Use
      *             <code>assertEquals(String message, double expected, double actual, double delta)</code>
      *             instead
      */
-    @Deprecated
+   /* @Deprecated
     public static void assertEquals(String message, double expected,
             double actual) {
         fail("Use assertEquals(expected, actual, delta) to compare floating-point numbers");
-    }
+    }*/
 
     /**
      * Asserts that two doubles are equal to within a positive delta. If they
@@ -1016,11 +1016,11 @@ public class Assert {
      *            actual values
      * @deprecated use assertArrayEquals
      */
-    @Deprecated
+    /*@Deprecated
     public static void assertEquals(String message, Object[] expecteds,
             Object[] actuals) {
         assertArrayEquals(message, expecteds, actuals);
-    }
+    }*/
 
     /**
      * Asserts that two object arrays are equal. If they are not, an
@@ -1035,11 +1035,11 @@ public class Assert {
      *            actual values
      * @deprecated use assertArrayEquals
      */
-    @Deprecated
+   /* @Deprecated
     public static void assertEquals(Object[] expecteds, Object[] actuals) {
         assertArrayEquals(expecteds, actuals);
     }
-
+*/
     /**
      * Asserts that <code>actual</code> satisfies the condition specified by
      * <code>matcher</code>. If not, an {@link AssertionError} is thrown with
@@ -1069,11 +1069,11 @@ public class Assert {
      * @see org.hamcrest.CoreMatchers
      * @deprecated use {@code org.hamcrest.MatcherAssert.assertThat()}
      */
-    @Deprecated
+   /* @Deprecated
     public static <T> void assertThat(T actual, Matcher<? super T> matcher) {
         assertThat("", actual, matcher);
     }
-
+*/
     /**
      * Asserts that <code>actual</code> satisfies the condition specified by
      * <code>matcher</code>. If not, an {@link AssertionError} is thrown with
@@ -1106,12 +1106,12 @@ public class Assert {
      * @see org.hamcrest.CoreMatchers
      * @deprecated use {@code org.hamcrest.MatcherAssert.assertThat()}
      */
-    @Deprecated
+   /* @Deprecated
     public static <T> void assertThat(String reason, T actual,
             Matcher<? super T> matcher) {
         MatcherAssert.assertThat(reason, actual, matcher);
     }
-
+*/
     /**
      * Asserts that {@code runnable} throws an exception of type
      * {@code expectedThrowable} when executed. If it does, the exception object
