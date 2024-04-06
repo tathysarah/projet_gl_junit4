@@ -306,14 +306,35 @@ public class TemporaryFolder extends ExternalResource {
     }
 
     private static File createTemporaryFolderWithNioApi(File parentFolder)
-            throws ClassNotFoundException, NoSuchMethodException,
-            InvocationTargetException, IllegalAccessException {
+            throws ClassNotFoundException {
         Class<?> filesClass = Class.forName("java.nio.file.Files");
         Object fileAttributeArray = Array.newInstance(
                 Class.forName("java.nio.file.attribute.FileAttribute"), 0);
         Class<?> pathClass = Class.forName("java.nio.file.Path");
-        Object tempDir;
-        if (parentFolder != null) {
+
+        try {
+            Object tempDir;
+            if (parentFolder != null) {
+                Method createTempDirectoryMethod = filesClass.getDeclaredMethod(
+                        "createTempDirectory", pathClass, String.class,
+                        fileAttributeArray.getClass());
+                Object parentPath = File.class.getDeclaredMethod("toPath")
+                        .invoke(parentFolder);
+                tempDir = createTempDirectoryMethod.invoke(null, parentPath,
+                        TMP_PREFIX, fileAttributeArray);
+            } else {
+                Method createTempDirectoryMethod = filesClass.getDeclaredMethod(
+                        "createTempDirectory", String.class,
+                        fileAttributeArray.getClass());
+                tempDir = createTempDirectoryMethod.invoke(null, TMP_PREFIX,
+                        fileAttributeArray);
+            }
+            return (File) pathClass.getDeclaredMethod("toFile").invoke(tempDir);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
+        /*if (parentFolder != null) {
             Method createTempDirectoryMethod = filesClass.getDeclaredMethod(
                     "createTempDirectory", pathClass, String.class,
                     fileAttributeArray.getClass());
@@ -328,7 +349,7 @@ public class TemporaryFolder extends ExternalResource {
             tempDir = createTempDirectoryMethod.invoke(null, TMP_PREFIX,
                     fileAttributeArray);
         }
-        return (File) pathClass.getDeclaredMethod("toFile").invoke(tempDir);
+        return (File) pathClass.getDeclaredMethod("toFile").invoke(tempDir);*/
     }
 
     private static File createTemporaryFolderWithFileApi(File parentFolder)
