@@ -15,7 +15,7 @@ import org.junit.runners.model.RunnerBuilder;
  * <p>
  * If a runner supports inner member classes, the member classes will inherit
  * the runner from the enclosing class, e.g.:
- * 
+ *
  * <pre>
  * &#064;RunWith(MyRunner.class)
  * public class MyTest {
@@ -55,7 +55,7 @@ import org.junit.runners.model.RunnerBuilder;
  *     // some tests might go here
  * }
  * </pre>
- * 
+ *
  * The key points to note here are:
  * <ul>
  * <li>If there is no RunWith annotation, no runner will be created.</li>
@@ -107,7 +107,7 @@ public class AnnotatedBuilder extends RunnerBuilder {
     }
 
     public Runner buildRunner(Class<? extends Runner> runnerClass,
-            Class<?> testClass) throws Exception {
+                              Class<?> testClass) throws Exception {
         try {
             return runnerClass.getConstructor(Class.class)
                     .newInstance(testClass);

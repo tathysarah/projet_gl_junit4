@@ -63,26 +63,11 @@ public class TestClass implements Annotatable {
                 fieldsForAnnotations);
     }
 
-    protected void addToAnnotationListsByMethod(Class<?> eachClass){
-        for (Method eachMethod : MethodSorter
-                .getDeclaredMethods(eachClass)) {
-            addToAnnotationLists(new FrameworkMethod(eachMethod),
-                    methodsForAnnotations);
-        }
-    }
-
-    protected void addToAnnotationListsByField(Class<?> eachClass){
-        for (Field eachField : getSortedDeclaredFields(eachClass)) {
-            addToAnnotationLists(new FrameworkField(eachField),
-                    fieldsForAnnotations);
-        }
-    }
-
     protected void scanAnnotatedMembers(
             Map<Class<? extends Annotation>, List<FrameworkMethod>> methodsForAnnotations,
             Map<Class<? extends Annotation>, List<FrameworkField>> fieldsForAnnotations) {
         for (Class<?> eachClass : getSuperClasses(clazz)) {
-            /*for (Method eachMethod : MethodSorter
+            for (Method eachMethod : MethodSorter
                     .getDeclaredMethods(eachClass)) {
                 addToAnnotationLists(new FrameworkMethod(eachMethod),
                         methodsForAnnotations);
@@ -92,9 +77,7 @@ public class TestClass implements Annotatable {
             for (Field eachField : getSortedDeclaredFields(eachClass)) {
                 addToAnnotationLists(new FrameworkField(eachField),
                         fieldsForAnnotations);
-            }*/
-            addToAnnotationListsByMethod(eachClass);
-            addToAnnotationListsByField(eachClass);
+            }
         }
     }
 
@@ -135,7 +118,7 @@ public class TestClass implements Annotatable {
     /**
      * Returns, efficiently, all the non-overridden methods in this class and
      * its superclasses that are annotated}.
-     * 
+     *
      * @since 4.12
      */
     public List<FrameworkMethod> getAnnotatedMethods() {
@@ -157,7 +140,7 @@ public class TestClass implements Annotatable {
     /**
      * Returns, efficiently, all the non-overridden fields in this class and its
      * superclasses that are annotated.
-     * 
+     *
      * @since 4.12
      */
     public List<FrameworkField> getAnnotatedFields() {
@@ -254,7 +237,7 @@ public class TestClass implements Annotatable {
     }
 
     public <T> List<T> getAnnotatedFieldValues(Object test,
-            Class<? extends Annotation> annotationClass, Class<T> valueClass) {
+                                               Class<? extends Annotation> annotationClass, Class<T> valueClass) {
         final List<T> results = new ArrayList<T>();
         collectAnnotatedFieldValues(test, annotationClass, valueClass,
                 new MemberValueConsumer<T>() {
@@ -273,8 +256,8 @@ public class TestClass implements Annotatable {
      * @since 4.13
      */
     public <T> void collectAnnotatedFieldValues(Object test,
-            Class<? extends Annotation> annotationClass, Class<T> valueClass,
-            MemberValueConsumer<T> consumer) {
+                                                Class<? extends Annotation> annotationClass, Class<T> valueClass,
+                                                MemberValueConsumer<T> consumer) {
         for (FrameworkField each : getAnnotatedFields(annotationClass)) {
             try {
                 Object fieldValue = each.get(test);
@@ -290,7 +273,7 @@ public class TestClass implements Annotatable {
     }
 
     public <T> List<T> getAnnotatedMethodValues(Object test,
-            Class<? extends Annotation> annotationClass, Class<T> valueClass) {
+                                                Class<? extends Annotation> annotationClass, Class<T> valueClass) {
         final List<T> results = new ArrayList<T>();
         collectAnnotatedMethodValues(test, annotationClass, valueClass,
                 new MemberValueConsumer<T>() {
@@ -309,8 +292,8 @@ public class TestClass implements Annotatable {
      * @since 4.13
      */
     public <T> void collectAnnotatedMethodValues(Object test,
-            Class<? extends Annotation> annotationClass, Class<T> valueClass,
-            MemberValueConsumer<T> consumer) {
+                                                 Class<? extends Annotation> annotationClass, Class<T> valueClass,
+                                                 MemberValueConsumer<T> consumer) {
         for (FrameworkMethod each : getAnnotatedMethods(annotationClass)) {
             try {
                 /*
