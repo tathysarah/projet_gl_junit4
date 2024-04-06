@@ -153,7 +153,7 @@ public abstract class ComparisonCriteria {
         }*/
         int prefixLength = Math.min(actualsLength, expectedsLength);
         longIsArray(message,header, expecteds, actuals,prefixLength);
-        lengthOfObjects(actualsLength,expectedsLength,expecteds,actuals,prefixLength,header);
+        lengthOfObjects(actualsLength,expectedsLength,expecteds,actuals,header);
         /*for (int i = 0; i < prefixLength; i++) {
             Object expected = Array.get(expecteds, i);
             Object actual = Array.get(actuals, i);
