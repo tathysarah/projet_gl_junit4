@@ -34,9 +34,11 @@ public class AllDefaultPossibilitiesBuilder extends RunnerBuilder {
             Runner runner = each.safeRunnerForClass(testClass);
             if (runner != null) {
                 return runner;
+            } else {
+                return null;
             }
         }
-        return null;
+        //return null;
     }
 
     protected JUnit4Builder junit4Builder() {

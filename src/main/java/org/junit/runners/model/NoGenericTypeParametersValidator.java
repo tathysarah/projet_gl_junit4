@@ -44,14 +44,27 @@ class NoGenericTypeParametersValidator {
         }
     }
 
+    private void getUpperBoundsOfWildcard(WildcardType wildcard, List<Throwable> errors){
+        for (Type each : wildcard.getUpperBounds()) {
+            validateNoTypeParameterOnType(each, errors);
+        }
+    }
+
+    private void getLowerBoundsOfWildcard(WildcardType wildcard, List<Throwable> errors){
+        for (Type each : wildcard.getLowerBounds()) {
+            validateNoTypeParameterOnType(each, errors);
+        }
+    }
     private void validateNoTypeParameterOnWildcardType(WildcardType wildcard,
             List<Throwable> errors) {
-        for (Type each : wildcard.getUpperBounds()) {
+        /*for (Type each : wildcard.getUpperBounds()) {
             validateNoTypeParameterOnType(each, errors);
         }
         for (Type each : wildcard.getLowerBounds()) {
             validateNoTypeParameterOnType(each, errors);
-        }
+        }*/
+        getUpperBoundsOfWildcard(wildcard, errors);
+        getLowerBoundsOfWildcard(wildcard, errors);
     }
 
     private void validateNoTypeParameterOnGenericArrayType(

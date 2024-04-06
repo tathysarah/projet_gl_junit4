@@ -31,8 +31,7 @@ public abstract class ComparisonCriteria {
         arrayEquals(message, expecteds, actuals, true);
     }
 
-    private void arrayEquals(String message, Object expecteds, Object actuals,
-            boolean outer) throws ArrayComparisonFailure {
+    private void actualsComparison(Object expecteds, Object actuals){
         if (expecteds == actuals || Arrays.deepEquals(
                 new Object[] { expecteds }, new Object[] { actuals })) {
             // The reflection-based loop below is potentially very slow,
@@ -42,6 +41,9 @@ public abstract class ComparisonCriteria {
             // the arrays are exactly equal.
             return;
         }
+    }
+
+    private void expectedsIsNull(String message, Object expecteds, boolean outer){
         String header = message == null ? "" : message + ": ";
 
         // Only include the user-provided message in the outer exception.
@@ -50,10 +52,19 @@ public abstract class ComparisonCriteria {
         if (expecteds == null) {
             Assert.fail(exceptionMessage + "expected array was null");
         }
+    }
+
+    private void actualsIsNull(boolean outer,String message, Object actuals){
+        String header = message == null ? "" : message + ": ";
+
+        // Only include the user-provided message in the outer exception.
+        String exceptionMessage = outer ? header : "";
         if (actuals == null) {
             Assert.fail(exceptionMessage + "actual array was null");
         }
+    }
 
+    private void addHeader(String message,Object actuals, Object expecteds, String header){
         int actualsLength = Array.getLength(actuals);
         int expectedsLength = Array.getLength(expecteds);
         if (actualsLength != expectedsLength) {
@@ -61,13 +72,14 @@ public abstract class ComparisonCriteria {
                     + expectedsLength + " actual.length=" + actualsLength
                     + "; ";
         }
-        int prefixLength = Math.min(actualsLength, expectedsLength);
+    }
 
+    private void longIsArray(String message, String header, Object expecteds, Object actuals,int prefixLength){
         for (int i = 0; i < prefixLength; i++) {
             Object expected = Array.get(expecteds, i);
             Object actual = Array.get(actuals, i);
-
-            if (isArray(expected) && isArray(actual)) {
+            //sArray(message,expected, actual,header,i);
+           if (isArray(expected) && isArray(actual)) {
                 try {
                     arrayEquals(message, expected, actual, false);
                 } catch (ArrayComparisonFailure e) {
@@ -77,7 +89,87 @@ public abstract class ComparisonCriteria {
                     // Array lengths differed.
                     throw new ArrayComparisonFailure(header, e, i);
                 }
-            } else {
+            }
+            else {
+                try {
+                    assertElementsEqual(expected, actual);
+                } catch (AssertionError e) {
+                    throw new ArrayComparisonFailure(header, e, i);
+                }
+            }
+        }
+    }
+
+    private void lengthOfObjects(int actualsLength, int expectedsLength, Object expecteds, Object actuals, String header){
+        int prefixLength = Math.min(actualsLength, expectedsLength);
+        if (actualsLength != expectedsLength) {
+            Object expected = getToStringableArrayElement(expecteds,
+                    expectedsLength, prefixLength);
+            Object actual = getToStringableArrayElement(actuals, actualsLength,
+                    prefixLength);
+            try {
+                Assert.assertEquals(expected, actual);
+            } catch (AssertionError e) {
+                throw new ArrayComparisonFailure(header, e, prefixLength);
+            }
+        }
+    }
+
+    private void arrayEquals(String message, Object expecteds, Object actuals,
+            boolean outer) throws ArrayComparisonFailure {
+        String header = message == null ? "" : message + ": ";
+        String exceptionMessage = outer ? header : "";
+        actualsComparison(expecteds, actuals);
+        expectedsIsNull(message,expecteds,outer);
+        actualsIsNull(outer,message,actuals);
+        addHeader(message,expecteds,actuals,header);
+        /*if (expecteds == actuals || Arrays.deepEquals(
+                new Object[] { expecteds }, new Object[] { actuals })) {
+            // The reflection-based loop below is potentially very slow,
+            // especially for primitive
+            // arrays. The deepEquals check allows us to circumvent it in the
+            // usual case where
+            // the arrays are exactly equal.
+            return;
+        }
+
+
+        // Only include the user-provided message in the outer exception.
+
+
+        /*if (expecteds == null) {
+            Assert.fail(exceptionMessage + "expected array was null");
+        }
+        if (actuals == null) {
+            Assert.fail(exceptionMessage + "actual array was null");
+        }*/
+
+        int actualsLength = Array.getLength(actuals);
+        int expectedsLength = Array.getLength(expecteds);
+        /*if (actualsLength != expectedsLength) {
+            header += "array lengths differed, expected.length="
+                    + expectedsLength + " actual.length=" + actualsLength
+                    + "; ";
+        }*/
+        int prefixLength = Math.min(actualsLength, expectedsLength);
+        longIsArray(message,header, expecteds, actuals,prefixLength);
+        lengthOfObjects(actualsLength,expectedsLength,expecteds,actuals,prefixLength,header);
+        /*for (int i = 0; i < prefixLength; i++) {
+            Object expected = Array.get(expecteds, i);
+            Object actual = Array.get(actuals, i);
+            //isArray(message,expected, actual,header,i);
+           /* if (isArray(expected) && isArray(actual)) {
+                try {
+                    arrayEquals(message, expected, actual, false);
+                } catch (ArrayComparisonFailure e) {
+                    e.addDimension(i);
+                    throw e;
+                } catch (AssertionError e) {
+                    // Array lengths differed.
+                    throw new ArrayComparisonFailure(header, e, i);
+                }
+            }
+            else {
                 try {
                     assertElementsEqual(expected, actual);
                 } catch (AssertionError e) {
@@ -96,7 +188,7 @@ public abstract class ComparisonCriteria {
             } catch (AssertionError e) {
                 throw new ArrayComparisonFailure(header, e, prefixLength);
             }
-        }
+        }*/
     }
 
     private static final Object END_OF_ARRAY_SENTINEL = objectWithToString(

@@ -407,12 +407,27 @@ public class BlockJUnit4ClassRunner extends ParentRunner<FrameworkMethod> {
                 : new RunAfters(statement, afters, target);
     }
 
+    private void addRuleInFunctionOfTestRules(Object target,List<TestRule> testRules, RuleContainer ruleContainer){
+        for (MethodRule each : rules(target)) {
+            if (!(each instanceof TestRule && testRules.contains(each))) {
+                ruleContainer.add(each);
+            }
+        }
+    }
+
+    private void addRule(Object target, List<TestRule> testRules, RuleContainer ruleContainer){
+        for (TestRule rule : testRules) {
+            ruleContainer.add(rule);
+        }
+    }
     private Statement withRules(FrameworkMethod method, Object target,
             Statement statement) {
         RuleContainer ruleContainer = new RuleContainer();
         CURRENT_RULE_CONTAINER.set(ruleContainer);
         try {
             List<TestRule> testRules = getTestRules(target);
+            addRuleInFunctionOfTestRules(target, testRules, ruleContainer);
+            addRule(target, testRules, ruleContainer);
             /*for (MethodRule each : rules(target)) {
                 if (!(each instanceof TestRule && testRules.contains(each))) {
                     ruleContainer.add(each);
@@ -421,14 +436,7 @@ public class BlockJUnit4ClassRunner extends ParentRunner<FrameworkMethod> {
             for (TestRule rule : testRules) {
                 ruleContainer.add(rule);
             }*/
-            for(MethodRule each: rules(target)){
-                for(TestRule rule: testRules){
-                    ruleContainer.add(rule);
-                    if(!(each instanceof TestRule && testRules.contains(each))){
-                        ruleContainer.add(each);
-                    }
-                }
-            }
+
         } finally {
             CURRENT_RULE_CONTAINER.remove();
         }

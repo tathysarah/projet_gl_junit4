@@ -490,6 +490,25 @@ public abstract class ParentRunner<T> extends Runner
      *
      * @since 4.13
      */
+
+    public void addChild(List<T> children, Orderer orderer, Map<Description, List<T>> childMap) throws InvalidOrderingException {
+        for (T child : children) {
+            Description description = describeChild(child);
+            List<T> childrenWithDescription = childMap.get(description);
+            if (childrenWithDescription == null) {
+                childrenWithDescription = new ArrayList<T>(1);
+                childMap.put(description, childrenWithDescription);
+            }
+            childrenWithDescription.add(child);
+            orderer.apply(child);
+        }
+    }
+
+    public void addAllInChildren(Map<Description, List<T>> childMap, List<T> children, List<Description> inOrder){
+        for (Description description : inOrder) {
+            children.addAll(childMap.get(description));
+        }
+    }
     public void order(Orderer orderer) throws InvalidOrderingException {
         if (shouldNotReorder()) {
             return;
@@ -503,7 +522,8 @@ public abstract class ParentRunner<T> extends Runner
             // and add them back at the end.
             Map<Description, List<T>> childMap = new LinkedHashMap<Description, List<T>>(
                     children.size());
-            for (T child : children) {
+            addChild(children,orderer,childMap);
+            /*for (T child : children) {
                 Description description = describeChild(child);
                 List<T> childrenWithDescription = childMap.get(description);
                 if (childrenWithDescription == null) {
@@ -512,14 +532,15 @@ public abstract class ParentRunner<T> extends Runner
                 }
                 childrenWithDescription.add(child);
                 orderer.apply(child);
-            }
+            }*/
 
             List<Description> inOrder = orderer.order(childMap.keySet());
 
             children = new ArrayList<T>(children.size());
-            for (Description description : inOrder) {
+            addAllInChildren(childMap, children, inOrder);
+            /*for (Description description : inOrder) {
                 children.addAll(childMap.get(description));
-            }
+            }*/
             filteredChildren = Collections.unmodifiableList(children);
         } finally {
             childrenLock.unlock();

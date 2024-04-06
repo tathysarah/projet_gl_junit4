@@ -63,11 +63,26 @@ public class TestClass implements Annotatable {
                 fieldsForAnnotations);
     }
 
+    protected void addToAnnotationListsByMethod(Class<?> eachClass){
+        for (Method eachMethod : MethodSorter
+                .getDeclaredMethods(eachClass)) {
+            addToAnnotationLists(new FrameworkMethod(eachMethod),
+                    methodsForAnnotations);
+        }
+    }
+
+    protected void addToAnnotationListsByField(Class<?> eachClass){
+        for (Field eachField : getSortedDeclaredFields(eachClass)) {
+            addToAnnotationLists(new FrameworkField(eachField),
+                    fieldsForAnnotations);
+        }
+    }
+
     protected void scanAnnotatedMembers(
             Map<Class<? extends Annotation>, List<FrameworkMethod>> methodsForAnnotations,
             Map<Class<? extends Annotation>, List<FrameworkField>> fieldsForAnnotations) {
         for (Class<?> eachClass : getSuperClasses(clazz)) {
-            for (Method eachMethod : MethodSorter
+            /*for (Method eachMethod : MethodSorter
                     .getDeclaredMethods(eachClass)) {
                 addToAnnotationLists(new FrameworkMethod(eachMethod),
                         methodsForAnnotations);
@@ -77,7 +92,9 @@ public class TestClass implements Annotatable {
             for (Field eachField : getSortedDeclaredFields(eachClass)) {
                 addToAnnotationLists(new FrameworkField(eachField),
                         fieldsForAnnotations);
-            }
+            }*/
+            addToAnnotationListsByMethod(eachClass);
+            addToAnnotationListsByField(eachClass);
         }
     }
 

@@ -189,30 +189,17 @@ public class TemporaryFolder extends ExternalResource {
         return newFolder(new String[] { path });
     }
 
-    /**
-     * Returns a new fresh folder with the given paths under the temporary
-     * folder. For example, if you pass in the strings {@code "parent"} and
-     * {@code "child"} then a directory named {@code "parent"} will be created
-     * under the temporary folder and a directory named {@code "child"} will be
-     * created under the newly-created {@code "parent"} directory.
-     */
-    public File newFolder(String... paths) throws IOException {
-        if (paths.length == 0) {
-            throw new IllegalArgumentException("must pass at least one path");
-        }
-
-        /*
-         * Before checking if the paths are absolute paths, check if create()
-         * was ever called, and if it wasn't, throw IllegalStateException.
-         */
-        File root = getRoot();
+    public void fileIsAbsolute(String... paths) throws IOException {
         for (String path : paths) {
             if (new File(path).isAbsolute()) {
                 throw new IOException(
                         "folder path \'" + path + "\' is not a relative path");
             }
         }
+    }
 
+    public void fileIsDirectory(String... paths) throws IOException {
+        File root = getRoot();
         File relativePath = null;
         File file = root;
         boolean lastMkdirsCallSuccessful = true;
@@ -232,6 +219,53 @@ public class TemporaryFolder extends ExternalResource {
                 }
             }
         }
+    }
+    /**
+     * Returns a new fresh folder with the given paths under the temporary
+     * folder. For example, if you pass in the strings {@code "parent"} and
+     * {@code "child"} then a directory named {@code "parent"} will be created
+     * under the temporary folder and a directory named {@code "child"} will be
+     * created under the newly-created {@code "parent"} directory.
+     */
+    public File newFolder(String... paths) throws IOException {
+        if (paths.length == 0) {
+            throw new IllegalArgumentException("must pass at least one path");
+        }
+
+        /*
+         * Before checking if the paths are absolute paths, check if create()
+         * was ever called, and if it wasn't, throw IllegalStateException.
+         */
+        File root = getRoot();
+        fileIsAbsolute(paths);
+       /* for (String path : paths) {
+            if (new File(path).isAbsolute()) {
+                throw new IOException(
+                        "folder path \'" + path + "\' is not a relative path");
+            }
+        }*/
+
+        File relativePath = null;
+        File file = root;
+        boolean lastMkdirsCallSuccessful = true;
+        fileIsDirectory(paths);
+        /*for (String path : paths) {
+            relativePath = new File(relativePath, path);
+            file = new File(root, relativePath.getPath());
+
+            lastMkdirsCallSuccessful = file.mkdirs();
+            if (!lastMkdirsCallSuccessful && !file.isDirectory()) {
+                if (file.exists()) {
+                    throw new IOException("a file with the path \'"
+                            + relativePath.getPath() + "\' exists");
+                } else {
+                    throw new IOException(
+                            "could not create a folder with the path \'"
+                                    + relativePath.getPath() + "\'");
+                }
+            }
+        }*/
+
         if (!lastMkdirsCallSuccessful) {
             throw new IOException("a folder with the path \'"
                     + relativePath.getPath() + "\' already exists");
